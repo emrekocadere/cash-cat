@@ -1,3 +1,5 @@
+using CashCat.Infstructre.Extensions;
+
 namespace CashCat.API;
 
 public class Program
@@ -12,7 +14,8 @@ public class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
-
+        
+        builder.Services.AddInfrastructureServices(builder.Configuration); // bunu eklemzsek ne olur baba
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
