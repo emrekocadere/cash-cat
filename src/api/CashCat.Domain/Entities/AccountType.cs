@@ -7,5 +7,4 @@ public class AccountType
     public Guid AccountId { get; set; }
 
     public ICollection<Account>? Accounts { get; set; }
-    
 }

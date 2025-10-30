@@ -15,8 +15,9 @@ public class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
-        
-        builder.Services.AddInfrastructureServices(builder.Configuration); // bunu eklemzsek ne olur baba. ne olduğunu hatırlaıyprum iyi analiz et
+
+        builder.Services.AddInfrastructureServices(builder
+            .Configuration); // bunu eklemzsek ne olur baba. ne olduğunu hatırlaıyprum iyi analiz et
         builder.Services.AddApplication();
         // Bu hata, Entity Framework Core (EF Core) kullanırken karşına çıkan çok yaygın bir hatadır.
         //     Kısaca açıklarsak:

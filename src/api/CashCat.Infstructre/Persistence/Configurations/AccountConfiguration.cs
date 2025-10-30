@@ -13,7 +13,5 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
             .WithMany(u => u.Accounts)
             .HasForeignKey(a => a.UserId)
             .OnDelete(DeleteBehavior.Cascade);
-
     }
 }
-

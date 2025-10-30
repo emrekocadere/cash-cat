@@ -1,13 +1,25 @@
 namespace CashCat.Domain.Common;
 
-public record ResultT<T>: Result
+public record ResultT<T> : Result
 {
+    private ResultT(T value) : base(true, null)
+    {
+        Value = value;
+    }
+
+    private ResultT(Error error) : base(false, error)
+    {
+    }
+
     public T? Value { get; }
 
-    private ResultT(T value) : base(true, null) => Value = value;
-    private ResultT(Error error) : base(false, error) { }
+    public static implicit operator ResultT<T>(T value)
+    {
+        return new ResultT<T>(value);
+    }
 
-    public static implicit operator ResultT<T>(T value) => new(value);
-
-    public static implicit operator ResultT<T>(Error error) => new(error);
+    public static implicit operator ResultT<T>(Error error)
+    {
+        return new ResultT<T>(error);
+    }
 }
