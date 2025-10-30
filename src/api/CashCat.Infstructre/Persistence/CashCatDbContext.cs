@@ -7,7 +7,7 @@ namespace CashCat.Infstructre.Persistence;
 
 public class CashCatDbContext:IdentityDbContext<ApplicationUser,ApplicationRole,Guid>
 {
-    public CashCatDbContext(DbContextOptions<CashCatDbContext> options) : base(options)
+    public CashCatDbContext(DbContextOptions<CashCatDbContext> options) : base(options) // buna bak meslela program.cs teki service.addbbcontext i silsem migratiopn olut mu veya derlenirmi
     {
     }
 
