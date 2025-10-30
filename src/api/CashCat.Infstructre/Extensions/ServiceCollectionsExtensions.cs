@@ -1,4 +1,7 @@
 using System.Text;
+using CashCat.Application.Common.Services;
+using CashCat.Infstructre.Auth.Services;
+using CashCat.Infstructre.Identity.Models;
 using CashCat.Infstructre.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -13,13 +16,15 @@ public static class ServiceCollectionsExtensions
     public static void AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
         
-        var connectionString = configuration.GetConnectionString("CashCatDbConnection");
+        var connectionString = configuration.GetConnectionString("DefaultConnection");
 
         services.AddDbContext<CashCatDbContext>(opt=>
         {
             opt.UseNpgsql(connectionString);
         });
-
+        
+        services.AddIdentity<ApplicationUser, ApplicationRole>()
+            .AddEntityFrameworkStores<CashCatDbContext>();
         
 
         services.AddAuthentication(options => // nden kütüphaneyi indridikten sonra çalıştı. sonuçta services başka yerde. program.cs te kabul ediyor
@@ -43,5 +48,10 @@ public static class ServiceCollectionsExtensions
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
                 };
             });
+
+        // services.AddScoped<IUserContext, UserContext>();
+        //
+        // services.AddHttpContextAccessor();
+    
     }
 }
