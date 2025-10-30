@@ -8,5 +8,7 @@ public static class ServiceCollectionsExtensions
     {
         var applicationAssembly = typeof(ServiceCollectionsExtensions).Assembly;
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(applicationAssembly));
+
+        services.AddAutoMapper(cfg => { }, applicationAssembly);
     }
 }
