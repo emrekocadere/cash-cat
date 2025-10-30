@@ -1,13 +1,17 @@
 using CashCat.Domain.Entities;
 using CashCat.Infstructre.Identity.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace CashCat.Infstructre.Persistence;
 
-public class CashCatDbContext:IdentityDbContext<ApplicationUser,ApplicationRole,Guid>
+public class CashCatDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid,
+    IdentityUserClaim<Guid>, IdentityUserRole<Guid>, IdentityUserLogin<Guid>,
+    IdentityRoleClaim<Guid>, ApplicationUserToken>
 {
-    public CashCatDbContext(DbContextOptions<CashCatDbContext> options) : base(options) // buna bak meslela program.cs teki service.addbbcontext i silsem migratiopn olut mu veya derlenirmi
+    public CashCatDbContext(DbContextOptions<CashCatDbContext> options) :
+        base(options) // buna bak meslela program.cs teki service.addbbcontext i silsem migratiopn olut mu veya derlenirmi
     {
     }
 
