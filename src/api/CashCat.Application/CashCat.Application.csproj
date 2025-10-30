@@ -10,4 +10,9 @@
       <ProjectReference Include="..\CashCat.Domain\CashCat.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="15.1.0" />
+      <PackageReference Include="MediatR" Version="12.5.0" />
+    </ItemGroup>
+
 </Project>
