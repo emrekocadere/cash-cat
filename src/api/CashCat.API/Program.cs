@@ -18,11 +18,9 @@ public class Program
 
         builder.Services.AddInfrastructureServices(builder
             .Configuration); // bunu eklemzsek ne olur baba. ne olduğunu hatırlaıyprum iyi analiz et
+
         builder.Services.AddApplication();
-        // Bu hata, Entity Framework Core (EF Core) kullanırken karşına çıkan çok yaygın bir hatadır.
-        //     Kısaca açıklarsak:
-        //
-        // EF Core, CashCatDbContext sınıfını oluşturmak isterken gerekli olan DbContextOptions<CashCatDbContext> nesnesini bulamıyor.
+        
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -34,9 +32,10 @@ public class Program
 
         app.UseHttpsRedirection();
 
-        app.UseAuthorization();
 
 
+        app.UseInfrastructure();
+        
         app.MapControllers();
 
         app.Run();
