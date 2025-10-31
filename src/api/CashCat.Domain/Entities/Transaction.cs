@@ -3,7 +3,7 @@ namespace CashCat.Domain.Entities;
 public class Transaction
 {
     public Guid Id { get; set; }
-    public DateTime Date { get; set; }
+    public DateTime Date { get; set; }=DateTime.UtcNow;
     public Guid AccountId { get; set; }
     public Guid CategoryId { get; set; }
     public Guid TransactionTypeId { get; set; }
