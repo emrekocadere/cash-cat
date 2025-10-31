@@ -1,4 +1,5 @@
 using CashCat.Application.Transaction.Commands.CreateTransaction;
+using CashCat.Application.Transaction.Queries.GetAllTransactions;
 using CashCat.Domain.Common;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -18,5 +19,21 @@ public class TransactionController(IMediator mediator):ControllerBase
               return Ok(result);
          }
             return BadRequest(result);
+    }
+    
+    [HttpGet]
+    public async Task<ActionResult<Result>> GetTransactions(int pageNumber)
+    {
+        var query = new GetAllTransactionsQuery()
+        {
+            PageNumber = pageNumber
+        };
+        var result= await mediator.Send(query);
+        
+        if (result.IsSuccess)
+        {
+            return Ok(result);
+        }
+        return BadRequest(result);
     }
 }
