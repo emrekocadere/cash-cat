@@ -59,6 +59,7 @@ public static class ServiceCollectionsExtensions
         services.AddScoped<IIdentityService,IdentityService>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IRepository<ApplicationUserToken>, Repository<ApplicationUserToken>>();
+        services.AddScoped<IUserTokenRepository, UserTokenRepository>();
 
     }
 }

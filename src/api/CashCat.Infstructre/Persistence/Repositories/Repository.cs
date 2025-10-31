@@ -6,7 +6,7 @@ namespace CashCat.Infstructre.Persistence.Repositories;
 public class Repository<T> : IRepository<T> where T : class
 {
     private readonly CashCatDbContext _context;
-    private readonly DbSet<T> _dbSet;
+    protected readonly DbSet<T> _dbSet;
 
     public Repository(CashCatDbContext context)
     {
