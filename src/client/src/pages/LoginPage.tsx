@@ -1,5 +1,5 @@
 
-import { Link, } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { LoginForm } from '@/components/auth/LoginForm';
 
 import type { LoginRequest } from '@/types/auth.types';
@@ -13,13 +13,13 @@ export const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-12 px-4 relative ">
-
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-12 px-4 relative overflow-hidden">
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary-500/30 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl"></div>
 
       <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10">
-     
         <div className="hidden md:block">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-primary-500 via-purple-500 to-indigo-600 rounded-3xl mb-8 ">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-primary-500 via-purple-500 to-indigo-600 rounded-3xl mb-8 shadow-2xl shadow-primary-500/50">
             <svg
               className="w-10 h-10 text-white"
               fill="none"
@@ -34,7 +34,7 @@ export const LoginPage = () => {
               />
             </svg>
           </div>
-          <h1 className="text-5xl  bg-gradient-to-r from-white via-purple-200 to-white bg-clip-text text-transparent mb-4">
+          <h1 className="text-5xl font-extrabold bg-gradient-to-r from-white via-purple-200 to-white bg-clip-text text-transparent mb-4">
             CashCat
           </h1>
           <p className="text-xl text-gray-300 mb-8 leading-relaxed">
@@ -59,13 +59,13 @@ export const LoginPage = () => {
                 </svg>
               </div>
               <div>
-                <h3 className="text-lg  text-white mb-1">Secure Access</h3>
+                <h3 className="text-lg font-semibold text-white mb-1">Secure Access</h3>
                 <p className="text-gray-400">Your account is protected</p>
               </div>
             </div>
 
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center">
+              <div className="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
                 <svg
                   className="w-6 h-6 text-purple-400"
                   fill="none"
@@ -81,7 +81,7 @@ export const LoginPage = () => {
                 </svg>
               </div>
               <div>
-                <h3 className="text-lg  text-white mb-1">Quick Access</h3>
+                <h3 className="text-lg font-semibold text-white mb-1">Quick Access</h3>
                 <p className="text-gray-400">Login instantly to your dashboard</p>
               </div>
             </div>
@@ -103,7 +103,7 @@ export const LoginPage = () => {
                 </svg>
               </div>
               <div>
-                <h3 className="text-lg text-white mb-1">Your Data</h3>
+                <h3 className="text-lg font-semibold text-white mb-1">Your Data</h3>
                 <p className="text-gray-400">All your expenses in one place</p>
               </div>
             </div>
@@ -124,7 +124,7 @@ export const LoginPage = () => {
                 Don't have an account?{' '}
                 <Link
                   to="/register"
-                  className="text-primary-400  font-semibold hover:underline "
+                  className="text-primary-400 hover:text-primary-300 font-semibold hover:underline transition-all"
                 >
                   Create one →
                 </Link>
