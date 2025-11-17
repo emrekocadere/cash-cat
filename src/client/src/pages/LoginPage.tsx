@@ -1,15 +1,31 @@
-
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { LoginForm } from '@/components/auth/LoginForm';
-
+import { authApi } from '@/api/endpoints';
+import { tokenUtils } from '@/utils/token.utils';
 import type { LoginRequest } from '@/types/auth.types';
+import type { ApiError } from '@/types';
 
 export const LoginPage = () => {
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleLogin = async (data: LoginRequest) => {
+    setIsLoading(true);
+    setError(null);
 
+    try {
+      const response = await authApi.login(data);
 
+      tokenUtils.saveToken(response.token);
+
+    } catch (err) {
+      const apiError = err as ApiError;
+      setError(apiError.message || 'Login failed. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -117,7 +133,7 @@ export const LoginPage = () => {
               <p className="text-gray-300">Welcome back to CashCat</p>
             </div>
 
-            <LoginForm onSubmit={handleLogin}  />
+            <LoginForm onSubmit={handleLogin} isLoading={isLoading} error={error} />
 
             <div className="mt-8 pt-6 border-t border-white/10">
               <p className="text-center text-sm text-gray-300">
