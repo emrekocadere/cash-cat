@@ -15,10 +15,28 @@ export const LoginForm = ({ onSubmit, isLoading = false, error }: LoginFormProps
 
   const [errors, setErrors] = useState<Partial<Record<keyof LoginRequest, string>>>({});
 
+  const validateForm = (): boolean => {
+    const newErrors: Partial<Record<keyof LoginRequest, string>> = {};
+
+    if (!formData.email) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Email is invalid';
+    }
+
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
+    if (validateForm()) {
+      onSubmit(formData);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
