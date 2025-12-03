@@ -16,6 +16,19 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
+        // Add CORS
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowLocalhost", policy =>
+            {
+                policy
+                    .WithOrigins("http://localhost:3001", "http://localhost:3000")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();
+            });
+        });
+
         builder.Services.AddInfrastructureServices(builder
             .Configuration); // bunu eklemzsek ne olur baba. ne olduğunu hatırlaıyprum iyi analiz et
 
@@ -32,7 +45,7 @@ public class Program
 
         app.UseHttpsRedirection();
 
-
+        app.UseCors("AllowLocalhost");
 
         app.UseInfrastructure();
         
