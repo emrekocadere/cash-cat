@@ -1,7 +1,8 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
-import type { ApiError } from '@/types';
+import type { ApiError } from '@/types/common.types';
+import { store } from '@/store/store';
 
-const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5039';
 
 export const apiClient = axios.create({
   baseURL,
@@ -9,11 +10,13 @@ export const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true, // Important for cookies
 });
 
+// Request interceptor - Add access token from Redux store
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const token = localStorage.getItem('authToken');
+    const token = store.getState().auth.accessToken;
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -34,7 +37,8 @@ apiClient.interceptors.response.use(
         statusCode: error.response.status,
       };
       if (error.response.status === 401) {
-        localStorage.removeItem('authToken');
+        // Clear Redux state and redirect
+        store.dispatch({ type: 'auth/logout' });
         window.location.href = '/login';
       }
 
