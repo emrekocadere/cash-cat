@@ -31,7 +31,7 @@ public static class ServiceCollectionsExtensions
 
 
         services.AddHttpContextAccessor();
-
+        services.AddScoped<IAccountRepository, AccountRepository>();
         services.AddScoped<IUserContext, UserContext>();
         services.AddScoped<IIdentityService, IdentityService>();
         services.AddScoped<ITokenService, TokenService>();

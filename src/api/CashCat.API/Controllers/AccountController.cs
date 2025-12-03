@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using CashCat.Application.Account.Commands.CreateAccount;
+using CashCat.Application.Account.Commands.DeleteAccount;
 using CashCat.Application.Account.Queries.GetAccounts;
 using CashCat.Domain.Common;
 using MediatR;
@@ -22,6 +23,13 @@ public class AccountController(IMediator mediator):ControllerBase
     public async Task<ActionResult> GetAccounts()
     {
         var result = await mediator.Send(new GetAccountsQuery());
+        return Ok(result);
+    }
+    
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteAccounts(Guid id)
+    {
+        var result = await mediator.Send(new DeleteAccountCommand(id));
         return Ok(result);
     }
 }

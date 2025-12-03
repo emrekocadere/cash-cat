@@ -24,14 +24,23 @@ public class Repository<T> : IRepository<T> where T : class
         _context.Remove(entity);
     }
 
+    public void Delete(Guid id)
+    {
+        var entity = _dbSet.Find(id);
+        if (entity != null)
+        {
+            _context.Remove(entity);
+        }
+    }
+
     public Task Update(T entity)
     {
         throw new NotImplementedException();
     }
 
-    public Task<T> GetByIdAsync(Guid id)
+    public async Task<T> GetByIdAsync(Guid id) // durdurmazsak ne olur
     {
-        throw new NotImplementedException();
+        return await _dbSet.FindAsync(id);
     }
 
     public async Task<int> SaveChanges()
