@@ -15,7 +15,7 @@ export const RegisterForm = ({ onSubmit, isLoading = false, error }: RegisterFor
     name: '',
   });
 
-
+  const [errors, setErrors] = useState<Partial<Record<keyof RegisterRequest, string>>>({});
 
   const validateForm = (): boolean => {
     const newErrors: Partial<Record<keyof RegisterRequest, string>> = {};
@@ -38,7 +38,7 @@ export const RegisterForm = ({ onSubmit, isLoading = false, error }: RegisterFor
       newErrors.confirmPassword = 'Passwords do not match';
     }
 
-
+    setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
@@ -52,7 +52,10 @@ export const RegisterForm = ({ onSubmit, isLoading = false, error }: RegisterFor
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-
+    // Clear error when user starts typing
+    if (errors[name as keyof RegisterRequest]) {
+      setErrors((prev) => ({ ...prev, [name]: undefined }));
+    }
   };
 
   return (
@@ -65,7 +68,7 @@ export const RegisterForm = ({ onSubmit, isLoading = false, error }: RegisterFor
 
       <div>
         <label htmlFor="name" className="block text-sm font-semibold text-gray-200">
-          Name 
+          Name (Optional)
         </label>
         <input
           id="name"
@@ -75,12 +78,13 @@ export const RegisterForm = ({ onSubmit, isLoading = false, error }: RegisterFor
           onChange={handleChange}
           disabled={isLoading}
           className="mt-1 block w-full rounded-xl border-2 border-white/20 bg-white/5 backdrop-blur-sm px-4 py-3 text-white placeholder-gray-400 focus:border-primary-400 focus:outline-none focus:ring-4 focus:ring-primary-500/20 disabled:bg-white/5 disabled:cursor-not-allowed transition-all duration-200 hover:border-white/30"
+          placeholder="John Doe"
         />
       </div>
 
       <div>
         <label htmlFor="email" className="block text-sm font-semibold text-gray-200">
-          Email 
+          Email <span className="text-red-500">*</span>
         </label>
         <input
           id="email"
@@ -90,15 +94,19 @@ export const RegisterForm = ({ onSubmit, isLoading = false, error }: RegisterFor
           value={formData.email}
           onChange={handleChange}
           disabled={isLoading}
-          className={`mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:outline-none focus:ring-1 disabled:bg-gray-100 disabled:cursor-not-allowed `}
+          className={`mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:outline-none focus:ring-1 disabled:bg-gray-100 disabled:cursor-not-allowed ${
+            errors.email
+              ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
+              : 'border-gray-300 focus:border-primary-500 focus:ring-primary-500'
+          }`}
           placeholder="you@example.com"
         />
-
+        {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
       </div>
 
       <div>
         <label htmlFor="password" className="block text-sm font-semibold text-gray-200">
-          Password 
+          Password <span className="text-red-500">*</span>
         </label>
         <input
           id="password"
@@ -108,15 +116,19 @@ export const RegisterForm = ({ onSubmit, isLoading = false, error }: RegisterFor
           value={formData.password}
           onChange={handleChange}
           disabled={isLoading}
-          className={`mt-1 block w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-1 disabled:bg-gray-100 disabled:cursor-not-allowed`}
+          className={`mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:outline-none focus:ring-1 disabled:bg-gray-100 disabled:cursor-not-allowed ${
+            errors.password
+              ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
+              : 'border-gray-300 focus:border-primary-500 focus:ring-primary-500'
+          }`}
           placeholder="••••••••"
         />
-
+        {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password}</p>}
       </div>
 
       <div>
         <label htmlFor="confirmPassword" className="block text-sm font-semibold text-gray-200">
-          Confirm Password 
+          Confirm Password <span className="text-red-500">*</span>
         </label>
         <input
           id="confirmPassword"
@@ -126,10 +138,16 @@ export const RegisterForm = ({ onSubmit, isLoading = false, error }: RegisterFor
           value={formData.confirmPassword}
           onChange={handleChange}
           disabled={isLoading}
-          className={`mt-1 block w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-1 disabled:bg-gray-100 disabled:cursor-not-allowed`}
+          className={`mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:outline-none focus:ring-1 disabled:bg-gray-100 disabled:cursor-not-allowed ${
+            errors.confirmPassword
+              ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
+              : 'border-gray-300 focus:border-primary-500 focus:ring-primary-500'
+          }`}
           placeholder="••••••••"
         />
-        
+        {errors.confirmPassword && (
+          <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>
+        )}
       </div>
 
       <button
