@@ -1,25 +1,44 @@
-
-import { Link,  } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { RegisterForm } from '@/components/auth/RegisterForm';
+import { authApi } from '@/api/endpoints/auth.api';
+import { setCredentials } from '@/store/slices/authSlice';
 import type { RegisterRequest } from '@/types/auth.types';
-
+import type { ApiError } from '@/types/common.types';
 
 export const RegisterPage = () => {
-
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleRegister = async (data: RegisterRequest) => {
-
-
+    setIsLoading(true);
+    setError(null);
+    console.log(data);
+    try {
+      const response = await authApi.register(data);
+      
+      dispatch(setCredentials({
+        accessToken: response.accessToken,
+      }));
+      
+      navigate('/dashboard');
+    } catch (err) {
+      const apiError = err as ApiError;
+      setError(apiError.message || 'Registration failed. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-12 px-4 relative overflow-hidden">
-
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary-500/30 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl"></div>
       
       <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10">
-
         <div className="hidden md:block">
           <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-primary-500 via-purple-500 to-indigo-600 rounded-3xl mb-8 shadow-2xl shadow-primary-500/50">
             <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -70,14 +89,13 @@ export const RegisterPage = () => {
           </div>
         </div>
         
-  
         <div>
           <div className="bg-white/5 backdrop-blur-2xl py-12 px-10 shadow-2xl rounded-3xl border border-white/10">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-white mb-2">Create Account</h2>
               <p className="text-gray-300">Start tracking your expenses</p>
             </div>
-            <RegisterForm onSubmit={handleRegister}  />
+            <RegisterForm onSubmit={handleRegister} isLoading={isLoading} error={error} />
 
             <div className="mt-8 pt-6 border-t border-white/10">
               <p className="text-center text-sm text-gray-300">

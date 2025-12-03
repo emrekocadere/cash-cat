@@ -16,13 +16,12 @@ export interface LoginRequest {
 export interface RegisterRequest {
   email: string;
   password: string;
-  confirmPassword: string;
+  surname: string;
   name?: string;
 }
 
 export interface AuthResponse {
   accessToken: string;
-  refreshToken: User;
 }
 
 export interface TokenPayload {
