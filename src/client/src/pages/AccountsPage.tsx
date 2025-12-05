@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useState, useEffect } from 'react';
 import { Header } from '@/components/common/Header';
 import { Footer } from '@/components/common/Footer';
 import { accountsApi } from '@/api/endpoints/accounts.api';
@@ -9,10 +9,29 @@ import { AddAccountModal } from '@/components/accounts/AddAccountModal';
 
 export const AccountsPage = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const { data: accounts = [], isLoading } = useQuery({
-    queryKey: ['accounts'],
-    queryFn: () => accountsApi.getAll(),
-  });
+  const [accounts, setAccounts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchAccounts = async () => {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const result = await accountsApi.getAll();
+        console.log('Accounts API Response:', result);
+
+      } catch (err) {
+        setError((err as Error).message || 'Failed to fetch accounts');
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchAccounts();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
@@ -47,7 +66,13 @@ export const AccountsPage = () => {
         <Footer />
       </main>
 
- 
+      <AddAccountModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onSubmit={(data) => {
+
+        }}
+      />
     </div>
   );
 };
