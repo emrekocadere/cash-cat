@@ -38,6 +38,7 @@ public static class ServiceCollectionsExtensions
         services.AddScoped<IRepository<Transaction>, Repository<Transaction>>();
         services.AddScoped<IUserTokenRepository, UserTokenRepository>();
         services.AddScoped<IRepository<Account>, Repository<Account>>();
+        services.AddScoped<ITransactionRepository, TransactionRepository>();
 
 
         services.AddAuthentication(options =>
