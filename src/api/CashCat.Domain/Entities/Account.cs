@@ -7,7 +7,9 @@ public class Account
     public Guid UserId { get; set; }
     public Guid AccountTypeId { get; set; }
     public double Balance { get; set; }
+    public Guid CurrencyId { get; set; }
 
     public ICollection<Transaction>? Transactions { get; set; }
     public AccountType? AccountType { get; set; }
+    public Currency? Currency { get; set; }
 }

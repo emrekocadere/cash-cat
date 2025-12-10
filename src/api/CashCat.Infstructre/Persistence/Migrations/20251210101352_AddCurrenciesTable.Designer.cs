@@ -3,6 +3,7 @@ using System;
 using CashCat.Infstructre.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CashCat.Infstructre.Persistence.Migrations
 {
     [DbContext(typeof(CashCatDbContext))]
-    partial class CashCatDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251210101352_AddCurrenciesTable")]
+    partial class AddCurrenciesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,9 +37,6 @@ namespace CashCat.Infstructre.Persistence.Migrations
                     b.Property<double>("Balance")
                         .HasColumnType("double precision");
 
-                    b.Property<Guid>("CurrencyId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -47,8 +47,6 @@ namespace CashCat.Infstructre.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AccountTypeId");
-
-                    b.HasIndex("CurrencyId");
 
                     b.HasIndex("UserId");
 
@@ -115,6 +113,9 @@ namespace CashCat.Infstructre.Persistence.Migrations
                     b.Property<Guid>("CategoryId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("CurrencyId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime>("Date")
                         .HasColumnType("timestamp with time zone");
 
@@ -132,6 +133,8 @@ namespace CashCat.Infstructre.Persistence.Migrations
                     b.HasIndex("AccountId");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("CurrencyId");
 
                     b.HasIndex("TransactionTypeId");
 
@@ -367,12 +370,6 @@ namespace CashCat.Infstructre.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CashCat.Domain.Entities.Currency", "Currency")
-                        .WithMany("Account")
-                        .HasForeignKey("CurrencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("CashCat.Infstructre.Identity.Models.ApplicationUser", null)
                         .WithMany("Accounts")
                         .HasForeignKey("UserId")
@@ -380,8 +377,6 @@ namespace CashCat.Infstructre.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("AccountType");
-
-                    b.Navigation("Currency");
                 });
 
             modelBuilder.Entity("CashCat.Domain.Entities.Transaction", b =>
@@ -398,6 +393,12 @@ namespace CashCat.Infstructre.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CashCat.Domain.Entities.Currency", "Currency")
+                        .WithMany("Transactions")
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CashCat.Domain.Entities.TransactionType", "TransactionType")
                         .WithMany("Transactions")
                         .HasForeignKey("TransactionTypeId")
@@ -407,6 +408,8 @@ namespace CashCat.Infstructre.Persistence.Migrations
                     b.Navigation("Account");
 
                     b.Navigation("Category");
+
+                    b.Navigation("Currency");
 
                     b.Navigation("TransactionType");
                 });
@@ -479,7 +482,7 @@ namespace CashCat.Infstructre.Persistence.Migrations
 
             modelBuilder.Entity("CashCat.Domain.Entities.Currency", b =>
                 {
-                    b.Navigation("Account");
+                    b.Navigation("Transactions");
                 });
 
             modelBuilder.Entity("CashCat.Domain.Entities.TransactionType", b =>
