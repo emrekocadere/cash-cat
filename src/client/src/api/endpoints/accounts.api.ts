@@ -30,4 +30,9 @@ export const accountsApi = {
     const { data } = await apiClient.get<ResultT<AccountTypeInfo[]>>('/Account/AccountTypes');
     return data.value!;
   },
+
+  getById: async (id: string): Promise<Account> => {
+    const { data } = await apiClient.get<ResultT<Account>>(`/account/${id}`);
+    return data.value!;
+  },
 };

@@ -1,9 +1,11 @@
+import type { Currency } from './currency.types';
+
 export interface Account {
   id: string;
   name: string;
-  type: AccountType;
+  accountType: AccountTypeInfo;
   balance: number;
-  currency: string;
+  currency: Currency;
 }
 
 export enum AccountType {
