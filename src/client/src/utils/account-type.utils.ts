@@ -1,4 +1,4 @@
-import { AccountType } from '@/types/transaction.types';
+import { AccountType } from '@/types/account.types';
 
 export const accountTypeMeta: Record<
   AccountType,

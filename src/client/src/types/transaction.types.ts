@@ -1,3 +1,6 @@
+import type { Category } from './category.types';
+import type { Account } from './account.types';
+
 export enum TransactionType {
   Income = 'Income',
   Expense = 'Expense',
@@ -36,29 +39,4 @@ export interface CreateTransactionRequest {
 
 export interface UpdateTransactionRequest extends Partial<CreateTransactionRequest> {
   id: string;
-}
-
-export interface Category {
-  id: string;
-  name: string;
-  icon?: string;
-  color?: string;
-  type: TransactionType;
-  createdAt: string;
-}
-
-export interface Account {
-  id: string;
-  name: string;
-  type: AccountType;
-  balance: number;
-  currency: string;
-  createdAt: string;
-}
-
-export enum AccountType {
-  Cash = 'Cash',
-  BankAccount = 'BankAccount',
-  CreditCard = 'CreditCard',
-  Savings = 'Savings',
 }
