@@ -19,6 +19,11 @@ public class Repository<T> : IRepository<T> where T : class
         await _context.AddAsync(entity);
     }
 
+    public ICollection<T> GetAll()
+    {
+        return _dbSet.ToList();
+    }
+
     public void Delete(T entity)
     {
         _context.Remove(entity);

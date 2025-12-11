@@ -2,7 +2,9 @@ using System.Security.Claims;
 using CashCat.Application.Account.Commands.CreateAccount;
 using CashCat.Application.Account.Commands.DeleteAccount;
 using CashCat.Application.Account.Queries.GetAccounts;
+using CashCat.Application.Account.Queries.GetAccountTypes;
 using CashCat.Domain.Common;
+using Google.GenAI;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,4 +34,13 @@ public class AccountController(IMediator mediator):ControllerBase
         var result = await mediator.Send(new DeleteAccountCommand(id));
         return Ok(result);
     }
+    
+    [HttpGet("AccountTypes")]
+    public async Task<ActionResult> GetAccountTypes()
+    {
+        var result = await mediator.Send(new GetAccountTypesQuery());
+        return Ok(result);
+    }
+    
+
 }
