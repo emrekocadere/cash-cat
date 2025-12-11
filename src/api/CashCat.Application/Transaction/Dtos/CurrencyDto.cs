@@ -5,6 +5,6 @@ namespace CashCat.Application.Transaction.Dtos;
 public class CurrencyDto
 {
     public Guid Id { get; set; }
-    public required string ISO4217Code { get; set; } 
+    public required string Iso4217Code { get; set; } 
 
 }
