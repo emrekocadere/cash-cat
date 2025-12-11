@@ -5,26 +5,23 @@ import { accountsApi } from '@/api/endpoints/accounts.api';
 import { AccountsHeroStats } from '@/components/accounts/AccountsHeroStats';
 import { AccountListSection } from '@/components/accounts/AccountListSection';
 import { AddAccountModal } from '@/components/accounts/AddAccountModal';
-
+import type { Account } from '@/types/account.types';
 
 export const AccountsPage = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [accounts, setAccounts] = useState([]);
+  const [accounts, setAccounts] = useState<Account[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchAccounts = async () => {
       setIsLoading(true);
-      setError(null);
 
       try {
         const result = await accountsApi.getAll();
         console.log('Accounts API Response:', result);
-
+        setAccounts(result);
       } catch (err) {
-        setError((err as Error).message || 'Failed to fetch accounts');
-        console.error(err);
+        console.error('Failed to fetch accounts:', err);
       } finally {
         setIsLoading(false);
       }
@@ -69,8 +66,18 @@ export const AccountsPage = () => {
       <AddAccountModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        onSubmit={(data) => {
+        onSubmit={async (accountData) => {
+          try {
 
+            const result = await accountsApi.create(accountData);
+
+            
+            if (result.isSuccess && result.value) {
+              setAccounts([...accounts, result.value]);
+            }
+          } catch (err) {
+            alert('Failed to create account. Please try again.');
+          }
         }}
       />
     </div>
