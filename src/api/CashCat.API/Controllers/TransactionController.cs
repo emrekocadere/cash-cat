@@ -1,5 +1,6 @@
 using CashCat.Application.Transaction.Commands.CreateTransaction;
 using CashCat.Application.Transaction.Commands.DeleteTransaction;
+using CashCat.Application.Transaction.Queries.GetCurrencies;
 using CashCat.Application.Transaction.Queries.GetTransactions;
 using CashCat.Domain.Common;
 using MediatR;
@@ -38,6 +39,17 @@ public class TransactionController(IMediator mediator) : ControllerBase
     public async Task<ActionResult<Result>> DeleteTransaction (Guid transactionId)
     {
         var result = await mediator.Send(new DeleteTransactionCommand(transactionId));
+        if (result.IsSuccess)
+        {
+            return Ok(result);
+        }
+        return BadRequest(result);
+    }
+    
+    [HttpGet("Currencies")]
+    public async Task<ActionResult<Result>> GetCurrencies ()
+    {
+        var result = await mediator.Send(new GetCurrenciesQuery());
         if (result.IsSuccess)
         {
             return Ok(result);
