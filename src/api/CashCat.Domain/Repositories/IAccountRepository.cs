@@ -5,4 +5,5 @@ namespace CashCat.Domain.Repositories;
 public interface IAccountRepository:IRepository<Account>
 {
     ICollection<Account>GetAllAccountsByUserId(Guid userId);
+    Account GetAccountById(Guid accountId);
 }

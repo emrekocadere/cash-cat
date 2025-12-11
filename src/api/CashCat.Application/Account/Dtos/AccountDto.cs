@@ -1,3 +1,5 @@
+using CashCat.Application.Transaction.Dtos;
+
 namespace CashCat.Application.Account.Dtos;
 
 public class AccountDto
@@ -6,6 +8,7 @@ public class AccountDto
     public required string Name { get; set; }
     public required AccountTypeDto AccountType { get; set; }
     public double Balance { get; set; }
+    public CurrencyDto Currency { get; set; }
     
 
 }

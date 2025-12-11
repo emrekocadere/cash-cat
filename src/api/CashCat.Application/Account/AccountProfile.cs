@@ -11,7 +11,8 @@ public class AccountProfile:Profile
     {
         CreateMap<CreateAccountCommand,Domain.Entities.Account>();
         CreateMap<Domain.Entities.Account,AccountDto>()
-            .ForMember(dest => dest.AccountType, opt => opt.MapFrom(src => src.AccountType));
+            .ForMember(dest => dest.AccountType, opt => opt.MapFrom(src => src.AccountType))
+            .ForMember(dest => dest.Currency, opt => opt.MapFrom(src => src.Currency));
         
         
         CreateMap<AccountType,AccountTypeDto>();
