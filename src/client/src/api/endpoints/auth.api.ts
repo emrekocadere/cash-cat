@@ -12,12 +12,12 @@ export const authApi = {
     return data;
   },
 
-  register: async (userData: RegisterRequest): Promise<AuthResponse> => {
+  register: async (userData: RegisterRequest): Promise<ResultT<AuthResponse>> => {
     const { data } = await apiClient.post<ResultT<AuthResponse>>(
       '/Identity/register',
       userData
     );
-    return data.value!;
+    return data;
   },
 
 };

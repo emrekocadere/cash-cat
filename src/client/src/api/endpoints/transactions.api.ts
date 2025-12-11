@@ -3,6 +3,7 @@ import type {
   Transaction,
   CreateTransactionRequest,
 } from '@/types/transaction.types';
+import type { Currency } from '@/types/currency.types';
 import type { ResultT } from '@/types/common.types';
 
 export const transactionsApi = {
@@ -12,13 +13,18 @@ export const transactionsApi = {
     return data.value!;
   },
 
-  create: async (transaction: CreateTransactionRequest): Promise<Transaction> => {
+  create: async (transaction: CreateTransactionRequest): Promise<ResultT<Transaction>> => {
     const { data } = await apiClient.post<ResultT<Transaction>>('/transactions', transaction);
-    return data.value!;
+    return data;
   },
 
-  delete: async (id: string): Promise<void> => {
-    await apiClient.delete(`/transactions/${id}`);
+  delete: async (id: string): Promise<ResultT<void>> => {
+    const { data } = await apiClient.delete<ResultT<void>>(`/transactions/${id}`);
+    return data;
   },
-  
+
+  getAllCurrencies: async (): Promise<Currency[]> => {
+    const { data } = await apiClient.get<ResultT<Currency[]>>('/Transaction/Currencies');
+    return data.value!;
+  },
 };

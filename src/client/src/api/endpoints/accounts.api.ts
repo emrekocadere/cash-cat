@@ -1,12 +1,12 @@
 import { apiClient } from '../client/axios.client';
-import type { Account, AccountType } from '@/types/transaction.types';
+import type { Account, AccountType, AccountTypeInfo } from '@/types/account.types';
 import type { ResultT } from '@/types/common.types';
 
 export interface CreateAccountRequest {
   name: string;
-  type: AccountType;
+  accountTypeId: string;
   balance: number;
-  currency: string;
+  currencyId: string;
 }
 
 export const accountsApi = {
@@ -16,13 +16,18 @@ export const accountsApi = {
   },
 
 
-  create: async (account: CreateAccountRequest): Promise<Account> => {
+  create: async (account: CreateAccountRequest): Promise<ResultT<Account>> => {
     const { data } = await apiClient.post<ResultT<Account>>('/account', account);
-    return data.value!;
+    return data;
   },
 
-  // Delete account
-  delete: async (id: string): Promise<void> => {
-    await apiClient.delete(`/account/${id}`);
+  delete: async (id: string): Promise<ResultT<void>> => {
+    const { data } = await apiClient.delete<ResultT<void>>(`/account/${id}`);
+    return data;
+  },
+
+  getAllAccountTypes: async (): Promise<AccountTypeInfo[]> => {
+    const { data } = await apiClient.get<ResultT<AccountTypeInfo[]>>('/Account/AccountTypes');
+    return data.value!;
   },
 };
