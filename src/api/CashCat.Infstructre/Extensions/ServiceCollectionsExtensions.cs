@@ -38,9 +38,12 @@ public static class ServiceCollectionsExtensions
         services.AddScoped<IRepository<Transaction>, Repository<Transaction>>();
         services.AddScoped<IRepository<AccountType>, Repository<AccountType>>();
         services.AddScoped<IRepository<Currency>, Repository<Currency>>();
+        services.AddScoped<IRepository<TransactionType>, Repository<TransactionType>>();
         services.AddScoped<IUserTokenRepository, UserTokenRepository>();
         services.AddScoped<IRepository<Account>, Repository<Account>>();
+        services.AddScoped<IRepository<Category>, Repository<Category>>();
         services.AddScoped<ITransactionRepository, TransactionRepository>();
+        
         services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

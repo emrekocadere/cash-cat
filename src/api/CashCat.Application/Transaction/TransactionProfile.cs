@@ -9,6 +9,7 @@ public class TransactionProfile : Profile
     public TransactionProfile()
     {
         CreateMap<CreateTransactionCommand, Domain.Entities.Transaction>();
+        CreateMap< Domain.Entities.TransactionType,  TransactionTypeDto>();
         CreateMap<Domain.Entities.Category,CategoryDto>();
         CreateMap<Domain.Entities.Transaction,TransactionDto>();
         CreateMap<Domain.Entities.Currency,CurrencyDto>()

@@ -3,6 +3,7 @@ using CashCat.Application.Transaction.Commands.DeleteTransaction;
 using CashCat.Application.Transaction.Queries.GetCategories;
 using CashCat.Application.Transaction.Queries.GetCurrencies;
 using CashCat.Application.Transaction.Queries.GetTransactions;
+using CashCat.Application.Transaction.Queries.GetTransactionTypes;
 using CashCat.Domain.Common;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -62,6 +63,16 @@ public class TransactionController(IMediator mediator) : ControllerBase
     public async Task<ActionResult<Result>> GetCategories()
     {
         var result = await mediator.Send(new GetCategoriesQuery());
+        if (result.IsSuccess)
+        {
+            return Ok(result);
+        }
+        return BadRequest(result);
+    }
+    [HttpGet("types")]
+    public async Task<ActionResult<Result>> GetTransactionTypes()
+    {
+        var result = await mediator.Send(new GetTransactionTypesQuery());
         if (result.IsSuccess)
         {
             return Ok(result);
