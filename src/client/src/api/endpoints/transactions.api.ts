@@ -2,6 +2,7 @@ import { apiClient } from '../client/axios.client';
 import type {
   Transaction,
   CreateTransactionRequest,
+  TransactionType,
 } from '@/types/transaction.types';
 import type { Currency } from '@/types/currency.types';
 import type { Result, ResultT } from '@/types/common.types';
@@ -15,7 +16,8 @@ export const transactionsApi = {
   },
 
   create: async (transaction: CreateTransactionRequest): Promise<Result> => {
-    const { data } = await apiClient.post<ResultT<Transaction>>('/transactions', transaction);
+    console.log('Creating transaction:', transaction);
+    const { data } = await apiClient.post<Result>('/transaction', transaction);
     return data;
   },
 
@@ -30,6 +32,11 @@ export const transactionsApi = {
   },
   getAllCategories: async (): Promise<Category[]> => {
     const { data } = await apiClient.get<ResultT<Category[]>>('/Transaction/categories');
+    return data.value!;
+  },
+
+  getAllTransactionTypes: async (): Promise<TransactionType[]> => {
+    const { data } = await apiClient.get<ResultT<TransactionType[]>>('Transaction/types');
     return data.value!;
   }
 };

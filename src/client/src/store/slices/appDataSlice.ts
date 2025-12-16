@@ -4,11 +4,13 @@ import { transactionsApi } from '@/api/endpoints/transactions.api';
 import type { Currency } from '@/types/currency.types';
 import type { AccountTypeInfo } from '@/types/account.types';
 import type { Category } from '@/types/category.types';
+import type { TransactionType } from '@/types/transaction.types';
 
 interface AppDataState {
   currencies: Currency[];
   accountTypes: AccountTypeInfo[];
   categories: Category[];
+  transactionTypes: TransactionType[];
   isLoaded: boolean;
   isLoading: boolean;
   error: string | null;
@@ -18,6 +20,7 @@ const initialState: AppDataState = {
   currencies: [],
   accountTypes: [],
   categories: [],
+  transactionTypes: [],
   isLoaded: false,
   isLoading: false,
   error: null,
@@ -27,12 +30,13 @@ export const fetchAppData = createAsyncThunk(
   'appData/fetchAppData',
   async (_, { rejectWithValue }) => {
     try {
-      const [currencies, accountTypes, categories] = await Promise.all([
+      const [currencies, accountTypes, categories, transactionTypes] = await Promise.all([
         transactionsApi.getAllCurrencies(),
         accountsApi.getAllAccountTypes(),
         transactionsApi.getAllCategories(),
+        transactionsApi.getAllTransactionTypes(),
       ]);
-      return { currencies, accountTypes, categories };
+      return { currencies, accountTypes, categories, transactionTypes };
     } catch (error: any) {
       return rejectWithValue(error.message || 'Failed to fetch app data');
     }
@@ -53,6 +57,7 @@ const appDataSlice = createSlice({
         state.currencies = action.payload.currencies;
         state.accountTypes = action.payload.accountTypes;
         state.categories = action.payload.categories;
+        state.transactionTypes = action.payload.transactionTypes;
         state.isLoaded = true;
         state.isLoading = false;
       })

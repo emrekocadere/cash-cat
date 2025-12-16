@@ -1,23 +1,25 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import type { RootState } from '@/store/store';
 import { Header } from '@/components/common/Header';
 import { Footer } from '@/components/common/Footer';
 import { accountsApi } from '@/api/endpoints/accounts.api';
 import { transactionsApi } from '@/api/endpoints/transactions.api';
-import { accountTypeMeta, getAccountTypeLabel } from '@/utils/account-type.utils';
 import { AccountSummarySection } from '@/components/account-detail/AccountSummarySection';
-import { AccountStatusPanel } from '@/components/account-detail/AccountStatusPanel';
 import { AccountTransactionsPanel } from '@/components/account-detail/AccountTransactionsPanel';
-import { TransactionType } from '@/types/transaction.types';
+import { AddTransactionModal } from '@/components/transactions/AddTransactionModal';
 import type { Transaction } from '@/types/transaction.types';
-import type { AccountType, Account } from '@/types/account.types';
+import type { Account } from '@/types/account.types';
 
 export const AccountDetailPage = () => {
   const { id } = useParams<{ id: string }>();
+  const { categories } = useSelector((state: RootState) => state.appData);
   const [account, setAccount] = useState<Account | null>(null);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -104,6 +106,7 @@ export const AccountDetailPage = () => {
             isLoading={isLoading}
             isError={isError}
             showDemoNotice={false}
+            onAddTransaction={() => setShowAddModal(true)}
           />
 
           <AccountTransactionsPanel transactions={transactions} />
@@ -111,6 +114,23 @@ export const AccountDetailPage = () => {
 
         <Footer />
       </main>
+
+      <AddTransactionModal
+        isOpen={showAddModal}
+        onClose={() => setShowAddModal(false)}
+        accounts={[{ id: account.id, name: account.name }]}
+        categories={categories}
+        defaultAccountId={account.id}
+        onSuccess={async () => {
+          // Refresh transactions after adding
+          try {
+            const transactionsData = await transactionsApi.getByAccountId(id!);
+            setTransactions(transactionsData);
+          } catch (err) {
+            console.error('Failed to refresh transactions:', err);
+          }
+        }}
+      />
     </div>
   );
 };
