@@ -4,7 +4,8 @@ import type {
   CreateTransactionRequest,
 } from '@/types/transaction.types';
 import type { Currency } from '@/types/currency.types';
-import type { ResultT } from '@/types/common.types';
+import type { Result, ResultT } from '@/types/common.types';
+import { Category } from '@/types/category.types';
 
 export const transactionsApi = {
 
@@ -13,7 +14,7 @@ export const transactionsApi = {
     return data.value!;
   },
 
-  create: async (transaction: CreateTransactionRequest): Promise<ResultT<Transaction>> => {
+  create: async (transaction: CreateTransactionRequest): Promise<Result> => {
     const { data } = await apiClient.post<ResultT<Transaction>>('/transactions', transaction);
     return data;
   },
@@ -27,4 +28,9 @@ export const transactionsApi = {
     const { data } = await apiClient.get<ResultT<Currency[]>>('/Transaction/Currencies');
     return data.value!;
   },
+  getAllCategories: async (): Promise<Category[]> => {
+    const { data } = await apiClient.get<ResultT<Category[]>>('/Transaction/categories');
+    return data.value!;
+  }
 };
+  
