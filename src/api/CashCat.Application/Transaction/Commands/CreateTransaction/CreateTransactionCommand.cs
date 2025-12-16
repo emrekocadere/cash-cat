@@ -11,4 +11,5 @@ public class CreateTransactionCommand : IRequest<Result>
     public double Amount { get; set; }
     public string? Title { get; set; }
     public string? Description { get; set; }
+    public DateTimeOffset Date { get; set; } 
 }
