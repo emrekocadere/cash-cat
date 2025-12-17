@@ -12,4 +12,6 @@ public class Account
     public ICollection<Transaction>? Transactions { get; set; }
     public AccountType? AccountType { get; set; }
     public Currency? Currency { get; set; }
+    
+    public ICollection<Goal>? Goals { get; set; }
 }
