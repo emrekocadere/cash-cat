@@ -1,0 +1,8 @@
+namespace CashCat.Application.Transaction.Dtos;
+
+public class TransactionDashboardDto
+{
+    public double Income { get; set; }
+    public double Expense { get; set; }
+    public int  Quantity { get; set; }
+}

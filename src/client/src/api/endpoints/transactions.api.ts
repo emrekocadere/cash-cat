@@ -3,6 +3,7 @@ import type {
   Transaction,
   CreateTransactionRequest,
   TransactionType,
+  TransactionDashboard,
 } from '@/types/transaction.types';
 import type { Currency } from '@/types/currency.types';
 import type { Result, ResultT } from '@/types/common.types';
@@ -36,8 +37,17 @@ export const transactionsApi = {
   },
 
   getAllTransactionTypes: async (): Promise<TransactionType[]> => {
-    const { data } = await apiClient.get<ResultT<TransactionType[]>>('Transaction/types');
+    const { data } = await apiClient.get<ResultT<TransactionType[]>>('/Transaction/types');
+    return data.value!;
+  },
+
+  getAll: async (): Promise<Transaction[]> => {
+    const { data } = await apiClient.get<ResultT<Transaction[]>>('/Transaction');
+    return data.value!;
+  },
+
+  getDashboard: async (month: number): Promise<TransactionDashboard> => {
+    const { data } = await apiClient.get<ResultT<TransactionDashboard>>(`/Transaction/dashboard/${month}`);
     return data.value!;
   }
 };
-  

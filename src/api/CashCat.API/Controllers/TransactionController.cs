@@ -2,6 +2,7 @@ using CashCat.Application.Transaction.Commands.CreateTransaction;
 using CashCat.Application.Transaction.Commands.DeleteTransaction;
 using CashCat.Application.Transaction.Queries.GetCategories;
 using CashCat.Application.Transaction.Queries.GetCurrencies;
+using CashCat.Application.Transaction.Queries.GetDashboard;
 using CashCat.Application.Transaction.Queries.GetTransactions;
 using CashCat.Application.Transaction.Queries.GetTransactionsByUser;
 using CashCat.Application.Transaction.Queries.GetTransactionTypes;
@@ -85,6 +86,17 @@ public class TransactionController(IMediator mediator) : ControllerBase
     public async Task<ActionResult<Result>> GetAll()
     {
         var result = await mediator.Send(new GetTransactionsByUserQuery());
+        if (result.IsSuccess)
+        {
+            return Ok(result);
+        }
+        return BadRequest(result);
+    }
+    
+    [HttpGet("dashboard/{month}")]
+    public async Task<ActionResult<Result>> GetDashboard(int month)
+    {
+        var result = await mediator.Send(new GetDashboardQuery(month));
         if (result.IsSuccess)
         {
             return Ok(result);
