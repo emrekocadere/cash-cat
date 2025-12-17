@@ -1,0 +1,86 @@
+import type { Transaction } from '@/types/transaction.types';
+
+interface RecentTransactionsPanelProps {
+  transactions: Transaction[];
+  isLoading: boolean;
+}
+
+export const RecentTransactionsPanel = ({ transactions, isLoading }: RecentTransactionsPanelProps) => {
+  if (isLoading) {
+    return <p className="text-gray-400">Loading transactions...</p>;
+  }
+
+  if (transactions.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-gray-400 text-lg">No transactions yet</p>
+        <p className="text-gray-500 text-sm mt-2">Create an account and add your first transaction</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-3">
+      {transactions.map((transaction) => {
+        const isIncome = transaction.transactionType?.name?.toLowerCase() === 'income';
+        const date = transaction.date ? new Date(transaction.date).toLocaleDateString('tr-TR', {
+          day: 'numeric',
+          month: 'short'
+        }) : '';
+        
+        return (
+          <div 
+            key={transaction.id}
+            className="flex items-center justify-between p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-all border border-white/5 hover:border-white/10"
+          >
+            <div className="flex items-center gap-4 flex-1 min-w-0">
+              <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                isIncome 
+                  ? 'bg-green-500/20' 
+                  : 'bg-red-500/20'
+              }`}>
+                <svg 
+                  className={`w-6 h-6 ${isIncome ? 'text-green-400' : 'text-red-400'}`} 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  {isIncome ? (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 11l5-5m0 0l5 5m-5-5v12" />
+                  ) : (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 13l-5 5m0 0l-5-5m5 5V6" />
+                  )}
+                </svg>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-white font-medium truncate">
+                  {transaction.description || 'No description'}
+                </p>
+                <div className="flex items-center gap-3 mt-1">
+                  <span className="text-xs text-gray-400 px-2 py-1 bg-white/5 rounded-full">
+                    {transaction.category?.name || 'Uncategorized'}
+                  </span>
+                  {date && (
+                    <span className="text-xs text-gray-500">
+                      {date}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="text-right ml-4 flex-shrink-0">
+              <p className={`text-lg font-bold ${
+                isIncome ? 'text-green-400' : 'text-white'
+              }`}>
+                {isIncome ? '+' : '-'}₺{transaction.amount.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </p>
+              <p className="text-xs text-gray-500 mt-1">
+                {transaction.transactionType?.name || 'Unknown'}
+              </p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
