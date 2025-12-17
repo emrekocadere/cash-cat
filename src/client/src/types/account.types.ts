@@ -6,6 +6,7 @@ export interface Account {
   accountType: AccountTypeInfo;
   balance: number;
   currency: Currency;
+  createdAt: string;
 }
 
 export enum AccountType {

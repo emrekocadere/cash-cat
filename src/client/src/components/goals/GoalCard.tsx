@@ -38,7 +38,7 @@ export const GoalCard = ({ goal, onAddMoney, onEdit }: GoalCardProps) => {
         </div>
         <div className="w-full h-3 bg-white/10 rounded-full overflow-hidden">
           <div
-            className={`h-full bg-gradient-to-r ${goal.color} transition-all duration-500`}
+            className={`h-full bg-gradient-to-r from-purple-500 to-purple-400 transition-all duration-500`}
             style={{ width: `${Math.min(progress, 100)}%` }}
           />
         </div>

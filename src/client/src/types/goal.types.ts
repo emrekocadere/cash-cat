@@ -5,5 +5,4 @@ export interface Goal {
   currentAmount: number;
   deadline: string;
   category: string;
-  color: string;
 }
