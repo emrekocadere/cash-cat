@@ -9,6 +9,6 @@ public class AccountDto
     public required AccountTypeDto AccountType { get; set; }
     public double Balance { get; set; }
     public CurrencyDto Currency { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
     
-
 }
