@@ -30,10 +30,10 @@ export const AccountListSection = ({ accounts, isLoading, currencies }: AccountL
                     <span
                       className={`text-xs font-semibold uppercase px-3 py-1 border border-white/10 rounded-full text-gray-300 bg-gradient-to-r ${typeMeta?.tone ?? 'from-white/5 to-white/10'}`}
                     >
-                      {account.currency}
+                      {account.currency.iso4217Code}
                     </span>
                   </div>
-                  <p className="mt-3 text-3xl font-bold text-white">{formatBalance(account.balance, account.currency)}</p>
+                  <p className="mt-3 text-3xl font-bold text-white">{formatBalance(account.balance, account.currency.iso4217Code)}</p>
                   <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-gray-400">
                     <span>Created {formatDate(account.createdAt)}</span>
                     <span className="px-2 py-1 rounded-full border border-white/10 text-[10px] uppercase tracking-wider">
