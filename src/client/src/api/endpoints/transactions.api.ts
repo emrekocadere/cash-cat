@@ -36,7 +36,7 @@ export const transactionsApi = {
     return data.value!;
   },
 
-  getAllTransactionTypes: async (): Promise<TransactionType[]> => {
+  getAllTransactionTypes: async () => {
     const { data } = await apiClient.get<ResultT<TransactionType[]>>('/Transaction/types');
     return data.value!;
   },

@@ -10,6 +10,7 @@ import { DashboardPage } from '@/pages/DashboardPage';
 import { TransactionsPage } from '@/pages/TransactionsPage';
 import { AccountsPage } from '@/pages/AccountsPage';
 import { AccountDetailPage } from '@/pages/AccountDetailPage';
+import { GoalsPage } from '@/pages/GoalsPage';
 
 export const AppRoutes = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -23,12 +24,14 @@ export const AppRoutes = () => {
 
   return (
     <Routes>
-
+      <Route path="/" element={<HomePage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/login" element={<LoginPage />} />
-
+      <Route path="/dashboard" element={<DashboardPage />} />
+      <Route path="/transactions" element={<TransactionsPage />} />
       <Route path="/accounts" element={<AccountsPage />} />
       <Route path="/accounts/:id" element={<AccountDetailPage />} />
+      <Route path="/goals" element={<GoalsPage />} />
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
