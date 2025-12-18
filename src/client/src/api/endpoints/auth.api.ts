@@ -1,5 +1,5 @@
 import { apiClient } from '../client/axios.client';
-import type { LoginRequest, RegisterRequest, AuthResponse, User } from '@/types/auth.types';
+import type { LoginRequest, RegisterRequest, AuthResponse } from '@/types/auth.types';
 import type { ResultT } from '@/types/common.types';
 
 export const authApi = {
@@ -18,6 +18,17 @@ export const authApi = {
       userData
     );
     return data;
+  },
+
+  refreshToken: async (): Promise<ResultT<AuthResponse>> => {
+    const { data } = await apiClient.post<ResultT<AuthResponse>>(
+      '/Identity/refresh-token'
+    );
+    return data;
+  },
+
+  logout: async (): Promise<void> => {
+    await apiClient.post('/Identity/logout');
   },
 
 };

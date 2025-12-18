@@ -1,9 +1,16 @@
 import type { TokenPayload } from '@/types/auth.types';
-import { store } from '@/store/store';
 
 export const tokenUtils = {
+  saveToken: (token: string): void => {
+    localStorage.setItem('auth_token', token);
+  },
+
   getToken: (): string | null => {
-    return store.getState().auth.accessToken;
+    return localStorage.getItem('auth_token');
+  },
+
+  removeToken: (): void => {
+    localStorage.removeItem('auth_token');
   },
 
   decodeToken: (token: string): TokenPayload | null => {

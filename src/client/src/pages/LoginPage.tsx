@@ -1,13 +1,15 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { LoginForm } from '@/components/auth/LoginForm';
 import { authApi } from '@/api/endpoints';
-import { tokenUtils } from '@/utils/token.utils';
+import { setCredentials } from '@/store/slices/authSlice';
 import type { LoginRequest } from '@/types/auth.types';
 import type { ApiError } from '@/types';
 
 export const LoginPage = () => {
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -18,7 +20,12 @@ export const LoginPage = () => {
     try {
       const response = await authApi.login(data);
 
-      tokenUtils.saveToken(response.token);
+      if (response.value?.accessToken) {
+        // Save access token to Redux store (Axios interceptor will use it)
+        dispatch(setCredentials({ accessToken: response.value.accessToken }));
+        // Refresh token is automatically saved in cookie by backend (withCredentials: true)
+        navigate('/dashboard');
+      }
 
     } catch (err) {
       const apiError = err as ApiError;

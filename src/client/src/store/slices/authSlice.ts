@@ -7,10 +7,21 @@ interface AuthState {
   isAuthenticated: boolean;
 }
 
+// Load token from localStorage on initial load
+const loadTokenFromStorage = (): string | null => {
+  try {
+    return localStorage.getItem('access_token');
+  } catch {
+    return null;
+  }
+};
+
+const storedToken = loadTokenFromStorage();
+
 const initialState: AuthState = {
-  accessToken: null,
+  accessToken: storedToken,
   user: null,
-  isAuthenticated: false,
+  isAuthenticated: !!storedToken,
 };
 
 const authSlice = createSlice({
@@ -23,11 +34,15 @@ const authSlice = createSlice({
     ) => {
       state.accessToken = action.payload.accessToken;
       state.isAuthenticated = true;
+      // Also save to localStorage for persistence
+      localStorage.setItem('access_token', action.payload.accessToken);
     },
     logout: (state) => {
       state.accessToken = null;
       state.user = null;
       state.isAuthenticated = false;
+      // Clear from localStorage
+      localStorage.removeItem('access_token');
     },
   },
 });

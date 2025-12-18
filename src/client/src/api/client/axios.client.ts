@@ -10,10 +10,9 @@ export const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: true, // Important for cookies
+  withCredentials: true, 
 });
 
-// Request interceptor - Add access token from Redux store
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const token = store.getState().auth.accessToken;
@@ -37,20 +36,17 @@ apiClient.interceptors.response.use(
         statusCode: error.response.status,
       };
       if (error.response.status === 401) {
-        // Clear Redux state and redirect
         store.dispatch({ type: 'auth/logout' });
         window.location.href = '/login';
       }
 
       return Promise.reject(apiError);
     } else if (error.request) {
-      // Request made but no response
       return Promise.reject({
         message: 'Network error. Please check your connection.',
         statusCode: 0,
       } as ApiError);
     } else {
-      // Error in request setup
       return Promise.reject({
         message: error.message || 'An unexpected error occurred',
       } as ApiError);
