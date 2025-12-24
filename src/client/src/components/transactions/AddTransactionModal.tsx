@@ -61,10 +61,12 @@ export const AddTransactionModal = ({
     try {
       const result = await transactionsApi.create({
         amount: amountValue,
-        description: description || title,
+        title: title,
+        description: description,
         transactionTypeId,
         categoryId,
         accountId: finalAccountId,
+        date: date,
       });
 
       if (result.isSuccess) {
