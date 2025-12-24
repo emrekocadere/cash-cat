@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
-import { accountTypeMeta, getAccountTypeLabel } from '@/utils/account-type.utils';
+import { accountTypeMeta } from '@/utils/account-type.utils';
 import { formatBalance, formatDate } from '@/utils/formatters';
-import type { Account } from '@/types/transaction.types';
+import type { Account } from '@/types/model.types';
+import { AccountType } from '@/types/model.types';
 
 type AccountListSectionProps = {
   accounts: Account[];
@@ -17,8 +18,9 @@ export const AccountListSection = ({ accounts, isLoading, currencies }: AccountL
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {accounts.map((account) => {
-            const typeMeta = accountTypeMeta[account.type];
-            const typeLabel = typeMeta?.label ?? account.type;
+            const accountTypeEnum = account.accountType.name as AccountType;
+            const typeMeta = accountTypeMeta[accountTypeEnum];
+            const typeLabel = typeMeta?.label ?? account.accountType.name;
             return (
               <Link key={account.id} to={`/accounts/${account.id}`} className="group block">
                 <article className="bg-gradient-to-br from-slate-900/60 to-slate-900/30 border border-white/10 rounded-2xl p-5 shadow-xl shadow-black/20 transition duration-200 ease-out hover:border-primary-500/40 hover:shadow-primary-500/40">

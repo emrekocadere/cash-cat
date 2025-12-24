@@ -7,8 +7,8 @@ import { TransactionStats } from '@/components/transactions/TransactionStats';
 import { AddTransactionModal } from '@/components/transactions/AddTransactionModal';
 import { transactionsApi } from '@/api/endpoints/transactions.api';
 import { accountsApi } from '@/api/endpoints/accounts.api';
-import type { Transaction } from '@/types/transaction.types';
-import type { Account } from '@/types/account.types';
+import type { Transaction,Account } from '@/types/model.types';
+
 
 export const TransactionsPage = () => {
   const [showAddModal, setShowAddModal] = useState(false);

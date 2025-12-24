@@ -14,3 +14,7 @@ export interface ApiError {
     statusCode?: number;
 }
 
+export interface Currency {
+  id: string;
+  iso4217Code: string;
+}

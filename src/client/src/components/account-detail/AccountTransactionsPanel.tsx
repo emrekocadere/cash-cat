@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { formatBalance, formatDate } from '@/utils/formatters';
-import type { Transaction } from '@/types/transaction.types';
+import type { Transaction } from '@/types/model.types';
 
 type AccountTransactionsPanelProps = {
   transactions: Transaction[];
@@ -38,7 +38,7 @@ export const AccountTransactionsPanel = ({ transactions, currency }: AccountTran
                 <span className={`text-sm font-semibold ${tone}`}>{formatBalance(tx.amount, currency)}</span>
               </div>
               <div className="flex items-center gap-2 text-[10px] text-gray-400">
-                <span className="px-2 py-0.5 rounded-full border border-white/10">{tx.categoryId || 'Category'}</span>
+                <span className="px-2 py-0.5 rounded-full border border-white/10">{tx.category?.id || 'Category'}</span>
                 <span className="text-gray-500">#{tx.id}</span>
               </div>
             </div>

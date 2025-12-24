@@ -1,5 +1,5 @@
 import { formatBalance, formatDate } from '@/utils/formatters';
-import type { Account } from '@/types/account.types';
+import type { Account } from '@/types/model.types';
 
 type AccountSummarySectionProps = {
   account: Account;

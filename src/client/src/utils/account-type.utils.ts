@@ -1,4 +1,4 @@
-import { AccountType } from '@/types/account.types';
+import { AccountType } from '@/types/model.types';
 
 export const accountTypeMeta: Record<
   AccountType,

@@ -1,5 +1,5 @@
 import { apiClient } from '../client/axios.client';
-import type { Account, AccountType, AccountTypeInfo } from '@/types/account.types';
+import type { Account, AccountTypeInfo } from '@/types/model.types';
 import type { ResultT } from '@/types/common.types';
 
 export interface CreateAccountRequest {

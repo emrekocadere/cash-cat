@@ -5,7 +5,7 @@ import { accountsApi } from '@/api/endpoints/accounts.api';
 import { AccountsHeroStats } from '@/components/accounts/AccountsHeroStats';
 import { AccountListSection } from '@/components/accounts/AccountListSection';
 import { AddAccountModal } from '@/components/accounts/AddAccountModal';
-import type { Account } from '@/types/account.types';
+import type { Account } from '@/types/model.types';
 
 export const AccountsPage = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);

@@ -1,10 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { accountsApi } from '@/api/endpoints/accounts.api';
 import { transactionsApi } from '@/api/endpoints/transactions.api';
-import type { Currency } from '@/types/currency.types';
-import type { AccountTypeInfo } from '@/types/account.types';
-import type { Category } from '@/types/category.types';
-import type { TransactionType } from '@/types/transaction.types';
+import type {
+  Currency,
+  TransactionType,
+  AccountTypeInfo,
+  Category
+} from '@/types/model.types';
+
 
 interface AppDataState {
   currencies: Currency[];
