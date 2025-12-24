@@ -17,6 +17,7 @@ public class CreateTransactionCommandHandler(
     public async Task<Result> Handle(CreateTransactionCommand request, CancellationToken cancellationToken)
     {
         var transaction = mapper.Map<Domain.Entities.Transaction>(request);
+        transaction.Date = transaction.Date.ToUniversalTime();
        await transactionsRepository.Create(transaction);
         await transactionsRepository.SaveChanges();
        return  Result.Success();
