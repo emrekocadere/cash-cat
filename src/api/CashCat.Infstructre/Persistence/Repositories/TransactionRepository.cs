@@ -52,7 +52,7 @@ public class TransactionRepository : Repository<Transaction>, ITransactionReposi
             .Sum(x=>x.Amount);
     }
 
-    public double GetExpenseByMonths(Guid userId, int month) 
+    public double GetExpenseAmountByMonths(Guid userId, int month) 
     {
         return _dbSet
             .AsNoTracking()
@@ -60,5 +60,16 @@ public class TransactionRepository : Repository<Transaction>, ITransactionReposi
             .Include(x=>x.TransactionType)
             .Where(x=>x.Account.UserId==userId && x.TransactionType.Name=="expense" && x.Date.Month==month)
             .Sum(x=>x.Amount);
+    }
+
+    public ICollection<Transaction> GetExpensesByMonths(Guid userId, int month)
+    {
+        return _dbSet
+            .AsNoTracking()
+            .Include(x => x.Account)
+            .Include(x=>x.Category)
+            .Include(x => x.TransactionType)
+            .Where(x => x.Account.UserId == userId && x.TransactionType.Name == "expense" && x.Date.Month == month)
+            .ToList();
     }
 }

@@ -10,5 +10,6 @@ public interface ITransactionRepository:IRepository<Transaction>
      ICollection<Transaction> GetByUserId(Guid userId);
      int  GetTransactionQuantityByMonths(Guid userId,int month);
      double  GetIncomesByMonths(Guid userId,int month);
-     double  GetExpenseByMonths(Guid userId,int month);
+     double  GetExpenseAmountByMonths(Guid userId,int month);
+     ICollection<Transaction> GetExpensesByMonths(Guid userId,int month);
 }
