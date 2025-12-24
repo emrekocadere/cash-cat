@@ -21,17 +21,32 @@ export interface CreateTransactionRequest {
   date: string;
   categoryId: string;
   accountId: string;
+  title: string;
 }
+
+
+ 
+
+
+
 
 export interface Category {
   id: string;
   name: string;
 }
 
+export interface CategoryExpense {
+  categoryId: string;
+  categoryName: string;
+  amount: number;
+  percentage: number;
+}
+
 export interface TransactionDashboard {
   income: number;
   expense: number;
   quantity: number;
+  categoryExpenses: CategoryExpense[];
 }
 
 export interface UpdateTransactionRequest extends Partial<CreateTransactionRequest> {
