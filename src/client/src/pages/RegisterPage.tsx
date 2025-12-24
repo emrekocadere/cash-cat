@@ -20,11 +20,12 @@ export const RegisterPage = () => {
     try {
       const response = await authApi.register(data);
       
-      dispatch(setCredentials({
-        accessToken: response.accessToken,
-      }));
-      
-      navigate('/dashboard');
+      if (response.value?.accessToken) {
+        dispatch(setCredentials({
+          accessToken: response.value.accessToken,
+        }));
+        navigate('/dashboard');
+      }
     } catch (err) {
       const apiError = err as ApiError;
       setError(apiError.message || 'Registration failed. Please try again.');
