@@ -28,4 +28,12 @@ public class AccountRepository:Repository<Account>,IAccountRepository
             .FirstOrDefault(x => x.Id == accountId);
         return account;
     }
+
+    public ICollection<Account> GetByIdsAsync(ICollection<Guid> AccountIds)
+    {
+        var accounts = _dbSet
+            .Where(x => AccountIds.Contains(x.Id))
+            .ToList();
+        return accounts;
+    }
 }
