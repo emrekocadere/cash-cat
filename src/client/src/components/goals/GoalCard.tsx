@@ -19,9 +19,6 @@ export const GoalCard = ({ goal, onAddMoney, onEdit }: GoalCardProps) => {
       <div className="flex items-start justify-between mb-4">
         <div>
           <h3 className="text-xl font-bold text-white mb-1">{goal.name}</h3>
-          <span className="text-xs text-gray-400 px-2 py-1 bg-white/5 rounded-full">
-            {goal.category}
-          </span>
         </div>
         <button className="text-gray-400 hover:text-white transition-colors">
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -62,16 +59,6 @@ export const GoalCard = ({ goal, onAddMoney, onEdit }: GoalCardProps) => {
           <span className="text-sm text-gray-400">Remaining</span>
           <span className="text-sm font-bold text-primary-400">
             ₺{remaining.toLocaleString('tr-TR')}
-          </span>
-        </div>
-      </div>
-
-      {/* Deadline */}
-      <div className="pt-4 border-t border-white/10">
-        <div className="flex items-center justify-between text-sm">
-          <span className="text-gray-400">Deadline</span>
-          <span className="text-white font-medium">
-            {daysLeft > 0 ? `${daysLeft} days left` : 'Overdue'}
           </span>
         </div>
       </div>
