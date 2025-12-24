@@ -53,8 +53,8 @@ export const AccountsPage = () => {
           </div>
 
           <AccountsHeroStats
-            totalBalance={0}
-            totalAccounts={0}
+            totalBalance={accounts.reduce((sum, acc) => sum + (acc.balance || 0), 0)}
+            totalAccounts={accounts.length}
           />
 
           <AccountListSection accounts={accounts} isLoading={isLoading} currencies={{}} />
