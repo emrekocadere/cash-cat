@@ -1,16 +1,17 @@
 import { useState } from 'react';
+import { goalsApi } from '@/api/endpoints/goals.api';
 
 interface AddGoalModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess?: () => void;
+  accounts?: Array<{ id: string; name: string }>;
 }
 
-export const AddGoalModal = ({ isOpen, onClose, onSuccess }: AddGoalModalProps) => {
+export const AddGoalModal = ({ isOpen, onClose, onSuccess, accounts = [] }: AddGoalModalProps) => {
   const [name, setName] = useState('');
   const [targetAmount, setTargetAmount] = useState('');
-  const [deadline, setDeadline] = useState('');
-  const [category, setCategory] = useState('');
+  const [accountId, setAccountId] = useState('');
   const [description, setDescription] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -28,31 +29,27 @@ export const AddGoalModal = ({ isOpen, onClose, onSuccess }: AddGoalModalProps) 
       return;
     }
 
-    if (!category) {
-      alert('Please select a category');
-      return;
-    }
-
     setIsSubmitting(true);
     try {
-      // TODO: API call will be added here
-      console.log('Creating goal:', {
-        name,
-        targetAmount: amount,
-        deadline,
-        category,
-        description,
+      const result = await goalsApi.create({
+        title: name,
+        amount: amount,
+        description: description || '',
+        accountIds: accountId ? [accountId] : [],
       });
 
-      // Reset form
-      setName('');
-      setTargetAmount('');
-      setDeadline('');
-      setCategory('');
-      setDescription('');
+      if (result.isSuccess) {
+        // Reset form
+        setName('');
+        setTargetAmount('');
+        setAccountId('');
+        setDescription('');
 
-      onSuccess?.();
-      onClose();
+        onSuccess?.();
+        onClose();
+      } else {
+        alert(result.error || 'Failed to create goal');
+      }
     } catch (err) {
       console.error('Failed to create goal:', err);
       alert('Failed to create goal. Please try again.');
@@ -87,9 +84,7 @@ export const AddGoalModal = ({ isOpen, onClose, onSuccess }: AddGoalModalProps) 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Goal Name
-                </label>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Goal Name</label>
                 <input
                   type="text"
                   placeholder="e.g., Emergency Fund"
@@ -101,9 +96,7 @@ export const AddGoalModal = ({ isOpen, onClose, onSuccess }: AddGoalModalProps) 
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Target Amount
-                </label>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Target Amount</label>
                 <input
                   type="number"
                   step="0.01"
@@ -116,45 +109,33 @@ export const AddGoalModal = ({ isOpen, onClose, onSuccess }: AddGoalModalProps) 
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Category
-                </label>
-                <select
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  required
-                  className="w-full px-4 py-2.5 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
-                >
-                  <option value="">Select category</option>
-                  <option value="Savings">Savings</option>
-                  <option value="Investment">Investment</option>
-                  <option value="Emergency">Emergency Fund</option>
-                  <option value="Travel">Travel</option>
-                  <option value="Electronics">Electronics</option>
-                  <option value="Education">Education</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Target Date (optional)
-                </label>
-                <input
-                  type="date"
-                  value={deadline}
-                  onChange={(e) => setDeadline(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
-                />
-              </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Linked Account (optional)
+              </label>
+              <select
+                value={accountId}
+                onChange={(e) => setAccountId(e.target.value)}
+                className="w-full px-4 py-2.5 bg-slate-800/80 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 hover:bg-slate-800 transition-colors appearance-none cursor-pointer"
+                style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'right 0.5rem center',
+                  backgroundSize: '1.5em 1.5em',
+                  paddingRight: '2.5rem'
+                }}
+              >
+                <option value="" className="bg-slate-800 text-white">Select account</option>
+                {accounts.map((account) => (
+                  <option key={account.id} value={account.id} className="bg-slate-800 text-white">
+                    {account.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Description (optional)
-              </label>
+              <label className="block text-sm font-medium text-gray-300 mb-2">Description (optional)</label>
               <textarea
                 rows={3}
                 placeholder="Add some details about your goal..."
