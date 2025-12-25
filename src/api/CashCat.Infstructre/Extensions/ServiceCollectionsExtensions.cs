@@ -38,6 +38,7 @@ public static class ServiceCollectionsExtensions
         services.AddScoped<IRepository<Transaction>, Repository<Transaction>>();
         services.AddScoped<IRepository<Goal>, Repository<Goal>>();
         services.AddScoped<IRepository<AccountType>, Repository<AccountType>>();
+        services.AddScoped<IRepository<GoalTransaction>, Repository<GoalTransaction>>();
         services.AddScoped<IRepository<Currency>, Repository<Currency>>();
         services.AddScoped<IRepository<TransactionType>, Repository<TransactionType>>();
         services.AddScoped<IUserTokenRepository, UserTokenRepository>();

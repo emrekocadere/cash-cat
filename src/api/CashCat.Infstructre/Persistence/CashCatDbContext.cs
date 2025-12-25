@@ -22,6 +22,7 @@ public class CashCatDbContext : IdentityDbContext<ApplicationUser, ApplicationRo
     public DbSet<TransactionType> TransactionTypes { get; set; }
     public DbSet<Currency> Currencies { get; set; }
     public DbSet<Goal>Goals { get; set; }
+    public DbSet<GoalTransaction> GoalTransactions{ get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

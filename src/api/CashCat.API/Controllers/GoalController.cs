@@ -1,4 +1,6 @@
+using CashCat.Application.Goal.Commands.AddTransactionToGoal;
 using CashCat.Application.Goal.Commands.CreateGoal;
+using CashCat.Application.Goal.Dtos;
 using CashCat.Application.Goal.Queries.GetGoals;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +21,18 @@ public class GoalController(IMediator mediator):ControllerBase
     public async  Task<ActionResult> GetGoals()
     {
         var result =await  mediator.Send(new GetGoalsQuery());
+        return Ok(result);
+    }
+    
+    [HttpPost("api/Goal/{goalId}/Transaction")]
+    public async  Task<ActionResult> AddTransactionToGoal(Guid goalId,AddGoalTransactionRequest request)
+    {
+        var command = new AddTransactionToGoalCommand(
+            goalId,
+            request.Amount,
+            request.TransactionTypeId); 
+        
+        var result =await  mediator.Send(command);
         return Ok(result);
     }
     

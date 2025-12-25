@@ -9,7 +9,7 @@ public class Goal
     public double TargetPercent { get; set; }
     public double CurrentAmount { get; set; }
     public string? Description { get; set; }
-    public DateTimeOffset CreationTime { get; set; }=DateTimeOffset.UtcNow;
-    
+    public DateTimeOffset CreationTime { get; set; } = DateTimeOffset.UtcNow;
 
+    public ICollection<GoalTransaction>? GoalTransactions { get; set; }
 }
