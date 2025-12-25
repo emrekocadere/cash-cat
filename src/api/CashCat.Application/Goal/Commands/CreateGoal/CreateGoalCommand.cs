@@ -1,9 +1,9 @@
 using CashCat.Domain.Common;
 using MediatR;
 
-namespace CashCat.Application.Goal.Queries.CreateGoal;
+namespace CashCat.Application.Goal.Commands.CreateGoal;
 
-public record CreateGoalQuery(
+public record CreateGoalCommand(
     string Title,
     string? Description,
     double Amount,
