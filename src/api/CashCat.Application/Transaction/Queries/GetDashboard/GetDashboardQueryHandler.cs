@@ -19,7 +19,6 @@ public class GetDashboardQueryHandler(
         
         var expenses = transactionRepository.GetExpensesByMonths(userContext.UserId,request.Month);
         
-        // Kategorilere göre grupla ve topla
         var categoryExpenses = expenses
             .GroupBy(e => new { e.CategoryId, e.Category!.Name })
             .Select(g => new CategoryExpenseDto
@@ -27,11 +26,10 @@ public class GetDashboardQueryHandler(
                 CategoryId = g.Key.CategoryId,
                 CategoryName = g.Key.Name,
                 Amount = g.Sum(e => e.Amount),
-                Percentage = 0 // Önce 0, sonra hesaplanacak
+                Percentage = 0
             })
             .ToList();
-
-        // Yüzdelik dilimleri hesapla
+        
         if (expenseAmount > 0)
         {
             foreach (var categoryExpense in categoryExpenses)

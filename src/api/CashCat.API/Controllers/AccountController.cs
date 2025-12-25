@@ -5,7 +5,6 @@ using CashCat.Application.Account.Queries.GetAccount;
 using CashCat.Application.Account.Queries.GetAccounts;
 using CashCat.Application.Account.Queries.GetAccountTypes;
 using CashCat.Domain.Common;
-using Google.GenAI;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
