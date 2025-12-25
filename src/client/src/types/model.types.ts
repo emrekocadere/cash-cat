@@ -60,14 +60,6 @@ export interface Currency {
   iso4217Code: string;
 }
 
-export interface Goal {
-  id: string;
-  name: string;
-  targetAmount: number;
-  currentAmount: number;
-  deadline: string;
-  category: string;
-}
 
 export interface CategoryExpense {
   categoryId: string;
@@ -82,3 +74,14 @@ export interface TransactionDashboard {
   quantity: number;
   categoryExpenses: CategoryExpense[];
 }
+
+export interface Goal {
+  id: string;
+  title: string;
+  description: string;
+  target: number;
+  currentAmount: number;
+  targetPercent: number;
+  creationTime: string;
+}
+

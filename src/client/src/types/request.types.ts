@@ -9,9 +9,15 @@ export interface CreateTransactionRequest {
 }
 
 export interface CreateGoalRequest {
-    amount: number;
+    target: number;
     description: string;
     title: string;
-    accountIds: string[];
 }
+
+export interface AddTransactionToGoalRequest {
+    amount: number;
+    transactionTypeId: string;
+}
+
+
 

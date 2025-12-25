@@ -8,10 +8,9 @@ interface AddGoalModalProps {
   accounts?: Array<{ id: string; name: string }>;
 }
 
-export const AddGoalModal = ({ isOpen, onClose, onSuccess, accounts = [] }: AddGoalModalProps) => {
+export const AddGoalModal = ({ isOpen, onClose, onSuccess }: AddGoalModalProps) => {
   const [name, setName] = useState('');
   const [targetAmount, setTargetAmount] = useState('');
-  const [accountId, setAccountId] = useState('');
   const [description, setDescription] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -33,16 +32,14 @@ export const AddGoalModal = ({ isOpen, onClose, onSuccess, accounts = [] }: AddG
     try {
       const result = await goalsApi.create({
         title: name,
-        amount: amount,
+        target: amount,
         description: description || '',
-        accountIds: accountId ? [accountId] : [],
       });
 
       if (result.isSuccess) {
         // Reset form
         setName('');
         setTargetAmount('');
-        setAccountId('');
         setDescription('');
 
         onSuccess?.();
@@ -107,31 +104,6 @@ export const AddGoalModal = ({ isOpen, onClose, onSuccess, accounts = [] }: AddG
                   className="w-full px-4 py-2.5 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
               </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Linked Account (optional)
-              </label>
-              <select
-                value={accountId}
-                onChange={(e) => setAccountId(e.target.value)}
-                className="w-full px-4 py-2.5 bg-slate-800/80 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 hover:bg-slate-800 transition-colors appearance-none cursor-pointer"
-                style={{
-                  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'right 0.5rem center',
-                  backgroundSize: '1.5em 1.5em',
-                  paddingRight: '2.5rem'
-                }}
-              >
-                <option value="" className="bg-slate-800 text-white">Select account</option>
-                {accounts.map((account) => (
-                  <option key={account.id} value={account.id} className="bg-slate-800 text-white">
-                    {account.name}
-                  </option>
-                ))}
-              </select>
             </div>
 
             <div>
