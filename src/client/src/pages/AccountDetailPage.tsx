@@ -9,8 +9,10 @@ import { transactionsApi } from '@/api/endpoints/transactions.api';
 import { AccountSummarySection } from '@/components/account-detail/AccountSummarySection';
 import { AccountTransactionsPanel } from '@/components/account-detail/AccountTransactionsPanel';
 import { AddTransactionModal } from '@/components/transactions/AddTransactionModal';
-import type { Transaction } from '@/types/transaction.types';
-import type { Account } from '@/types/account.types';
+import type { Transaction,
+  Account,
+ } from '@/types/model.types';
+
 
 export const AccountDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -109,7 +111,7 @@ export const AccountDetailPage = () => {
             onAddTransaction={() => setShowAddModal(true)}
           />
 
-          <AccountTransactionsPanel transactions={transactions} />
+          <AccountTransactionsPanel transactions={transactions} currency={account.currency.iso4217Code} />
         </div>
 
         <Footer />

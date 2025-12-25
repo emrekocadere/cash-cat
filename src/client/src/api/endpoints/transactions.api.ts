@@ -1,13 +1,14 @@
 import { apiClient } from '../client/axios.client';
 import type {
   Transaction,
-  CreateTransactionRequest,
   TransactionType,
   TransactionDashboard,
-} from '@/types/transaction.types';
-import type { Currency } from '@/types/currency.types';
+} from '@/types/model.types';
+
+import type {  CreateTransactionRequest } from '@/types/request.types';
+import type { Currency } from '@/types/model.types';
 import type { Result, ResultT } from '@/types/common.types';
-import { Category } from '@/types/category.types';
+import { Category } from '@/types/model.types';
 
 export const transactionsApi = {
 
