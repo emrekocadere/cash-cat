@@ -1,5 +1,6 @@
 using CashCat.Application.Goal.Commands.AddTransactionToGoal;
 using CashCat.Application.Goal.Commands.CreateGoal;
+using CashCat.Application.Goal.Commands.DeleteGoal;
 using CashCat.Application.Goal.Dtos;
 using CashCat.Application.Goal.Queries.GetGoals;
 using MediatR;
@@ -36,4 +37,12 @@ public class GoalController(IMediator mediator):ControllerBase
         return Ok(result);
     }
     
+    [HttpDelete("api/Goal/{goalId}")]
+    public async  Task<ActionResult> AddTransactionToGoal(Guid goalId)
+    {
+        var command = new DeleteGoalCommand(goalId);
+        var result =await  mediator.Send(command);
+        return Ok(result);
+    }
+
 }
