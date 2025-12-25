@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { LoginForm } from '@/components/auth/LoginForm';
-import { authApi } from '@/api/endpoints';
+import { authApi } from '@/api/endpoints/auth.api';
 import { setCredentials } from '@/store/slices/authSlice';
 import type { LoginRequest } from '@/types/auth.types';
 import type { ApiError } from '@/types';
