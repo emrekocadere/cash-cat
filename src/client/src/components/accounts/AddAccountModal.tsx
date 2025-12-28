@@ -10,10 +10,11 @@ interface AddAccountModalProps {
     accountTypeId: string;
     balance: number;
     currencyId: string;
-  }) => void;
+  }) => Promise<boolean>;
+  onShowToast?: (message: string, type: 'success' | 'error') => void;
 }
 
-export const AddAccountModal = ({ isOpen, onClose, onSubmit }: AddAccountModalProps) => {
+export const AddAccountModal = ({ isOpen, onClose, onSubmit, onShowToast }: AddAccountModalProps) => {
   const { accountTypes, currencies } = useSelector((state: RootState) => state.appData);
   
   const [accountName, setAccountName] = useState('');
@@ -30,29 +31,35 @@ export const AddAccountModal = ({ isOpen, onClose, onSubmit }: AddAccountModalPr
     }
   }, [accountTypes, accountTypeId, currencies, currencyId]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const balanceValue = parseFloat(accountBalance);
     if (isNaN(balanceValue)) {
-      alert('Invalid balance');
+      onShowToast?.('Invalid balance', 'error');
       return;
     }
-    onSubmit?.({
+    const success = await onSubmit?.({
       name: accountName,
       accountTypeId: accountTypeId,
       balance: balanceValue,
       currencyId: currencyId,
-    });
-    // Reset form
-    setAccountName('');
-    if (accountTypes.length > 0) {
-      setAccountTypeId(accountTypes[0].id);
+    }) || false;
+    
+    if (success) {
+      onShowToast?.('Başarıyla oluşturuldu', 'success');
+      // Reset form
+      setAccountName('');
+      if (accountTypes.length > 0) {
+        setAccountTypeId(accountTypes[0].id);
+      }
+      if (currencies.length > 0) {
+        setCurrencyId(currencies[0].id);
+      }
+      setAccountBalance('0');
+      onClose();
+    } else {
+      onShowToast?.('Failed to create account', 'error');
     }
-    if (currencies.length > 0) {
-      setCurrencyId(currencies[0].id);
-    }
-    setAccountBalance('0');
-    onClose();
   };
 
   if (!isOpen) return null;
@@ -88,16 +95,23 @@ export const AddAccountModal = ({ isOpen, onClose, onSubmit }: AddAccountModalPr
               <select
                 value={accountTypeId}
                 onChange={(e) => setAccountTypeId(e.target.value)}
-                className="w-full px-4 py-2.5 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="w-full px-4 py-2.5 bg-slate-800/80 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 hover:bg-slate-800 transition-colors appearance-none cursor-pointer"
+                style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'right 0.5rem center',
+                  backgroundSize: '1.5em 1.5em',
+                  paddingRight: '2.5rem'
+                }}
               >
                 {accountTypes.length > 0 ? (
                   accountTypes.map((type) => (
-                    <option key={type.id} value={type.id}>
+                    <option key={type.id} value={type.id} className="bg-slate-800 text-white">
                       {type.name}
                     </option>
                   ))
                 ) : (
-                  <option value="">Loading...</option>
+                  <option value="" className="bg-slate-800 text-white">Loading...</option>
                 )}
               </select>
             </div>
@@ -107,7 +121,14 @@ export const AddAccountModal = ({ isOpen, onClose, onSubmit }: AddAccountModalPr
               <select
                 value={currencyId}
                 onChange={(e) => setCurrencyId(e.target.value)}
-                className="w-full px-4 py-2.5 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="w-full px-4 py-2.5 bg-slate-800/80 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 hover:bg-slate-800 transition-colors appearance-none cursor-pointer"
+                style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'right 0.5rem center',
+                  backgroundSize: '1.5em 1.5em',
+                  paddingRight: '2.5rem'
+                }}
               >
                 {currencies.length > 0 ? (
                   currencies.map((currency) => (
