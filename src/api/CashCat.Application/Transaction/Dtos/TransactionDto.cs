@@ -5,7 +5,7 @@ namespace CashCat.Application.Transaction.Dtos;
 public class TransactionDto
 {
 
-    public DateTimeOffset Date { get; set; } 
+    public DateTime Date { get; set; } 
     public double Amount { get; set; }
     public string? Title { get; set; }
     public string? Description { get; set; }

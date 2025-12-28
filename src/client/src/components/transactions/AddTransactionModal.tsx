@@ -10,6 +10,7 @@ interface AddTransactionModalProps {
   categories?: Array<{ id: string; name: string }>;
   defaultAccountId?: string;
   onSuccess?: () => void;
+  onShowToast?: (message: string, type: 'success' | 'error') => void;
 }
 
 export const AddTransactionModal = ({
@@ -19,6 +20,7 @@ export const AddTransactionModal = ({
   categories = [],
   defaultAccountId,
   onSuccess,
+  onShowToast,
 }: AddTransactionModalProps) => {
   const { transactionTypes } = useSelector((state: RootState) => state.appData);
   const [transactionTypeId, setTransactionTypeId] = useState('');
@@ -59,6 +61,10 @@ export const AddTransactionModal = ({
 
     setIsSubmitting(true);
     try {
+      // Send date as UTC DateTime without timezone offset
+      // date input is in YYYY-MM-DD format, convert to UTC ISO: YYYY-MM-DDTHH:mm:ss.sssZ
+      const isoDateTime = date + 'T00:00:00Z';
+
       const result = await transactionsApi.create({
         amount: amountValue,
         title: title,
@@ -66,7 +72,7 @@ export const AddTransactionModal = ({
         transactionTypeId,
         categoryId,
         accountId: finalAccountId,
-        date: date,
+        date: isoDateTime,
       });
 
       if (result.isSuccess) {
@@ -80,14 +86,15 @@ export const AddTransactionModal = ({
         setDate(new Date().toISOString().split('T')[0]);
         if (!defaultAccountId) setAccountId('');
         
+        onShowToast?.('Başarıyla eklendi', 'success');
         onSuccess?.();
         onClose();
       } else {
-        alert(result.error || 'Failed to create transaction');
+        onShowToast?.(result.error || 'Failed to create transaction', 'error');
       }
     } catch (err) {
       console.error('Failed to create transaction:', err);
-      alert('Failed to create transaction. Please try again.');
+      onShowToast?.('Failed to create transaction. Please try again.', 'error');
     } finally {
       setIsSubmitting(false);
     }

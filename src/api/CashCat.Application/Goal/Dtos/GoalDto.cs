@@ -10,5 +10,5 @@ public class GoalDto
     public double Target { get; set; }
     public double TargetPercent { get; set; }
     public double CurrentAmount { get; set; }
-    public DateTimeOffset CreationTime { get; set; }
+    public DateTime CreationTime { get; set; }
 }

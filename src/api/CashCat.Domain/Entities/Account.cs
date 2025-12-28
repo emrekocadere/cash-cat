@@ -8,7 +8,7 @@ public class Account
     public Guid AccountTypeId { get; set; }
     public double Balance { get; set; }
     public Guid CurrencyId { get; set; }
-    public DateTimeOffset CreatedAt { get; set; }= DateTimeOffset.Now;
+    public DateTime CreatedAt { get; set; }= DateTime.UtcNow;
 
     public ICollection<Transaction>? Transactions { get; set; }
     public AccountType? AccountType { get; set; }
