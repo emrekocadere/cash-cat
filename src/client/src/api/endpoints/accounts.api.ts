@@ -1,6 +1,6 @@
 import { apiClient } from '../client/axios.client';
 import type { Account, AccountTypeInfo } from '@/types/model.types';
-import type { ResultT } from '@/types/common.types';
+import type { Result, ResultT } from '@/types/common.types';
 
 export interface CreateAccountRequest {
   name: string;
@@ -21,8 +21,8 @@ export const accountsApi = {
     return data;
   },
 
-  delete: async (id: string): Promise<ResultT<void>> => {
-    const { data } = await apiClient.delete<ResultT<void>>(`/account/${id}`);
+  delete: async (id: string): Promise<Result> => {
+    const { data } = await apiClient.delete<Result>(`/account/${id}`);
     return data;
   },
 

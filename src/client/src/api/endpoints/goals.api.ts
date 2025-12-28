@@ -23,6 +23,11 @@ export const goalsApi = {
   addMoney: async (goalId: string, body: AddTransactionToGoalRequest): Promise<Result> => {
     const { data } = await apiClient.post<Result>(`/goal/${goalId}/transaction`, body);
     return data;
+  },
+
+  delete: async (goalId: string): Promise<Result> => {
+    const { data } = await apiClient.delete<Result>(`/goal/${goalId}`);
+    return data;
   }
 
 };
