@@ -5,10 +5,11 @@ interface AddGoalModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess?: () => void;
+  onShowToast?: (message: string, type: 'success' | 'error') => void;
   accounts?: Array<{ id: string; name: string }>;
 }
 
-export const AddGoalModal = ({ isOpen, onClose, onSuccess }: AddGoalModalProps) => {
+export const AddGoalModal = ({ isOpen, onClose, onSuccess, onShowToast }: AddGoalModalProps) => {
   const [name, setName] = useState('');
   const [targetAmount, setTargetAmount] = useState('');
   const [description, setDescription] = useState('');
@@ -42,14 +43,15 @@ export const AddGoalModal = ({ isOpen, onClose, onSuccess }: AddGoalModalProps) 
         setTargetAmount('');
         setDescription('');
 
+        onShowToast?.('Başarıyla oluşturuldu', 'success');
         onSuccess?.();
         onClose();
       } else {
-        alert(result.error || 'Failed to create goal');
+        onShowToast?.(result.error || 'Failed to create goal', 'error');
       }
     } catch (err) {
       console.error('Failed to create goal:', err);
-      alert('Failed to create goal. Please try again.');
+      onShowToast?.('Failed to create goal. Please try again.', 'error');
     } finally {
       setIsSubmitting(false);
     }
