@@ -11,14 +11,14 @@ export const formatBalance = (amount: number, currency: string) => {
   }
 };
 
-export const formatDate = (value?: string) =>
-  value
-    ? new Intl.DateTimeFormat('tr-TR', {
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric',
-      }).format(new Date(value))
-    : '—';
+export const formatDate = (value?: string) => {
+  if (!value) return '—';
+  const date = new Date(value);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  return `${day}-${month}-${year}`;
+};
 
 export const formatCurrency = (amount: number, currency = 'USD') => {
   try {
