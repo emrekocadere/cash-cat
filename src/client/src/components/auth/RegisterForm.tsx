@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { RegisterRequest } from '@/types/auth.types';
+import { GoogleSignInButton } from './GoogleSignInButton';
 
 interface RegisterFormProps {
   onSubmit: (data: RegisterRequest) => void;
@@ -140,6 +141,8 @@ export const RegisterForm = ({ onSubmit, isLoading = false, error }: RegisterFor
       >
         {isLoading ? 'Creating account...' : 'Create Account'}
       </button>
+
+      <GoogleSignInButton isLoading={isLoading} onClick={() => console.log('Google sign up clicked')} />
     </form>
   );
 };

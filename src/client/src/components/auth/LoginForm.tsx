@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { LoginRequest } from '@/types/auth.types';
+import { GoogleSignInButton } from './GoogleSignInButton';
 
 interface LoginFormProps {
   onSubmit: (data: LoginRequest) => void;
@@ -102,6 +103,8 @@ export const LoginForm = ({ onSubmit, isLoading = false, error }: LoginFormProps
       >
         {isLoading ? 'Signing in...' : 'Sign In'}
       </button>
+
+      <GoogleSignInButton isLoading={isLoading} onClick={() => console.log('Google sign in clicked')} />
     </form>
   );
 };
