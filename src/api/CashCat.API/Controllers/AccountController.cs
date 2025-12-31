@@ -1,10 +1,9 @@
 using System.Security.Claims;
-using CashCat.Application.Account.Commands.CreateAccount;
-using CashCat.Application.Account.Commands.DeleteAccount;
-using CashCat.Application.Account.Queries.GetAccount;
-using CashCat.Application.Account.Queries.GetAccounts;
-using CashCat.Application.Account.Queries.GetAccountTypes;
-using CashCat.Domain.Common;
+using WalletUp.Application.Account.Commands.CreateAccount;
+using WalletUp.Application.Account.Commands.DeleteAccount;
+using WalletUp.Application.Account.Queries.GetAccount;
+using WalletUp.Application.Account.Queries.GetAccounts;
+using WalletUp.Application.Account.Queries.GetAccountTypes;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

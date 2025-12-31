@@ -1,12 +1,12 @@
-using CashCat.Application.Transaction.Commands.CreateTransaction;
-using CashCat.Application.Transaction.Commands.DeleteTransaction;
-using CashCat.Application.Transaction.Queries.GetCategories;
-using CashCat.Application.Transaction.Queries.GetCurrencies;
-using CashCat.Application.Transaction.Queries.GetDashboard;
-using CashCat.Application.Transaction.Queries.GetTransactions;
-using CashCat.Application.Transaction.Queries.GetTransactionsByUser;
-using CashCat.Application.Transaction.Queries.GetTransactionTypes;
-using CashCat.Domain.Common;
+using WalletUp.Application.Transaction.Commands.CreateTransaction;
+using WalletUp.Application.Transaction.Commands.DeleteTransaction;
+using WalletUp.Application.Transaction.Queries.GetCategories;
+using WalletUp.Application.Transaction.Queries.GetCurrencies;
+using WalletUp.Application.Transaction.Queries.GetDashboard;
+using WalletUp.Application.Transaction.Queries.GetTransactions;
+using WalletUp.Application.Transaction.Queries.GetTransactionsByUser;
+using WalletUp.Application.Transaction.Queries.GetTransactionTypes;
+using WalletUp.Domain.Common;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

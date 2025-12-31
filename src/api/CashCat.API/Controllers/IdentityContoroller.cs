@@ -1,8 +1,7 @@
-using CashCat.Application.Auth.Commands.Register;
-using CashCat.Application.Identity.Commands.Login;
-using CashCat.Application.Identity.Dtos;
-using CashCat.Domain.Common;
-using CashCat.Infstructre.Identity;
+using WalletUp.Application.Auth.Commands.Register;
+using WalletUp.Application.Identity.Commands.Login;
+using WalletUp.Application.Identity.Dtos;
+using WalletUp.Domain.Common;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

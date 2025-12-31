@@ -1,5 +1,5 @@
-using CashCat.Application.Extensions;
-using CashCat.Infstructre.Extensions;
+using WalletUp.Infstructre.Extensions;
+using WalletUp.Application.Extensions;
 
 namespace CashCat.API;
 

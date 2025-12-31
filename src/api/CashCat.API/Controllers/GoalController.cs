@@ -1,8 +1,8 @@
-using CashCat.Application.Goal.Commands.AddTransactionToGoal;
-using CashCat.Application.Goal.Commands.CreateGoal;
-using CashCat.Application.Goal.Commands.DeleteGoal;
-using CashCat.Application.Goal.Dtos;
-using CashCat.Application.Goal.Queries.GetGoals;
+using WalletUp.Application.Goal.Commands.AddTransactionToGoal;
+using WalletUp.Application.Goal.Commands.CreateGoal;
+using WalletUp.Application.Goal.Commands.DeleteGoal;
+using WalletUp.Application.Goal.Dtos;
+using WalletUp.Application.Goal.Queries.GetGoals;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
