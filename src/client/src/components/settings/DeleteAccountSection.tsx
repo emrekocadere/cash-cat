@@ -19,16 +19,16 @@ export const DeleteAccountSection = ({ onToast }: DeleteAccountSectionProps) => 
     try {
       await authApi.deleteAccount();
 
-      // Clear local onboarding/settings data
+
       localStorage.removeItem('walletup-settings');
       localStorage.removeItem('walletup-onboarding');
 
-      // Logout user and clear auth state
+
       dispatch(logout());
 
       onToast({ message: 'Account deleted successfully', type: 'success' });
 
-      // Redirect to home
+
       setTimeout(() => navigate('/'), 1200);
     } catch (err) {
       const apiError = err as ApiError;

@@ -11,6 +11,8 @@ import { TransactionsPage } from '@/pages/TransactionsPage';
 import { AccountsPage } from '@/pages/AccountsPage';
 import { AccountDetailPage } from '@/pages/AccountDetailPage';
 import { GoalsPage } from '@/pages/GoalsPage';
+import { SettingsPage } from '@/pages/SettingsPage';
+import { OnboardingPage } from '@/pages/OnboardingPage';
 
 export const AppRoutes = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -32,6 +34,8 @@ export const AppRoutes = () => {
       <Route path="/accounts" element={<AccountsPage />} />
       <Route path="/accounts/:id" element={<AccountDetailPage />} />
       <Route path="/goals" element={<GoalsPage />} />
+      <Route path="/settings" element={<SettingsPage />} />
+      <Route path="/onboarding" element={<OnboardingPage />} />
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
