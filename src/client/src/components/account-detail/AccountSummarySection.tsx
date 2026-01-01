@@ -1,5 +1,6 @@
 import { formatBalance, formatDate } from '@/utils/formatters';
-import type { Account } from '@/types/model.types';
+import { exportTransactionsToCSV } from '@/utils/exportToCSV';
+import type { Account, Transaction } from '@/types/model.types';
 
 type AccountSummarySectionProps = {
   account: Account;
@@ -11,6 +12,9 @@ type AccountSummarySectionProps = {
   isError: boolean;
   showDemoNotice: boolean;
   onAddTransaction?: () => void;
+  transactions?: Transaction[];
+  accounts?: Account[];
+  onShowToast?: (message: string, type: 'success' | 'error') => void;
 };
 
 export const AccountSummarySection = ({
@@ -20,7 +24,24 @@ export const AccountSummarySection = ({
   transactionCount,
   isLoading,
   onAddTransaction,
-}: AccountSummarySectionProps) => (
+  transactions = [],
+  accounts = [],
+  onShowToast,
+}: AccountSummarySectionProps) => {
+  const handleExportCSV = () => {
+    if (!transactions || transactions.length === 0) {
+      onShowToast?.('No transactions to export', 'error');
+      return;
+    }
+    if (!accounts || accounts.length === 0) {
+      onShowToast?.('No accounts available', 'error');
+      return;
+    }
+    exportTransactionsToCSV(transactions, accounts);
+    onShowToast?.('Transactions exported as CSV', 'success');
+  };
+
+  return (
   <section className="bg-white/5 border border-white/10 rounded-3xl p-6 space-y-6">
     <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
       <div>
@@ -66,9 +87,26 @@ export const AccountSummarySection = ({
       <button className="px-6 py-3 border border-white/20 rounded-2xl text-white font-semibold">
         Edit Account
       </button>
-      <button className="px-6 py-3 border border-dashed border-white/30 rounded-2xl text-sm text-gray-300 font-semibold">
-        Download Summary
-      </button>
+              <button
+                onClick={handleExportCSV}
+                className="px-6 py-3 bg-slate-800/50 hover:bg-slate-800 text-white font-semibold rounded-xl transition-all border border-white/10 flex items-center gap-2"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 16.5V9.75m0 0l-3 3m3-3l3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0111.25 19.5H6.75z"
+                  />
+                </svg>
+                Export CSV
+              </button>
     </div>
   </section>
-);
+  );
+};
