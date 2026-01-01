@@ -9,6 +9,7 @@ import { TransactionFilters } from '@/components/transactions/TransactionFilters
 import { AddTransactionModal } from '@/components/transactions/AddTransactionModal';
 import { transactionsApi } from '@/api/endpoints/transactions.api';
 import { accountsApi } from '@/api/endpoints/accounts.api';
+import { exportTransactionsToCSV } from '@/utils/exportToCSV';
 import type { Transaction, Account } from '@/types/model.types';
 
 
@@ -92,6 +93,16 @@ export const TransactionsPage = () => {
   }, [filterType, filterAccount, filterCategory, filterPeriod, transactionTypes]);
 
 
+  const exportToCSV = () => {
+    if (filteredTransactions.length === 0) {
+      setToast({ message: 'No transactions to export', type: 'error' });
+      return;
+    }
+
+    exportTransactionsToCSV(filteredTransactions, accounts);
+    setToast({ message: 'Transactions exported as CSV', type: 'success' });
+  };
+
   const filteredTransactions = transactions;
 
   return (
@@ -106,6 +117,25 @@ export const TransactionsPage = () => {
               <p className="text-gray-400">Manage and track your transactions</p>
             </div>
             <div className="flex items-center gap-3">
+              <button
+                onClick={exportToCSV}
+                className="px-6 py-3 bg-slate-800/50 hover:bg-slate-800 text-white font-semibold rounded-xl transition-all border border-white/10 flex items-center gap-2"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 16.5V9.75m0 0l-3 3m3-3l3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0111.25 19.5H6.75z"
+                  />
+                </svg>
+                Export CSV
+              </button>
               <button
                 onClick={() => setShowAddModal(true)}
                 className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2"
@@ -148,7 +178,7 @@ export const TransactionsPage = () => {
             }}
           />
 
-
+      
 
           <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden">
             <TransactionTable
