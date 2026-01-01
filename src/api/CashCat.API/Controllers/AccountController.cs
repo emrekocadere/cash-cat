@@ -5,12 +5,14 @@ using WalletUp.Application.Account.Queries.GetAccount;
 using WalletUp.Application.Account.Queries.GetAccounts;
 using WalletUp.Application.Account.Queries.GetAccountTypes;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CashCat.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class AccountController(IMediator mediator):ControllerBase
 {
     [HttpPost]

@@ -4,11 +4,13 @@ using WalletUp.Application.Goal.Commands.DeleteGoal;
 using WalletUp.Application.Goal.Dtos;
 using WalletUp.Application.Goal.Queries.GetGoals;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CashCat.API.Controllers;
 
 [ApiController]
+[Authorize]
 public class GoalController(IMediator mediator):ControllerBase
 {
     [HttpPost("api/Goal")]

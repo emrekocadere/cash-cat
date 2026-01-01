@@ -9,4 +9,5 @@ public interface IIdentityService
 {
     Task<ResultT<TokenDto>>  Register(RegisterCommand command);
     Task<ResultT<TokenDto>>  Login(LoginCommand command);
+    Task<ResultT<TokenDto>> Refresh(TokenDto tokenModel);
 }

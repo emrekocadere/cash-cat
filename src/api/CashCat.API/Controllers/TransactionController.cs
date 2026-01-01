@@ -8,12 +8,14 @@ using WalletUp.Application.Transaction.Queries.GetTransactionsByUser;
 using WalletUp.Application.Transaction.Queries.GetTransactionTypes;
 using WalletUp.Domain.Common;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CashCat.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class TransactionController(IMediator mediator) : ControllerBase
 {
     [HttpPost]

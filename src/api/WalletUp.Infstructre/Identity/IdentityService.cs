@@ -133,4 +133,32 @@ public class IdentityService(
 
         return tokenDto;
     }
+    
+    public async  Task<ResultT<TokenDto>> Refresh(TokenDto tokenModel)
+    {
+            
+        var principal = tokenService.GetPrincipalFromExpiredToken(tokenModel.AccessToken);
+        var username = principal.Identity.Name;
+        var user= await userManager.FindByNameAsync(username);
+        var tokenInfo = userTokenRepository.GetByUserId(user.Id);
+        if (tokenInfo == null
+            || tokenInfo.Value != tokenModel.RefreshToken
+            || tokenInfo.ExpiresAt <= DateTime.UtcNow)
+        {
+            return Errors.AccountNotFound;
+        }
+        
+        var newAccessToken = tokenService.GenerateAccessToken(principal.Claims);
+        var newRefreshToken = tokenService.GenerateRefreshToken();
+        
+        tokenInfo.Value = newRefreshToken; // rotating the refresh token
+       await userTokenRepository.SaveChanges();
+        var tokenDto = new TokenDto
+        {
+            AccessToken = newAccessToken,
+            RefreshToken = newRefreshToken
+        };
+        return tokenDto;
+        
+    }
 }

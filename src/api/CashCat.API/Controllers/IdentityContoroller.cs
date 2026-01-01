@@ -3,7 +3,9 @@ using WalletUp.Application.Identity.Commands.Login;
 using WalletUp.Application.Identity.Dtos;
 using WalletUp.Domain.Common;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WalletUp.Application.Identity.Commands.RefreshToken;
 
 namespace CashCat.API.Controllers;
 
@@ -15,6 +17,37 @@ public class IdentityController(IMediator mediator) : ControllerBase
     public async Task<ActionResult<ResultT<TokenDto>>> Register(RegisterCommand command)
     {
         var result = await mediator.Send(command);
+        return result;
+    }
+    
+    [HttpPost("refresh")]
+    public async Task<ActionResult<ResultT<TokenDto>>> Refresh()
+    {
+        // Cookie'den refresh token al
+        var refreshToken = Request.Cookies["refreshToken"];
+        if (string.IsNullOrEmpty(refreshToken))
+        {
+            return Unauthorized(Result.Failure(Errors.AccountNotFound));
+        }
+
+        // Access token'ı header'dan al
+        var accessToken = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+        
+        var command = new RefreshTokenCommand(accessToken, refreshToken);
+        var result = await mediator.Send(command);
+        
+        if (result.IsSuccess)
+        {
+            Response.Cookies.Append("refreshToken", result.Value.RefreshToken, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = false,
+                SameSite = SameSiteMode.Lax,
+                Expires = DateTime.UtcNow.AddDays(7),
+                Path = "/"
+            });
+        }
+        
         return result;
     }
 
