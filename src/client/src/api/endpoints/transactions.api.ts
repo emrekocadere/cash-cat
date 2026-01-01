@@ -12,8 +12,29 @@ import { Category } from '@/types/model.types';
 
 export const transactionsApi = {
 
-  getByAccountId: async (accountId: string): Promise<Transaction[]> => {
-    const { data } = await apiClient.get<ResultT<Transaction[]>>(`/Transaction/${accountId}`);
+  getByAccountId: async (
+    accountId: string,
+    filters?: {
+      categoryId?: string;
+      transactionTypeId?: string;
+      startDate?: string;
+      endDate?: string;
+    }
+  ): Promise<Transaction[]> => {
+    let url = `/Transaction/${accountId}`;
+    
+    // Query string parametreleri ekle
+    const params = new URLSearchParams();
+    if (filters?.categoryId) params.append('categoryId', filters.categoryId);
+    if (filters?.transactionTypeId) params.append('transactionTypeId', filters.transactionTypeId);
+    if (filters?.startDate) params.append('startDate', filters.startDate);
+    if (filters?.endDate) params.append('endDate', filters.endDate);
+    
+    if (params.toString()) {
+      url += `?${params.toString()}`;
+    }
+    
+    const { data } = await apiClient.get<ResultT<Transaction[]>>(url);
     return data.value!;
   },
 
@@ -42,8 +63,28 @@ export const transactionsApi = {
     return data.value!;
   },
 
-  getAll: async (): Promise<Transaction[]> => {
-    const { data } = await apiClient.get<ResultT<Transaction[]>>('/Transaction');
+  getAll: async (filters?: {
+    categoryId?: string;
+    transactionTypeId?: string;
+    accountId?: string;
+    startDate?: string;
+    endDate?: string;
+  }): Promise<Transaction[]> => {
+    let url = '/Transaction';
+    
+    // Query string parametreleri ekle
+    const params = new URLSearchParams();
+    if (filters?.categoryId) params.append('categoryId', filters.categoryId);
+    if (filters?.transactionTypeId) params.append('transactionTypeId', filters.transactionTypeId);
+    if (filters?.accountId) params.append('accountId', filters.accountId);
+    if (filters?.startDate) params.append('startDate', filters.startDate);
+    if (filters?.endDate) params.append('endDate', filters.endDate);
+    
+    if (params.toString()) {
+      url += `?${params.toString()}`;
+    }
+    
+    const { data } = await apiClient.get<ResultT<Transaction[]>>(url);
     return data.value!;
   },
 

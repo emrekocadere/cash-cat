@@ -5,5 +5,10 @@ using WalletUp.Application.Transaction.Dtos;
 
 namespace WalletUp.Application.Transaction.Queries.GetTransactions;
 
-public record GetTransactionsQuery(Guid AccountId): IRequest<ResultT<List<TransactionDto>>>;
-
+public record GetTransactionsQuery(
+    Guid AccountId,
+    Guid? CategoryId = null,
+    Guid? TransactionTypeId = null,
+    DateTime? StartDate = null,
+    DateTime? EndDate = null
+): IRequest<ResultT<List<TransactionDto>>>;

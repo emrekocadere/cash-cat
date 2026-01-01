@@ -15,9 +15,15 @@ public class GetTransactionsByUserQueryHandler(
 {
     public Task<ResultT<ICollection<TransactionDto>>> Handle(GetTransactionsByUserQuery request, CancellationToken cancellationToken)
     {
-       var transactions= transactionRepository.GetByUserId(userContext.UserId);
+       var transactions = transactionRepository.GetByUserId(
+           userContext.UserId,
+           request.CategoryId,
+           request.TransactionTypeId,
+           request.AccountId,
+           request.StartDate,
+           request.EndDate
+       );
        var transactionDtos = mapper.Map<List<TransactionDto>>(transactions);
-         return Task.FromResult<ResultT<ICollection<TransactionDto>>>(transactionDtos);
-
+       return Task.FromResult<ResultT<ICollection<TransactionDto>>>(transactionDtos);
     }
 }

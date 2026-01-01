@@ -4,4 +4,10 @@ using WalletUp.Application.Transaction.Dtos;
 
 namespace WalletUp.Application.Transaction.Queries.GetTransactionsByUser;
 
-public record GetTransactionsByUserQuery():IRequest<ResultT<ICollection<TransactionDto>>>;
+public record GetTransactionsByUserQuery(
+    Guid? CategoryId = null,
+    Guid? TransactionTypeId = null,
+    Guid? AccountId = null,
+    DateTime? StartDate = null,
+    DateTime? EndDate = null
+):IRequest<ResultT<ICollection<TransactionDto>>>;

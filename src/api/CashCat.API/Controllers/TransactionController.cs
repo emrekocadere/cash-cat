@@ -31,9 +31,20 @@ public class TransactionController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("{accountId}")]
-    public async Task<ActionResult<Result>> GetTransactions(Guid accountId)
+    public async Task<ActionResult<Result>> GetTransactions(
+        Guid accountId,
+        [FromQuery] Guid? categoryId = null,
+        [FromQuery] Guid? transactionTypeId = null,
+        [FromQuery] DateTime? startDate = null,
+        [FromQuery] DateTime? endDate = null)
     {
-        var result = await mediator.Send(new GetTransactionsQuery(accountId));
+        var result = await mediator.Send(new GetTransactionsQuery(
+            accountId,
+            categoryId,
+            transactionTypeId,
+            startDate,
+            endDate
+        ));
         if (result.IsSuccess)
         {
             return Ok(result);
@@ -85,9 +96,20 @@ public class TransactionController(IMediator mediator) : ControllerBase
         return BadRequest(result);
     }
     [HttpGet]
-    public async Task<ActionResult<Result>> GetAll()
+    public async Task<ActionResult<Result>> GetAll(
+        [FromQuery] Guid? categoryId = null,
+        [FromQuery] Guid? transactionTypeId = null,
+        [FromQuery] Guid? accountId = null,
+        [FromQuery] DateTime? startDate = null,
+        [FromQuery] DateTime? endDate = null)
     {
-        var result = await mediator.Send(new GetTransactionsByUserQuery());
+        var result = await mediator.Send(new GetTransactionsByUserQuery(
+            categoryId,
+            transactionTypeId,
+            accountId,
+            startDate,
+            endDate
+        ));
         if (result.IsSuccess)
         {
             return Ok(result);
