@@ -161,4 +161,17 @@ public class IdentityService(
         return tokenDto;
         
     }
+
+    public async Task<Result> DeleteUser(Guid userId)
+    {
+         var user= await userManager.FindByIdAsync(userId.ToString());
+        var result = await userManager.DeleteAsync(user);
+        if(result.Succeeded)
+            return Result.Success();
+        else
+        {
+            return Result.Failure(Errors.AccountNotFound);
+        }
+        
+    }
 }

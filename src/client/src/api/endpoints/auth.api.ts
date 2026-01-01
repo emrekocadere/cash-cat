@@ -1,6 +1,6 @@
 import { apiClient } from '../client/axios.client';
 import type { LoginRequest, RegisterRequest, AuthResponse } from '@/types/auth.types';
-import type { ResultT } from '@/types/common.types';
+import type { ResultT, Result } from '@/types/common.types';
 
 export const authApi = {
 
@@ -22,6 +22,11 @@ export const authApi = {
 
   logout: async (): Promise<void> => {
     await apiClient.post('/Identity/logout');
+  },
+
+  deleteAccount: async (): Promise<Result> => {
+    const { data } = await apiClient.delete<Result>('/Identity');
+    return data;
   },
 
 };
