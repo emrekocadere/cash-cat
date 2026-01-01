@@ -1,6 +1,6 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
-import type { ApiError } from '@/types/common.types';
-import { store } from '@/store/store';
+import type { ApiError, ResultT } from '@/types/common.types';
+import type { AuthResponse } from '@/types/auth.types';
 
 const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5039';
 
@@ -13,43 +13,69 @@ export const apiClient = axios.create({
   withCredentials: true, 
 });
 
+let store: any = null;
+
+// Store'u set etmek için function
+export const setApiClientStore = (reduxStore: any) => {
+  store = reduxStore;
+};
+
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const token = store.getState().auth.accessToken;
-    if (token && config.headers) {
-      config.headers.Authorization = `Bearer ${token}`;
+    if (store) {
+      const token = store.getState().auth.accessToken;
+      if (token && config.headers) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
 apiClient.interceptors.response.use(
   (response) => response,
-  (error: AxiosError<ApiError>) => {
-    if (error.response) {
-      const apiError: ApiError = {
-        message: error.response.data?.message || 'An error occurred',
-        errors: error.response.data?.errors,
-        statusCode: error.response.status,
-      };
-      if (error.response.status === 401) {
+  async (error: AxiosError<ApiError>) => {
+    if (!store) {
+      return Promise.reject(error);
+    }
+
+    const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
+
+    const publicEndpoints = ['/Identity/login', '/Identity/register', '/Identity/refresh'];
+    const isPublicEndpoint = publicEndpoints.some(endpoint => originalRequest.url?.includes(endpoint));
+
+    if (error.response?.status === 401 && !originalRequest._retry && !isPublicEndpoint) {
+      originalRequest._retry = true;
+
+      try {
+        const { data } = await apiClient.post<ResultT<AuthResponse>>('/Identity/refresh');
+        
+        if (data.value?.accessToken) {
+          const { setCredentials } = await import('@/store/slices/authSlice');
+          store.dispatch(setCredentials({ accessToken: data.value.accessToken }));
+          
+          originalRequest.headers!.Authorization = `Bearer ${data.value.accessToken}`;
+          return apiClient(originalRequest);
+        }
+      } catch {
         store.dispatch({ type: 'auth/logout' });
         window.location.href = '/login';
       }
+    }
 
-      return Promise.reject(apiError);
+    if (error.response) {
+      return Promise.reject({
+        message: error.response.data?.message || 'An error occurred',
+        errors: error.response.data?.errors,
+        statusCode: error.response.status,
+      } as ApiError);
     } else if (error.request) {
       return Promise.reject({
-        message: 'Network error. Please check your connection.',
+        message: 'Network error',
         statusCode: 0,
       } as ApiError);
-    } else {
-      return Promise.reject({
-        message: error.message || 'An unexpected error occurred',
-      } as ApiError);
     }
+    return Promise.reject(error);
   }
 );

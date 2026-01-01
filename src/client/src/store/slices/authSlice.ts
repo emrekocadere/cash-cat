@@ -1,27 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { User } from '@/types/auth.types';
+import { authService } from '@/services/auth.service';
 
 interface AuthState {
   accessToken: string | null;
   user: User | null;
   isAuthenticated: boolean;
+  onboarding_completed: boolean;
 }
 
-// Load token from localStorage on initial load
-const loadTokenFromStorage = (): string | null => {
-  try {
-    return localStorage.getItem('access_token');
-  } catch {
-    return null;
-  }
-};
-
-const storedToken = loadTokenFromStorage();
-
 const initialState: AuthState = {
-  accessToken: storedToken,
+  accessToken: null,
   user: null,
-  isAuthenticated: !!storedToken,
+  isAuthenticated: false,
+  onboarding_completed: false,
 };
 
 const authSlice = createSlice({
@@ -34,18 +26,22 @@ const authSlice = createSlice({
     ) => {
       state.accessToken = action.payload.accessToken;
       state.isAuthenticated = true;
-      // Also save to localStorage for persistence
-      localStorage.setItem('access_token', action.payload.accessToken);
+
+      authService.setAccessToken(action.payload.accessToken);
     },
     logout: (state) => {
       state.accessToken = null;
       state.user = null;
       state.isAuthenticated = false;
-      // Clear from localStorage
-      localStorage.removeItem('access_token');
+      state.onboarding_completed = false;
+
+      authService.clearAccessToken();
+    },
+    setOnboardingCompleted: (state, action: PayloadAction<boolean>) => {
+      state.onboarding_completed = action.payload;
     },
   },
 });
 
-export const { setCredentials, logout } = authSlice.actions;
+export const { setCredentials, logout, setOnboardingCompleted } = authSlice.actions;
 export default authSlice.reducer;

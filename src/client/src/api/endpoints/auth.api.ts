@@ -20,13 +20,6 @@ export const authApi = {
     return data;
   },
 
-  refreshToken: async (): Promise<ResultT<AuthResponse>> => {
-    const { data } = await apiClient.post<ResultT<AuthResponse>>(
-      '/Identity/refresh-token'
-    );
-    return data;
-  },
-
   logout: async (): Promise<void> => {
     await apiClient.post('/Identity/logout');
   },
