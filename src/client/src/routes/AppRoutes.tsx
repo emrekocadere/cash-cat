@@ -17,12 +17,14 @@ import { OnboardingPage } from '@/pages/OnboardingPage';
 export const AppRoutes = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { isLoaded } = useSelector((state: RootState) => state.appData);
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
-    if (!isLoaded) {
+    // Sadece authenticated ise appData fetch et
+    if (isAuthenticated && !isLoaded) {
       dispatch(fetchAppData());
     }
-  }, [dispatch, isLoaded]);
+  }, [dispatch, isLoaded, isAuthenticated]);
 
   return (
     <Routes>
