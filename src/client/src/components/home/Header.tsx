@@ -14,7 +14,7 @@ export const Header = () => {
             />
           </svg>
         </div>
-        <span className="text-xl font-bold text-white">Spendo</span>
+        <span className="text-xl font-bold text-white">WalletUp</span>
       </Link>
 
       <div className="flex items-center gap-6">

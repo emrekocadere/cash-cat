@@ -41,7 +41,7 @@ export const AddTransactionModal = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const amountValue = parseFloat(amount);
     if (isNaN(amountValue) || amountValue <= 0) {
       alert('Please enter a valid amount');
@@ -61,8 +61,8 @@ export const AddTransactionModal = ({
 
     setIsSubmitting(true);
     try {
-      // Send date as UTC DateTime without timezone offset
-      // date input is in YYYY-MM-DD format, convert to UTC ISO: YYYY-MM-DDTHH:mm:ss.sssZ
+
+
       const isoDateTime = date + 'T00:00:00Z';
 
       const result = await transactionsApi.create({
@@ -76,7 +76,7 @@ export const AddTransactionModal = ({
       });
 
       if (result.isSuccess) {
-        // Reset form
+
         const expenseType = transactionTypes.find((t: { name: string }) => t.name.toLowerCase() === 'expense');
         setTransactionTypeId(expenseType?.id || transactionTypes[0]?.id || '');
         setAmount('');
@@ -85,8 +85,8 @@ export const AddTransactionModal = ({
         setCategoryId('');
         setDate(new Date().toISOString().split('T')[0]);
         if (!defaultAccountId) setAccountId('');
-        
-        onShowToast?.('Başarıyla eklendi', 'success');
+
+        onShowToast?.('Added successfully', 'success');
         onSuccess?.();
         onClose();
       } else {
@@ -124,13 +124,13 @@ export const AddTransactionModal = ({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">Type</label>
-                <select 
+                <select
                   value={transactionTypeId}
                   onChange={(e) => setTransactionTypeId(e.target.value)}
                   required
                   className="w-full px-4 py-2.5 bg-slate-800/80 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 hover:bg-slate-800 transition-colors appearance-none cursor-pointer"
                   style={{
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 14l-7 7m0 0l-7-7m7 7V3'%3E%3C/path%3E%3C/svg%3E")`,
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'right 0.5rem center',
                     backgroundSize: '1.5em 1.5em',
@@ -187,13 +187,13 @@ export const AddTransactionModal = ({
               {!defaultAccountId && (
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">Account</label>
-                  <select 
+                  <select
                     value={accountId}
                     onChange={(e) => setAccountId(e.target.value)}
                     required
                     className="w-full px-4 py-2.5 bg-slate-800/80 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 hover:bg-slate-800 transition-colors appearance-none cursor-pointer"
                     style={{
-                      backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+                      backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 14l-7 7m0 0l-7-7m7 7V3'%3E%3C/path%3E%3C/svg%3E")`,
                       backgroundRepeat: 'no-repeat',
                       backgroundPosition: 'right 0.5rem center',
                       backgroundSize: '1.5em 1.5em',
@@ -212,13 +212,13 @@ export const AddTransactionModal = ({
 
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">Category</label>
-                <select 
+                <select
                   value={categoryId}
                   onChange={(e) => setCategoryId(e.target.value)}
                   required
                   className="w-full px-4 py-2.5 bg-slate-800/80 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 hover:bg-slate-800 transition-colors appearance-none cursor-pointer"
                   style={{
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 14l-7 7m0 0l-7-7m7 7V3'%3E%3C/path%3E%3C/svg%3E")`,
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'right 0.5rem center',
                     backgroundSize: '1.5em 1.5em',

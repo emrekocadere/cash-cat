@@ -26,7 +26,7 @@ export const AIFeatureSection = () => {
               Your Personal Financial Assistant
             </h2>
             <p className="text-lg text-gray-300 mb-6 leading-relaxed">
-              Spendo uses advanced artificial intelligence to understand your spending habits and provide personalized insights. Get smart recommendations, automatic expense categorization, and predictive analytics to help you make better financial decisions.
+              WalletUp uses advanced artificial intelligence to understand your spending habits and provide personalized insights. Get smart recommendations, automatic expense categorization, and predictive analytics to help you make better financial decisions.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex items-start gap-3">

@@ -1,5 +1,5 @@
-// token.utils.ts removed functionality — stubbed per cleanup request.
-// Use `authService` from services/auth.service.ts for production behavior.
+
+
 
 export const tokenUtils = {
   saveToken: (_token: string): void => undefined,

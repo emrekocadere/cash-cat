@@ -5,7 +5,7 @@ import { LoginForm } from '@/components/auth/LoginForm';
 import { authApi } from '@/api/endpoints/auth.api';
 import { setCredentials } from '@/store/slices/authSlice';
 import type { LoginRequest } from '@/types/auth.types';
-import type { ApiError } from '@/types';
+import type { ApiError } from '@/types/common.types';
 
 export const LoginPage = () => {
   const dispatch = useDispatch();
@@ -21,9 +21,9 @@ export const LoginPage = () => {
       const response = await authApi.login(data);
 
       if (response.value?.accessToken) {
-        // Save access token to Redux store (Axios interceptor will use it)
+
         dispatch(setCredentials({ accessToken: response.value.accessToken }));
-        // Refresh token is automatically saved in cookie by backend (withCredentials: true)
+
         navigate('/dashboard');
       }
 
@@ -58,7 +58,7 @@ export const LoginPage = () => {
             </svg>
           </div>
           <h1 className="text-5xl font-extrabold bg-gradient-to-r from-white via-purple-200 to-white bg-clip-text text-transparent mb-4">
-            CashCat
+            WalletUp
           </h1>
           <p className="text-xl text-gray-300 mb-8 leading-relaxed">
             Welcome back! Manage your finances with ease.
@@ -137,7 +137,7 @@ export const LoginPage = () => {
           <div className="bg-white/5 backdrop-blur-2xl py-12 px-10 shadow-2xl rounded-3xl border border-white/10">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-white mb-2">Sign In</h2>
-              <p className="text-gray-300">Welcome back to CashCat</p>
+              <p className="text-gray-300">Welcome back to WalletUp</p>
             </div>
 
             <LoginForm onSubmit={handleLogin} isLoading={isLoading} error={error} />

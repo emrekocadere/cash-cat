@@ -26,7 +26,7 @@ export const GoalTrackingSection = () => {
               Achieve Your Financial Dreams
             </h2>
             <p className="text-lg text-gray-300 mb-6 leading-relaxed">
-              Set meaningful financial goals and track your progress effortlessly. Whether you're saving for a new car, your dream house, a vacation, or any other milestone, Spendo helps you stay motivated and on track with visual progress tracking and smart savings recommendations.
+              Set meaningful financial goals and track your progress effortlessly. Whether you're saving for a new car, your dream house, a vacation, or any other milestone, WalletUp helps you stay motivated and on track with visual progress tracking and smart savings recommendations.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex items-start gap-3">

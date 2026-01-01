@@ -5,8 +5,8 @@ export interface User {
   createdAt: string;
 }
 
-//Types klasörü: Projedeki tüm veri tiplerini topladığın yer. Backend'den ne gelir,
-//frontend'de ne tutarsın - hepsini burada tanımlarsın.
+
+
 
 export interface LoginRequest {
   email: string;
@@ -30,4 +30,3 @@ export interface TokenPayload {
   exp: number;
   iat: number;
 }
-  

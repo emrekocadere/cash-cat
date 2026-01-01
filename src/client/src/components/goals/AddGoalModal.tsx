@@ -38,12 +38,12 @@ export const AddGoalModal = ({ isOpen, onClose, onSuccess, onShowToast }: AddGoa
       });
 
       if (result.isSuccess) {
-        // Reset form
+
         setName('');
         setTargetAmount('');
         setDescription('');
 
-        onShowToast?.('Başarıyla oluşturuldu', 'success');
+        onShowToast?.('Created successfully', 'success');
         onSuccess?.();
         onClose();
       } else {

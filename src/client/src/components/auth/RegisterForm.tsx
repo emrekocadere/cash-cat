@@ -48,7 +48,7 @@ export const RegisterForm = ({ onSubmit, isLoading = false, error }: RegisterFor
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    // Clear error when user starts typing
+
     if (errors[name as keyof RegisterRequest]) {
       setErrors((prev) => ({ ...prev, [name]: undefined }));
     }

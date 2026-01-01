@@ -21,7 +21,7 @@ export const SpendingByCategoryPanel = ({ categories }: SpendingByCategoryPanelP
               <span className="text-white font-bold">{category.percentage}%</span>
             </div>
             <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
-              <div 
+              <div
                 className={`h-full bg-gradient-to-r ${category.gradient}`}
                 style={{ width: `${category.percentage}%` }}
               />

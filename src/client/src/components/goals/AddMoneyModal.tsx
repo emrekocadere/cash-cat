@@ -15,7 +15,7 @@ export const AddMoneyModal = ({ isOpen, onClose, goal, onSuccess }: AddMoneyModa
   const [amount, setAmount] = useState('');
   const [transactionTypeId, setTransactionTypeId] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const transactionTypes = useSelector((state: RootState) => state.appData.transactionTypes);
 
   if (!isOpen || !goal) return null;
@@ -27,7 +27,7 @@ export const AddMoneyModal = ({ isOpen, onClose, goal, onSuccess }: AddMoneyModa
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    
+
     const amountValue = parseFloat(amount);
     if (isNaN(amountValue) || amountValue <= 0) {
       alert('Please enter a valid amount');
@@ -45,7 +45,7 @@ export const AddMoneyModal = ({ isOpen, onClose, goal, onSuccess }: AddMoneyModa
         amount: amountValue,
         transactionTypeId: transactionTypeId
       });
-      
+
 
       if (result.isSuccess) {
         setAmount('');
@@ -70,7 +70,7 @@ export const AddMoneyModal = ({ isOpen, onClose, goal, onSuccess }: AddMoneyModa
   };
 
   return (
-    <div 
+    <div
       className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
       onClick={handleBackdropClick}
     >
@@ -118,7 +118,7 @@ export const AddMoneyModal = ({ isOpen, onClose, goal, onSuccess }: AddMoneyModa
               onChange={(e) => setTransactionTypeId(e.target.value)}
               className="w-full px-4 py-3 bg-slate-700/50 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 hover:bg-slate-700 transition-colors appearance-none cursor-pointer"
               style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 14l-7 7m0 0l-7-7m7 7V3'%3E%3C/path%3E%3C/svg%3E")`,
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'right 0.5rem center',
                 backgroundSize: '1.5em 1.5em',

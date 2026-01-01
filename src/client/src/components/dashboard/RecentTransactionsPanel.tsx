@@ -27,22 +27,22 @@ export const RecentTransactionsPanel = ({ transactions, isLoading }: RecentTrans
           day: 'numeric',
           month: 'short'
         }) : '';
-        
+
         return (
-          <div 
+          <div
             key={transaction.id}
             className="flex items-center justify-between p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-all border border-white/5 hover:border-white/10"
           >
             <div className="flex items-center gap-4 flex-1 min-w-0">
               <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                isIncome 
-                  ? 'bg-green-500/20' 
+                isIncome
+                  ? 'bg-green-500/20'
                   : 'bg-red-500/20'
               }`}>
-                <svg 
-                  className={`w-6 h-6 ${isIncome ? 'text-green-400' : 'text-red-400'}`} 
-                  fill="none" 
-                  stroke="currentColor" 
+                <svg
+                  className={`w-6 h-6 ${isIncome ? 'text-green-400' : 'text-red-400'}`}
+                  fill="none"
+                  stroke="currentColor"
                   viewBox="0 0 24 24"
                 >
                   {isIncome ? (
