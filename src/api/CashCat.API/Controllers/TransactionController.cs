@@ -63,6 +63,7 @@ public class TransactionController(IMediator mediator) : ControllerBase
         return BadRequest(result);
     }
     
+    [AllowAnonymous]
     [HttpGet("Currencies")]
     public async Task<ActionResult<Result>> GetCurrencies()
     {
@@ -74,6 +75,7 @@ public class TransactionController(IMediator mediator) : ControllerBase
         return BadRequest(result);
     }
 
+    [AllowAnonymous]
     [HttpGet("categories")]
     public async Task<ActionResult<Result>> GetCategories()
     {
@@ -85,6 +87,7 @@ public class TransactionController(IMediator mediator) : ControllerBase
         return BadRequest(result);
     }
     
+    [AllowAnonymous]
     [HttpGet("types")]
     public async Task<ActionResult<Result>> GetTransactionTypes()
     {
