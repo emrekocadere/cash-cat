@@ -8,16 +8,19 @@ namespace WalletUp.Application.Transaction.Queries.GetDashboard;
 
 public class GetDashboardQueryHandler(
     IUserContext userContext,
-    ITransactionRepository transactionRepository)
+    ITransactionRepository transactionRepository,
+    IGoalRepository goalRepository)
     :IRequestHandler<GetDashboardQuery, ResultT<TransactionDashboardDto>>
 {
     public Task<ResultT<TransactionDashboardDto>> Handle(GetDashboardQuery request, CancellationToken cancellationToken)
     {
-        var transactionQuantity = transactionRepository.GetTransactionQuantityByMonths(userContext.UserId,request.Month);
-        var ıncomeAmount = transactionRepository.GetIncomesByMonths(userContext.UserId,request.Month);
-        var expenseAmount = transactionRepository.GetExpenseAmountByMonths(userContext.UserId,request.Month);
-        
-        var expenses = transactionRepository.GetExpensesByMonths(userContext.UserId,request.Month);
+        var userId = userContext.UserId;
+        var transactionQuantity = transactionRepository.GetTransactionQuantityByMonths(userId,request.Month);
+        var ıncomeAmount = transactionRepository.GetIncomesByMonths(userId,request.Month);
+        var expenseAmount = transactionRepository.GetExpenseAmountByMonths(userId,request.Month);
+        var goalQuantity = goalRepository.GetGoalQuantityByUser(userId);
+        var expenses = transactionRepository.GetExpensesByMonths(userId,request.Month);
+        var currentTotalBalance = transactionRepository.GetTotalBalanceByUser(userId);
         
         var categoryExpenses = expenses
             .GroupBy(e => new { e.CategoryId, e.Category!.Name })
@@ -43,7 +46,9 @@ public class GetDashboardQueryHandler(
             Quantity = transactionQuantity,
             Income = ıncomeAmount,
             Expense = expenseAmount,
-            CategoryExpenses = categoryExpenses
+            CategoryExpenses = categoryExpenses,
+            GoalQuantity = goalQuantity,
+            CurrentTotalBalance = currentTotalBalance
         };
         
         return Task.FromResult<ResultT<TransactionDashboardDto>>(dto);

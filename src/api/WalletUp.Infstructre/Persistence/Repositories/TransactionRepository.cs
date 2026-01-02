@@ -132,4 +132,14 @@ public class TransactionRepository : Repository<Transaction>, ITransactionReposi
             .Where(x => x.Account.UserId == userId && x.TransactionType.Name == "expense" && x.Date.Month == month)
             .ToList();
     }
+
+    public double GetTotalBalanceByUser(Guid userId)
+    {
+        return _dbSet
+            .AsNoTracking()
+            .Include(x=>x.Account)
+            .Include(x=>x.TransactionType)
+            .Where(x=>x.Account.UserId == userId)
+            .Sum(x=>x.TransactionType.Name=="income" ? x.Amount : -x.Amount);
+    }
 }

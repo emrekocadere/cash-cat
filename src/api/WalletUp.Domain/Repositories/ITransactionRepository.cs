@@ -21,4 +21,5 @@ public interface ITransactionRepository:IRepository<Transaction>
      double  GetIncomesByMonths(Guid userId,int month);
      double  GetExpenseAmountByMonths(Guid userId,int month);
      ICollection<Transaction> GetExpensesByMonths(Guid userId,int month);
+     double  GetTotalBalanceByUser(Guid userId);
 }
