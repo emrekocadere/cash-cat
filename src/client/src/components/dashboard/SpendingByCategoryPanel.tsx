@@ -10,7 +10,7 @@ interface SpendingByCategoryPanelProps {
 
 export const SpendingByCategoryPanel = ({ categories }: SpendingByCategoryPanelProps) => {
   return (
-    <div className="bg-white/5 backdrop-blur-xl p-8 rounded-2xl border border-white/10">
+    <div className="bg-white/5 backdrop-blur-xl p-8 rounded-2xl border border-white/10 hover:border-pink-500/20 transition-all duration-300 hover:shadow-lg hover:shadow-pink-500/5">
       <h2 className="text-xl font-bold text-white mb-6">Spending by Category</h2>
 
       <div className="space-y-5">
