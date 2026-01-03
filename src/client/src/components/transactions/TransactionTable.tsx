@@ -1,5 +1,7 @@
-import type { Transaction } from '@/types/transaction.types';
-import { formatBalance, formatDate, formatCurrency } from '@/utils/formatters';
+import { useState } from 'react';
+import type { Transaction } from '@/types/model.types';
+import { formatDate, formatCurrency } from '@/utils/formatters';
+import { DropdownMenu } from '@/components/common/DropdownMenu';
 
 interface TransactionTableProps {
   transactions: Transaction[];
@@ -14,6 +16,15 @@ export const TransactionTable = ({
   accounts,
   hasFilters,
 }: TransactionTableProps) => {
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+
+  const handleEdit = (transaction: Transaction) => {
+    console.log('Edit transaction:', transaction);
+  };
+
+  const handleDelete = (transaction: Transaction) => {
+    console.log('Delete transaction:', transaction);
+  };
   if (isLoading) {
     return <div className="text-center py-12 text-gray-400">Loading transactions...</div>;
   }
@@ -69,7 +80,7 @@ export const TransactionTable = ({
                 </div>
               </td>
               <td className="px-6 py-4">
-                <span className="inline-flex items-center gap-2 px-3 py-1 bg-primary-500/20 text-primary-400 rounded-lg text-sm">
+                <span className="inline-flex items-center gap-2 px-3 py-1 bg-purple-500/15 text-purple-300 rounded-lg text-sm border border-purple-500/20 hover:border-purple-400/40 transition-all">
                   {transaction.category?.name || 'No category'}
                 </span>
               </td>
@@ -79,12 +90,12 @@ export const TransactionTable = ({
               <td className="px-6 py-4">
                 <span
                   className={`inline-flex items-center gap-1 px-3 py-1 rounded-lg text-sm font-medium ${
-                    transaction.transactionType?.name === 'Income'
+                    transaction.transactionType?.name?.toLowerCase() === 'income'
                       ? 'bg-green-500/20 text-green-400'
                       : 'bg-red-500/20 text-red-400'
                   }`}
                 >
-                  {transaction.transactionType?.name === 'Income' ? (
+                  {transaction.transactionType?.name?.toLowerCase() === 'income' ? (
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
                         strokeLinecap="round"
@@ -109,24 +120,59 @@ export const TransactionTable = ({
               <td className="px-6 py-4 text-right">
                 <span
                   className={`text-lg font-bold ${
-                    transaction.transactionType?.name === 'Income' ? 'text-green-400' : 'text-white'
+                    transaction.transactionType?.name?.toLowerCase() === 'income' ? 'text-green-400' : 'text-white'
                   }`}
                 >
-                  {transaction.transactionType?.name === 'Income' ? '+' : '-'}
+                  {transaction.transactionType?.name?.toLowerCase() === 'income' ? '+' : '-'}
                   {formatCurrency(transaction.amount)}
                 </span>
               </td>
-              <td className="px-6 py-4 text-center">
-                <button className="text-gray-400 hover:text-white transition-colors">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
-                    />
-                  </svg>
-                </button>
+              <td className="px-6 py-4 text-center relative">
+                <div
+                  className="inline-block"
+                  onClick={() => transaction.id && setOpenMenuId(openMenuId === transaction.id ? null : transaction.id)}
+                >
+                  <DropdownMenu
+                    isOpen={openMenuId === transaction.id}
+                    menuItems={[
+                      {
+                        label: 'Edit',
+                        icon: (
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                            />
+                          </svg>
+                        ),
+                        onClick: () => {
+                          handleEdit(transaction);
+                          setOpenMenuId(null);
+                        },
+                      },
+                      {
+                        label: 'Delete',
+                        icon: (
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                            />
+                          </svg>
+                        ),
+                        onClick: () => {
+                          handleDelete(transaction);
+                          setOpenMenuId(null);
+                        },
+                        variant: 'danger',
+                      },
+                    ]}
+                  />
+                </div>
               </td>
             </tr>
           ))}

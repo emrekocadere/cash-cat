@@ -12,6 +12,7 @@ interface TransactionFiltersProps {
   accounts: Array<{ id: string; name: string; balance: number }>;
   categories: Array<{ id: string; name: string }>;
   onClearFilters: () => void;
+  hideAccountFilter?: boolean;
 }
 
 export const TransactionFilters = ({
@@ -26,6 +27,7 @@ export const TransactionFilters = ({
   accounts,
   categories,
   onClearFilters,
+  hideAccountFilter = false,
 }: TransactionFiltersProps) => {
   const hasActiveFilters =
     filterType !== 'all' ||
@@ -36,7 +38,7 @@ export const TransactionFilters = ({
   return (
     <div className="bg-white/5 backdrop-blur-xl p-6 rounded-2xl border border-white/10 mb-8">
       <h3 className="text-white font-semibold mb-4">Filters</h3>
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className={`grid grid-cols-1 ${hideAccountFilter ? 'md:grid-cols-3' : 'md:grid-cols-4'} gap-4`}>
         {/* Period Filter */}
         <div>
           <label className="block text-sm text-gray-400 mb-2">Period</label>
@@ -45,7 +47,7 @@ export const TransactionFilters = ({
             onChange={(e) => setFilterPeriod(e.target.value)}
             className="w-full px-4 py-2.5 bg-slate-800/80 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 hover:bg-slate-800 transition-colors appearance-none cursor-pointer"
             style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 14l-7 7m0 0l-7-7m7 7V3'%3E%3C/path%3E%3C/svg%3E")`,
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'right 0.5rem center',
               backgroundSize: '1.5em 1.5em',
@@ -66,7 +68,7 @@ export const TransactionFilters = ({
             onChange={(e) => setFilterType(e.target.value)}
             className="w-full px-4 py-2.5 bg-slate-800/80 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 hover:bg-slate-800 transition-colors appearance-none cursor-pointer"
             style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 14l-7 7m0 0l-7-7m7 7V3'%3E%3C/path%3E%3C/svg%3E")`,
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'right 0.5rem center',
               backgroundSize: '1.5em 1.5em',
@@ -80,28 +82,30 @@ export const TransactionFilters = ({
         </div>
 
         {/* Account Filter */}
-        <div>
-          <label className="block text-sm text-gray-400 mb-2">Account</label>
-          <select
-            value={filterAccount}
-            onChange={(e) => setFilterAccount(e.target.value)}
-            className="w-full px-4 py-2.5 bg-slate-800/80 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 hover:bg-slate-800 transition-colors appearance-none cursor-pointer"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
-              backgroundRepeat: 'no-repeat',
-              backgroundPosition: 'right 0.5rem center',
-              backgroundSize: '1.5em 1.5em',
-              paddingRight: '2.5rem'
-            }}
-          >
-            <option value="all" className="bg-slate-800 text-white">All Accounts</option>
-            {accounts.map((account) => (
-              <option key={account.id} value={account.id} className="bg-slate-800 text-white">
-                {account.name} ({formatCurrency(account.balance)})
-              </option>
-            ))}
-          </select>
-        </div>
+        {!hideAccountFilter && (
+          <div>
+            <label className="block text-sm text-gray-400 mb-2">Account</label>
+            <select
+              value={filterAccount}
+              onChange={(e) => setFilterAccount(e.target.value)}
+              className="w-full px-4 py-2.5 bg-slate-800/80 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 hover:bg-slate-800 transition-colors appearance-none cursor-pointer"
+              style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 14l-7 7m0 0l-7-7m7 7V3'%3E%3C/path%3E%3C/svg%3E")`,
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'right 0.5rem center',
+                backgroundSize: '1.5em 1.5em',
+                paddingRight: '2.5rem'
+              }}
+            >
+              <option value="all" className="bg-slate-800 text-white">All Accounts</option>
+              {accounts.map((account) => (
+                <option key={account.id} value={account.id} className="bg-slate-800 text-white">
+                  {account.name} ({formatCurrency(account.balance)})
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
         {/* Category Filter */}
         <div>
@@ -111,7 +115,7 @@ export const TransactionFilters = ({
             onChange={(e) => setFilterCategory(e.target.value)}
             className="w-full px-4 py-2.5 bg-slate-800/80 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 hover:bg-slate-800 transition-colors appearance-none cursor-pointer"
             style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 14l-7 7m0 0l-7-7m7 7V3'%3E%3C/path%3E%3C/svg%3E")`,
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'right 0.5rem center',
               backgroundSize: '1.5em 1.5em',
