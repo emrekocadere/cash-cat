@@ -8,6 +8,8 @@ import { Toast } from '@/components/common/Toast';
 import { TransactionTable } from '@/components/transactions/TransactionTable';
 import { TransactionFilters } from '@/components/transactions/TransactionFilters';
 import { AddTransactionModal } from '@/components/transactions/AddTransactionModal';
+import { AIInsightsSection } from '@/components/common/AIInsightsSection';
+import { useAIInsights } from '@/hooks/useAIInsights';
 import { accountsApi } from '@/api/endpoints/accounts.api';
 import { transactionsApi } from '@/api/endpoints/transactions.api';
 import { AccountSummarySection } from '@/components/account-detail/AccountSummarySection';
@@ -32,7 +34,7 @@ export const AccountDetailPage = () => {
   const [filterPeriod, setFilterPeriod] = useState<string>('all');
 
 
-
+  const { insights, loading: insightsLoading } = useAIInsights({ pageType: 'accounts' });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -167,7 +169,10 @@ export const AccountDetailPage = () => {
           />
 
 
-  
+          <div className="mb-8">
+            <AIInsightsSection insights={insights} loading={insightsLoading} />
+          </div>
+
           <TransactionFilters
             filterPeriod={filterPeriod}
             setFilterPeriod={setFilterPeriod}
