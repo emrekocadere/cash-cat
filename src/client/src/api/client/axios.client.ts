@@ -42,7 +42,14 @@ apiClient.interceptors.response.use(
 
     const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
 
-    const publicEndpoints = ['/Identity/login', '/Identity/register', '/Identity/refresh'];
+    const publicEndpoints = [
+      '/Identity/login',
+      '/Identity/register',
+      '/Identity/refresh',
+      '/Transaction/Currencies',
+      '/Transaction/categories',
+      '/Transaction/types'
+    ];
     const isPublicEndpoint = publicEndpoints.some(endpoint => originalRequest.url?.includes(endpoint));
 
     if (error.response?.status === 401 && !originalRequest._retry && !isPublicEndpoint) {
