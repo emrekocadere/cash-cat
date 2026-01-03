@@ -1,37 +1,80 @@
-import { Goal } from "@/types/goal.types";
+import { useState } from 'react';
+import type { Goal } from '@/types/model.types';
+import { DropdownMenu } from '@/components/common/DropdownMenu';
 
 interface GoalCardProps {
   goal: Goal;
   onAddMoney?: (goalId: string) => void;
   onEdit?: (goalId: string) => void;
+  onDelete?: (goalId: string) => Promise<void>;
 }
 
-export const GoalCard = ({ goal, onAddMoney, onEdit }: GoalCardProps) => {
-  const progress = (goal.currentAmount / goal.targetAmount) * 100;
-  const remaining = goal.targetAmount - goal.currentAmount;
-  const daysLeft = Math.ceil(
-    (new Date(goal.deadline).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
-  );
+export const GoalCard = ({ goal, onAddMoney, onEdit, onDelete }: GoalCardProps) => {
+  const [isDeleting, setIsDeleting] = useState(false);
+  const currentAmount = goal.currentAmount || 0;
+  const targetAmount = goal.target || 0;
+  const progress = goal.targetPercent || 0;
+
+  const handleDelete = async () => {
+    setIsDeleting(true);
+    try {
+      await onDelete?.(goal.id);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const menuItems = [
+    {
+      label: 'Edit',
+      icon: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+        </svg>
+      ),
+      onClick: () => onEdit?.(goal.id),
+    },
+    {
+      label: 'Delete',
+      icon: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+        </svg>
+      ),
+      onClick: handleDelete,
+      variant: 'danger' as const,
+      disabled: isDeleting,
+    },
+  ];
 
   return (
-    <div className="bg-white/5 backdrop-blur-xl p-6 rounded-2xl border border-white/10 hover:border-white/20 transition-all">
-      {/* Header */}
+    <div className={`bg-white/5 backdrop-blur-xl p-6 rounded-2xl border border-white/10 hover:border-purple-400/30 transition-all hover:shadow-lg hover:shadow-purple-500/10 ${isDeleting ? 'opacity-50 pointer-events-none' : ''}`}>
       <div className="flex items-start justify-between mb-4">
         <div>
-          <h3 className="text-xl font-bold text-white mb-1">{goal.name}</h3>
+          <h3 className="text-xl font-bold text-white mb-1">{goal.title}</h3>
+          {goal.description && (
+            <p className="text-sm text-gray-400 mt-1">{goal.description}</p>
+          )}
         </div>
-        <button className="text-gray-400 hover:text-white transition-colors">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-          </svg>
-        </button>
+        <div className="relative">
+          {isDeleting ? (
+            <div className="flex items-center justify-center">
+              <div className="animate-spin">
+                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 12a8 8 0 018-8V0c4.418 0 8 3.582 8 8h-4m0 6a8 8 0 01-8 8v-4c4.418 0 8-3.582 8-8h-4z" />
+                </svg>
+              </div>
+            </div>
+          ) : (
+            <DropdownMenu items={menuItems} />
+          )}
+        </div>
       </div>
 
-      {/* Progress */}
       <div className="mb-4">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm text-gray-400">Progress</span>
-          <span className="text-sm font-bold text-white">{progress.toFixed(0)}%</span>
+          <span className="text-sm font-bold text-white">{progress.toFixed(1)}%</span>
         </div>
         <div className="w-full h-3 bg-white/10 rounded-full overflow-hidden">
           <div
@@ -41,41 +84,27 @@ export const GoalCard = ({ goal, onAddMoney, onEdit }: GoalCardProps) => {
         </div>
       </div>
 
-      {/* Amounts */}
       <div className="space-y-2 mb-4">
         <div className="flex items-center justify-between">
           <span className="text-sm text-gray-400">Current</span>
           <span className="text-sm font-bold text-white">
-            ₺{goal.currentAmount.toLocaleString('tr-TR')}
+            ₺{currentAmount.toLocaleString('tr-TR')}
           </span>
         </div>
         <div className="flex items-center justify-between">
           <span className="text-sm text-gray-400">Target</span>
           <span className="text-sm font-bold text-white">
-            ₺{goal.targetAmount.toLocaleString('tr-TR')}
-          </span>
-        </div>
-        <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-400">Remaining</span>
-          <span className="text-sm font-bold text-primary-400">
-            ₺{remaining.toLocaleString('tr-TR')}
+            ₺{targetAmount.toLocaleString('tr-TR')}
           </span>
         </div>
       </div>
 
-      {/* Actions */}
       <div className="flex gap-2 mt-4">
-        <button 
+        <button
           onClick={() => onAddMoney?.(goal.id)}
           className="flex-1 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-lg transition-colors"
         >
           Add Money
-        </button>
-        <button 
-          onClick={() => onEdit?.(goal.id)}
-          className="px-4 py-2 border border-white/20 hover:border-white/30 text-white text-sm font-semibold rounded-lg transition-colors"
-        >
-          Edit
         </button>
       </div>
     </div>

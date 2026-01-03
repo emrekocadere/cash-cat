@@ -1,11 +1,39 @@
 import { Link, useLocation } from 'react-router-dom';
+import { useState } from 'react';
 
 export const Header = () => {
   const location = useLocation();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-64 bg-slate-900/95 border-r border-white/10 backdrop-blur-sm flex flex-col z-50">
+    <>
+      {/* Mobile Menu Button */}
+      <button
+        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        className="lg:hidden fixed top-4 left-4 z-[60] p-2 bg-slate-800 rounded-lg border border-white/10 text-white"
+      >
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          {isMobileMenuOpen ? (
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          ) : (
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          )}
+        </svg>
+      </button>
+
+      {/* Mobile Overlay */}
+      {isMobileMenuOpen && (
+        <div
+          className="lg:hidden fixed inset-0 bg-black/50 z-40"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside className={`fixed left-0 top-0 h-screen w-64 bg-slate-900/95 border-r border-white/10 backdrop-blur-sm flex flex-col z-50 transition-transform duration-300 ${
+        isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+      }`}>
       <Link to="/dashboard" className="flex items-center gap-3 px-6 py-6 border-b border-white/10 group">
         <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-primary-500/50 transition-shadow">
           <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -21,7 +49,7 @@ export const Header = () => {
       </Link>
 
 
-      <nav className="flex-1 flex flex-col gap-1 px-3 py-4">
+      <nav className="flex-1 flex flex-col gap-1 px-3 py-4" onClick={() => setIsMobileMenuOpen(false)}>
         <Link
           to="/dashboard"
           className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
@@ -89,7 +117,7 @@ export const Header = () => {
         </Link>
       </nav>
 
-      <nav className="border-t border-white/10 px-3 py-4 space-y-1">
+      <nav className="border-t border-white/10 px-3 py-4 space-y-1" onClick={() => setIsMobileMenuOpen(false)}>
         <Link
           to="/settings"
           className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
@@ -106,5 +134,6 @@ export const Header = () => {
         </Link>
       </nav>
     </aside>
+    </>
   );
 };

@@ -16,7 +16,7 @@ interface AddAccountModalProps {
 
 export const AddAccountModal = ({ isOpen, onClose, onSubmit, onShowToast }: AddAccountModalProps) => {
   const { accountTypes, currencies } = useSelector((state: RootState) => state.appData);
-  
+
   const [accountName, setAccountName] = useState('');
   const [accountTypeId, setAccountTypeId] = useState('');
   const [accountBalance, setAccountBalance] = useState('0');
@@ -44,10 +44,10 @@ export const AddAccountModal = ({ isOpen, onClose, onSubmit, onShowToast }: AddA
       balance: balanceValue,
       currencyId: currencyId,
     }) || false;
-    
+
     if (success) {
-      onShowToast?.('Başarıyla oluşturuldu', 'success');
-      // Reset form
+      onShowToast?.('Created successfully', 'success');
+
       setAccountName('');
       if (accountTypes.length > 0) {
         setAccountTypeId(accountTypes[0].id);
@@ -97,7 +97,7 @@ export const AddAccountModal = ({ isOpen, onClose, onSubmit, onShowToast }: AddA
                 onChange={(e) => setAccountTypeId(e.target.value)}
                 className="w-full px-4 py-2.5 bg-slate-800/80 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 hover:bg-slate-800 transition-colors appearance-none cursor-pointer"
                 style={{
-                  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 14l-7 7m0 0l-7-7m7 7V3'%3E%3C/path%3E%3C/svg%3E")`,
                   backgroundRepeat: 'no-repeat',
                   backgroundPosition: 'right 0.5rem center',
                   backgroundSize: '1.5em 1.5em',
@@ -123,7 +123,7 @@ export const AddAccountModal = ({ isOpen, onClose, onSubmit, onShowToast }: AddA
                 onChange={(e) => setCurrencyId(e.target.value)}
                 className="w-full px-4 py-2.5 bg-slate-800/80 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 hover:bg-slate-800 transition-colors appearance-none cursor-pointer"
                 style={{
-                  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 14l-7 7m0 0l-7-7m7 7V3'%3E%3C/path%3E%3C/svg%3E")`,
                   backgroundRepeat: 'no-repeat',
                   backgroundPosition: 'right 0.5rem center',
                   backgroundSize: '1.5em 1.5em',

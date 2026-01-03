@@ -38,7 +38,7 @@ export const AccountTransactionsPanel = ({ transactions, currency }: AccountTran
                 <span className={`text-sm font-semibold ${tone}`}>{formatBalance(tx.amount, currency)}</span>
               </div>
               <div className="flex items-center gap-2 text-[10px] text-gray-400">
-                <span className="px-2 py-0.5 rounded-full border border-white/10">{tx.category?.id || 'Category'}</span>
+                <span className="px-2 py-0.5 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-300 hover:border-purple-400/50 transition-all">{tx.category?.id || 'Category'}</span>
                 <span className="text-gray-500">#{tx.id}</span>
               </div>
             </div>

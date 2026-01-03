@@ -1,4 +1,4 @@
-import type { Transaction } from '@/types/transaction.types';
+import type { Transaction } from '@/types/model.types';
 
 interface RecentTransactionsPanelProps {
   transactions: Transaction[];
@@ -31,7 +31,7 @@ export const RecentTransactionsPanel = ({ transactions, isLoading }: RecentTrans
         return (
           <div
             key={transaction.id}
-            className="flex items-center justify-between p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-all border border-white/5 hover:border-white/10"
+            className="flex items-center justify-between p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-all border border-white/5 hover:border-purple-400/20 hover:shadow-md hover:shadow-purple-500/5"
           >
             <div className="flex items-center gap-4 flex-1 min-w-0">
               <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
@@ -57,7 +57,7 @@ export const RecentTransactionsPanel = ({ transactions, isLoading }: RecentTrans
                   {transaction.description || 'No description'}
                 </p>
                 <div className="flex items-center gap-3 mt-1">
-                  <span className="text-xs text-gray-400 px-2 py-1 bg-white/5 rounded-full">
+                  <span className="text-xs text-pink-300 px-2 py-1 bg-pink-500/15 border border-pink-500/20 rounded-full hover:border-pink-400/40 transition-all">
                     {transaction.category?.name || 'Uncategorized'}
                   </span>
                   {date && (
