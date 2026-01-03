@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { RegisterForm } from '@/components/auth/RegisterForm';
 import { authApi } from '@/api/endpoints/auth.api';
-import { setCredentials } from '@/store/slices/authSlice';
+import { setCredentials, setOnboardingCompleted } from '@/store/slices/authSlice';
 import type { RegisterRequest } from '@/types/auth.types';
 import type { ApiError } from '@/types/common.types';
 
@@ -19,12 +19,13 @@ export const RegisterPage = () => {
     console.log(data);
     try {
       const response = await authApi.register(data);
-      
+
       if (response.value?.accessToken) {
         dispatch(setCredentials({
           accessToken: response.value.accessToken,
         }));
-        navigate('/dashboard');
+        dispatch(setOnboardingCompleted(false));
+        navigate('/onboarding');
       }
     } catch (err) {
       const apiError = err as ApiError;
@@ -38,7 +39,7 @@ export const RegisterPage = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-12 px-4 relative overflow-hidden">
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary-500/30 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl"></div>
-      
+
       <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10">
         <div className="hidden md:block">
           <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-primary-500 via-purple-500 to-indigo-600 rounded-3xl mb-8 shadow-2xl shadow-primary-500/50">
@@ -46,11 +47,11 @@ export const RegisterPage = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <h1 className="text-5xl font-extrabold bg-gradient-to-r from-white via-purple-200 to-white bg-clip-text text-transparent mb-4">CashCat</h1>
+          <h1 className="text-5xl font-extrabold bg-gradient-to-r from-white via-purple-200 to-white bg-clip-text text-transparent mb-4">WalletUp</h1>
           <p className="text-xl text-gray-300 mb-8 leading-relaxed">
             Take control of your finances with our smart expense tracking app.
           </p>
-          
+
           <div className="space-y-6">
             <div className="flex items-start gap-4">
               <div className="w-12 h-12 bg-primary-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -63,7 +64,7 @@ export const RegisterPage = () => {
                 <p className="text-gray-400">Log expenses in seconds</p>
               </div>
             </div>
-            
+
             <div className="flex items-start gap-4">
               <div className="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
                 <svg className="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -75,7 +76,7 @@ export const RegisterPage = () => {
                 <p className="text-gray-400">Understand your spending patterns</p>
               </div>
             </div>
-            
+
             <div className="flex items-start gap-4">
               <div className="w-12 h-12 bg-indigo-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
                 <svg className="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -89,7 +90,7 @@ export const RegisterPage = () => {
             </div>
           </div>
         </div>
-        
+
         <div>
           <div className="bg-white/5 backdrop-blur-2xl py-12 px-10 shadow-2xl rounded-3xl border border-white/10">
             <div className="text-center mb-8">
