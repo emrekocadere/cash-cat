@@ -4,13 +4,7 @@ namespace WalletUp.Domain.Repositories;
 
 public interface ITransactionRepository:IRepository<Transaction>
 {
-     ICollection<Transaction> GetTransactionsByAccountId(
-          Guid accountId,
-          Guid? categoryId = null,
-          Guid? transactionTypeId = null,
-          DateTime? startDate = null,
-          DateTime? endDate = null);
-     ICollection<Transaction> GetByUserId(
+     ICollection<Transaction> GetTransactions(
           Guid userId,
           Guid? categoryId = null,
           Guid? transactionTypeId = null,

@@ -6,7 +6,7 @@ using WalletUp.Application.Transaction.Dtos;
 namespace WalletUp.Application.Transaction.Queries.GetTransactions;
 
 public record GetTransactionsQuery(
-    Guid AccountId,
+    Guid? AccountId=null,
     Guid? CategoryId = null,
     Guid? TransactionTypeId = null,
     DateTime? StartDate = null,

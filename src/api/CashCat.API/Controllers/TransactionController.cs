@@ -4,7 +4,6 @@ using WalletUp.Application.Transaction.Queries.GetCategories;
 using WalletUp.Application.Transaction.Queries.GetCurrencies;
 using WalletUp.Application.Transaction.Queries.GetDashboard;
 using WalletUp.Application.Transaction.Queries.GetTransactions;
-using WalletUp.Application.Transaction.Queries.GetTransactionsByUser;
 using WalletUp.Application.Transaction.Queries.GetTransactionTypes;
 using WalletUp.Domain.Common;
 using MediatR;
@@ -99,17 +98,17 @@ public class TransactionController(IMediator mediator) : ControllerBase
         return BadRequest(result);
     }
     [HttpGet]
-    public async Task<ActionResult<Result>> GetAll(
+    public async Task<ActionResult<Result>> GetTransaction(
         [FromQuery] Guid? categoryId = null,
         [FromQuery] Guid? transactionTypeId = null,
         [FromQuery] Guid? accountId = null,
         [FromQuery] DateTime? startDate = null,
         [FromQuery] DateTime? endDate = null)
     {
-        var result = await mediator.Send(new GetTransactionsByUserQuery(
+        var result = await mediator.Send(new GetTransactionsQuery(
+            accountId,
             categoryId,
             transactionTypeId,
-            accountId,
             startDate,
             endDate
         ));
