@@ -72,6 +72,8 @@ export interface TransactionDashboard {
   income: number;
   expense: number;
   quantity: number;
+  goalQuantity: number;
+  currentTotalBalance: number;
   categoryExpenses: CategoryExpense[];
 }
 

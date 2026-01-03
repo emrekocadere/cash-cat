@@ -1,27 +1,47 @@
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import type { RootState } from '@/store/store';
 import { Header } from '@/components/common/Header';
 import { Footer } from '@/components/common/Footer';
 import { transactionsApi } from '@/api/endpoints/transactions.api';
 import { RecentTransactionsPanel } from '@/components/dashboard/RecentTransactionsPanel';
 import { StatCard } from '@/components/dashboard/StatCard';
 import { SpendingByCategoryPanel } from '@/components/dashboard/SpendingByCategoryPanel';
+import { authService } from '@/services/auth.service';
+import { AIInsightsSection } from '@/components/common/AIInsightsSection';
+import { useAIInsights } from '@/hooks/useAIInsights';
 import type { Transaction, CategoryExpense } from '@/types/model.types';
 
 export const DashboardPage = () => {
+  const { accessToken } = useSelector((state: RootState) => state.auth);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [monthlySpending, setMonthlySpending] = useState(0);
   const [transactionCount, setTransactionCount] = useState(0);
   const [monthlyIncome, setMonthlyIncome] = useState(0);
   const [categoryExpenses, setCategoryExpenses] = useState<CategoryExpense[]>([]);
+  const [userName, setUserName] = useState<string | null>(null);
+  const [goalQuantity, setGoalQuantity] = useState(0);
+  const [currentTotalBalance, setCurrentTotalBalance] = useState(0);
+
+
+  const { insights, loading: insightsLoading } = useAIInsights({ pageType: 'dashboard' });
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
         setIsLoading(true);
         const currentMonth = new Date().getMonth() + 1;
-        
-        // Fetch both transactions and dashboard data in parallel
+
+
+        if (accessToken) {
+
+          const name = authService.getUserNameFromToken(accessToken);
+
+          setUserName(name);
+        }
+
+
         const [transactionsResult, dashboardResult] = await Promise.all([
           transactionsApi.getAll(),
           transactionsApi.getDashboard(currentMonth),
@@ -32,6 +52,8 @@ export const DashboardPage = () => {
         setMonthlyIncome(dashboardResult.income);
         setTransactionCount(dashboardResult.quantity);
         setCategoryExpenses(dashboardResult.categoryExpenses || []);
+        setGoalQuantity(dashboardResult.goalQuantity);
+        setCurrentTotalBalance(dashboardResult.currentTotalBalance);
       } catch (err) {
         console.error('Failed to fetch dashboard data:', err);
       } finally {
@@ -40,9 +62,9 @@ export const DashboardPage = () => {
     };
 
     fetchDashboardData();
-  }, []);
+  }, [accessToken]);
 
-  // Map API category data to component format
+
   const categoryData = categoryExpenses.map((cat, index) => {
     const gradients = [
       'from-orange-500 to-orange-400',
@@ -66,20 +88,20 @@ export const DashboardPage = () => {
       <Header />
 
       {/* Main Content */}
-      <main className="ml-64">
-        <div className="max-w-7xl mx-auto px-8 py-12">
+      <main className="lg:ml-64">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12 pt-16 lg:pt-12">
           {/* Welcome Section */}
-          <div className="mb-12">
-            <h1 className="text-4xl font-bold text-white mb-2">Welcome back, User!</h1>
-            <p className="text-gray-400">Here's your financial overview</p>
+          <div className="mb-8 lg:mb-12">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2">Welcome back, {userName || 'User'}!</h1>
+            <p className="text-sm sm:text-base text-gray-400">Here's your financial overview</p>
           </div>
 
           {/* Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mb-8 lg:mb-12">
             <StatCard
               title="Total Balance"
-              value="$12,450.50"
-              subtitle="+2.5% from last month"
+              value={`$${currentTotalBalance.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+              subtitle="Your current total balance"
               iconBgColor="bg-primary-500/20"
               iconColor="text-primary-400"
               borderHoverColor="primary-500/50"
@@ -108,8 +130,8 @@ export const DashboardPage = () => {
 
             <StatCard
               title="Goals"
-              value="3"
-              subtitle="Active goals"
+              value={goalQuantity.toString()}
+              subtitle={goalQuantity === 1 ? "Active goal" : "Active goals"}
               iconBgColor="bg-purple-500/20"
               iconColor="text-purple-400"
               borderHoverColor="purple-500/50"
@@ -137,10 +159,15 @@ export const DashboardPage = () => {
             />
           </div>
 
+          {/* AI Insights Section */}
+          <div className="mb-6 lg:mb-8">
+            <AIInsightsSection insights={insights} loading={insightsLoading} />
+          </div>
+
           {/* Recent Transactions Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
             {/* Recent Transactions */}
-            <div className="lg:col-span-2 bg-white/5 backdrop-blur-xl p-8 rounded-2xl border border-white/10">
+            <div className="lg:col-span-2 bg-white/5 backdrop-blur-xl p-4 sm:p-6 lg:p-8 rounded-xl sm:rounded-2xl border border-white/10">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold text-white">Recent Transactions</h2>
                 <a href="/transactions" className="text-primary-400 hover:text-primary-300 text-sm font-medium transition-colors">
