@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '@/store/store';
 import { fetchAppData } from '@/store/slices/appDataSlice';
@@ -16,15 +16,17 @@ import { OnboardingPage } from '@/pages/OnboardingPage';
 
 export const AppRoutes = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const location = useLocation();
   const { isLoaded } = useSelector((state: RootState) => state.appData);
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
-    // Sadece authenticated ise appData fetch et
-    if (isAuthenticated && !isLoaded) {
+    const shouldFetchAppData = isAuthenticated || location.pathname === '/onboarding';
+    
+    if (shouldFetchAppData && !isLoaded) {
       dispatch(fetchAppData());
     }
-  }, [dispatch, isLoaded, isAuthenticated]);
+  }, [dispatch, isLoaded, isAuthenticated, location.pathname]);
 
   return (
     <Routes>
