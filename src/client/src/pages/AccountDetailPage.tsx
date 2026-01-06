@@ -166,6 +166,20 @@ export const AccountDetailPage = () => {
             showDemoNotice={false}
             onAddTransaction={() => setShowAddModal(true)}
             onEditAccount={() => setShowEditModal(true)}
+            onDeleteAccount={async () => {
+              try {
+                const result = await accountsApi.delete(account.id);
+                if (result.isSuccess) {
+                  setToast({ message: 'Account deleted successfully', type: 'success' });
+                  setTimeout(() => window.location.href = '/accounts', 1500);
+                } else {
+                  setToast({ message: 'Failed to delete account', type: 'error' });
+                }
+              } catch (error) {
+                console.error('Delete error:', error);
+                setToast({ message: 'Failed to delete account', type: 'error' });
+              }
+            }}
             transactions={transactions}
             accounts={accounts}
             onShowToast={(message, type) => setToast({ message, type })}
