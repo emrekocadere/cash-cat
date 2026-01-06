@@ -1,12 +1,14 @@
 using System.Security.Claims;
 using WalletUp.Application.Account.Commands.CreateAccount;
 using WalletUp.Application.Account.Commands.DeleteAccount;
+using WalletUp.Application.Account.Commands.UpdateAccount;
 using WalletUp.Application.Account.Queries.GetAccount;
 using WalletUp.Application.Account.Queries.GetAccounts;
 using WalletUp.Application.Account.Queries.GetAccountTypes;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WalletUp.Application.Account.Dtos;
 
 namespace CashCat.API.Controllers;
 
@@ -40,6 +42,20 @@ public class AccountController(IMediator mediator):ControllerBase
     public async Task<ActionResult> DeleteAccounts(Guid id)
     {
         var result = await mediator.Send(new DeleteAccountCommand(id));
+        return Ok(result);
+    }
+    
+    [HttpPut("{id}")]
+    public async Task<ActionResult> UpdateAccount(Guid id, UpdateAccountRequest request)
+    {
+        UpdateAccountCommand command = new()
+        {
+            Id = id,
+            Name = request.Name,
+            CurrencyId = request.CurrencyId,
+            AccountTypeId = request.AccountTypeId
+        };
+        var result = await mediator.Send(command);
         return Ok(result);
     }
     
