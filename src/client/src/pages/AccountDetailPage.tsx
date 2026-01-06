@@ -8,6 +8,7 @@ import { Toast } from '@/components/common/Toast';
 import { TransactionTable } from '@/components/transactions/TransactionTable';
 import { TransactionFilters } from '@/components/transactions/TransactionFilters';
 import { AddTransactionModal } from '@/components/transactions/AddTransactionModal';
+import { EditAccountModal } from '@/components/accounts/EditAccountModal';
 import { AIInsightsSection } from '@/components/common/AIInsightsSection';
 import { useAIInsights } from '@/hooks/useAIInsights';
 import { accountsApi } from '@/api/endpoints/accounts.api';
@@ -28,6 +29,7 @@ export const AccountDetailPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const [filterType, setFilterType] = useState<string>('all');
   const [filterCategory, setFilterCategory] = useState<string>('all');
@@ -163,6 +165,7 @@ export const AccountDetailPage = () => {
             isError={isError}
             showDemoNotice={false}
             onAddTransaction={() => setShowAddModal(true)}
+            onEditAccount={() => setShowEditModal(true)}
             transactions={transactions}
             accounts={accounts}
             onShowToast={(message, type) => setToast({ message, type })}
@@ -228,6 +231,28 @@ export const AccountDetailPage = () => {
             setTransactions(updatedTransactions);
           } catch (error) {
             console.error('Failed to reload transactions:', error);
+          }
+        }}
+        onShowToast={(message, type) => setToast({ message, type })}
+      />
+
+      <EditAccountModal
+        isOpen={showEditModal}
+        onClose={() => setShowEditModal(false)}
+        account={account}
+        onSubmit={async (updateData) => {
+          try {
+            const result = await accountsApi.update(account.id, updateData);
+            if (result.isSuccess) {
+              // Hesap bilgilerini yenile
+              const updatedAccount = await accountsApi.getById(account.id);
+              setAccount(updatedAccount);
+              return true;
+            }
+            return false;
+          } catch (error) {
+            console.error('Failed to update account:', error);
+            return false;
           }
         }}
         onShowToast={(message, type) => setToast({ message, type })}

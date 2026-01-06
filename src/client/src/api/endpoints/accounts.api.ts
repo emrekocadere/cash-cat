@@ -9,6 +9,12 @@ export interface CreateAccountRequest {
   currencyId: string;
 }
 
+export interface UpdateAccountRequest {
+  name?: string;
+  currencyId?: string;
+  accountTypeId?: string;
+}
+
 export const accountsApi = {
   getAll: async (): Promise<Account[]> => {
     const { data } = await apiClient.get<ResultT<Account[]>>('/account');
@@ -34,5 +40,10 @@ export const accountsApi = {
   getById: async (id: string): Promise<Account> => {
     const { data } = await apiClient.get<ResultT<Account>>(`/account/${id}`);
     return data.value!;
+  },
+
+  update: async (id: string, account: UpdateAccountRequest): Promise<Result> => {
+    const { data } = await apiClient.put<Result>(`/account/${id}`, account);
+    return data;
   },
 };
