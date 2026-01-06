@@ -44,8 +44,8 @@ export const transactionsApi = {
     return data;
   },
 
-  delete: async (id: string): Promise<ResultT<void>> => {
-    const { data } = await apiClient.delete<ResultT<void>>(`/transactions/${id}`);
+  delete: async (id: string): Promise<Result> => {
+    const { data } = await apiClient.delete<Result>(`/transaction/${id}`);
     return data;
   },
 

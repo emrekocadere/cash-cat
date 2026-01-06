@@ -60,7 +60,7 @@ public class AccountController(IMediator mediator):ControllerBase
     }
     
     [HttpGet("AccountTypes")]
-       [AllowAnonymous]
+    [AllowAnonymous]
     public async Task<ActionResult> GetAccountTypes()
     {
         var result = await mediator.Send(new GetAccountTypesQuery());

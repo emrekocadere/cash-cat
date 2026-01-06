@@ -208,6 +208,20 @@ export const AccountDetailPage = () => {
                 filterCategory !== 'all' ||
                 filterPeriod !== 'all'
               }
+              onDelete={async (transactionId) => {
+                try {
+                  const result = await transactionsApi.delete(transactionId);
+                  console.log('Delete result:', result);
+                  if (result.isSuccess) {
+                    const updatedTransactions = await transactionsApi.getByAccountId(id!);
+                    setTransactions(updatedTransactions);
+                  }
+                } catch (error) {
+                  console.error('Delete error:', error);
+                  throw error;
+                }
+              }}
+              onShowToast={(message, type) => setToast({ message, type })}
             />
           </div>
 

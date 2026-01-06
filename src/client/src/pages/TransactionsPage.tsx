@@ -198,6 +198,12 @@ export const TransactionsPage = () => {
                 filterCategory !== 'all' ||
                 filterPeriod !== 'all'
               }
+              onDelete={async (transactionId) => {
+                await transactionsApi.delete(transactionId);
+                const updatedTransactions = await transactionsApi.getAll();
+                setTransactions(updatedTransactions);
+              }}
+              onShowToast={(message, type) => setToast({ message, type })}
             />
           </div>
         </div>
