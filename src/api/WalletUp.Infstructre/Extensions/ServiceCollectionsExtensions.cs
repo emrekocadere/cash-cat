@@ -46,6 +46,10 @@ public static class ServiceCollectionsExtensions
         services.AddScoped<IRepository<Category>, Repository<Category>>();
         services.AddScoped<ITransactionRepository, TransactionRepository>();
         services.AddScoped<IGoalRepository, GoalRepository>();
+        services.AddScoped<IGoalTransactionRepository, GoalTransactionRepository>();
+        
+        
+        
         
         services.AddAuthentication(options =>
             {
