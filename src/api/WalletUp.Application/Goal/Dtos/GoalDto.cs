@@ -8,7 +8,8 @@ public class GoalDto
     public string Title { get; set; } = null!;
     public string Description { get; set; }
     public double Target { get; set; }
-    public double TargetPercent { get; set; }
+    public double TargetPercent => (CurrentAmount / Target) * 100;
     public double CurrentAmount { get; set; }
+
     public DateTime CreationTime { get; set; }
 }
