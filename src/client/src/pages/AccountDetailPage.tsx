@@ -9,6 +9,7 @@ import { TransactionTable } from '@/components/transactions/TransactionTable';
 import { TransactionFilters } from '@/components/transactions/TransactionFilters';
 import { AddTransactionModal } from '@/components/transactions/AddTransactionModal';
 import { EditAccountModal } from '@/components/accounts/EditAccountModal';
+import { EditTransactionModal } from '@/components/transactions/EditTransactionModal';
 import { AIInsightsSection } from '@/components/common/AIInsightsSection';
 import { useAIInsights } from '@/hooks/useAIInsights';
 import { accountsApi } from '@/api/endpoints/accounts.api';
@@ -30,6 +31,8 @@ export const AccountDetailPage = () => {
   const [isError, setIsError] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showEditTransactionModal, setShowEditTransactionModal] = useState(false);
+  const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const [filterType, setFilterType] = useState<string>('all');
   const [filterCategory, setFilterCategory] = useState<string>('all');
@@ -222,6 +225,10 @@ export const AccountDetailPage = () => {
                 filterCategory !== 'all' ||
                 filterPeriod !== 'all'
               }
+              onEdit={(transaction) => {
+                setEditingTransaction(transaction);
+                setShowEditTransactionModal(true);
+              }}
               onDelete={async (transactionId) => {
                 try {
                   const result = await transactionsApi.delete(transactionId);
@@ -281,6 +288,25 @@ export const AccountDetailPage = () => {
           } catch (error) {
             console.error('Failed to update account:', error);
             return false;
+          }
+        }}
+        onShowToast={(message, type) => setToast({ message, type })}
+      />
+
+      <EditTransactionModal
+        isOpen={showEditTransactionModal}
+        onClose={() => {
+          setShowEditTransactionModal(false);
+          setEditingTransaction(null);
+        }}
+        transaction={editingTransaction}
+        categories={categories}
+        onSuccess={async () => {
+          try {
+            const updatedTransactions = await transactionsApi.getByAccountId(id!);
+            setTransactions(updatedTransactions);
+          } catch (error) {
+            console.error('Failed to reload transactions:', error);
           }
         }}
         onShowToast={(message, type) => setToast({ message, type })}

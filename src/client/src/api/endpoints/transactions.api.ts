@@ -49,6 +49,11 @@ export const transactionsApi = {
     return data;
   },
 
+  update: async (id: string, transaction: CreateTransactionRequest): Promise<Result> => {
+    const { data } = await apiClient.put<Result>(`/transaction/${id}`, transaction);
+    return data;
+  },
+
   getAllCurrencies: async (): Promise<Currency[]> => {
     const { data } = await apiClient.get<ResultT<Currency[]>>('/Transaction/Currencies');
     return data.value!;

@@ -7,6 +7,7 @@ import { Toast } from '@/components/common/Toast';
 import { TransactionTable } from '@/components/transactions/TransactionTable';
 import { TransactionFilters } from '@/components/transactions/TransactionFilters';
 import { AddTransactionModal } from '@/components/transactions/AddTransactionModal';
+import { EditTransactionModal } from '@/components/transactions/EditTransactionModal';
 import { AIInsightsSection } from '@/components/common/AIInsightsSection';
 import { useAIInsights } from '@/hooks/useAIInsights';
 import { transactionsApi } from '@/api/endpoints/transactions.api';
@@ -20,6 +21,8 @@ export const TransactionsPage = () => {
   const { categories, transactionTypes } = useSelector((state: RootState) => state.appData);
 
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
   const [filterType, setFilterType] = useState<string>('all');
   const [filterAccount, setFilterAccount] = useState<string>('all');
   const [filterCategory, setFilterCategory] = useState<string>('all');
@@ -198,6 +201,10 @@ export const TransactionsPage = () => {
                 filterCategory !== 'all' ||
                 filterPeriod !== 'all'
               }
+              onEdit={(transaction) => {
+                setEditingTransaction(transaction);
+                setShowEditModal(true);
+              }}
               onDelete={async (transactionId) => {
                 await transactionsApi.delete(transactionId);
                 const updatedTransactions = await transactionsApi.getAll();
@@ -218,6 +225,25 @@ export const TransactionsPage = () => {
         categories={categories}
         onSuccess={async () => {
 
+          try {
+            const updatedTransactions = await transactionsApi.getAll();
+            setTransactions(updatedTransactions);
+          } catch (error) {
+            console.error('Failed to reload transactions:', error);
+          }
+        }}
+        onShowToast={(message, type) => setToast({ message, type })}
+      />
+
+      <EditTransactionModal
+        isOpen={showEditModal}
+        onClose={() => {
+          setShowEditModal(false);
+          setEditingTransaction(null);
+        }}
+        transaction={editingTransaction}
+        categories={categories}
+        onSuccess={async () => {
           try {
             const updatedTransactions = await transactionsApi.getAll();
             setTransactions(updatedTransactions);

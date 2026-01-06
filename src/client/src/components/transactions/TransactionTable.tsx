@@ -9,6 +9,7 @@ interface TransactionTableProps {
   accounts: Array<{ id: string; name: string }>;
   hasFilters: boolean;
   onDelete?: (transactionId: string) => Promise<void>;
+  onEdit?: (transaction: Transaction) => void;
   onShowToast?: (message: string, type: 'success' | 'error') => void;
 }
 
@@ -18,10 +19,11 @@ export const TransactionTable = ({
   accounts,
   hasFilters,
   onDelete,
+  onEdit,
   onShowToast,
 }: TransactionTableProps) => {
   const handleEdit = (transaction: Transaction) => {
-    console.log('Edit transaction:', transaction);
+    onEdit?.(transaction);
   };
 
   const handleDelete = async (transaction: Transaction) => {
@@ -94,7 +96,7 @@ export const TransactionTable = ({
                 </span>
               </td>
               <td className="px-6 py-4 text-sm text-gray-300">
-                {accounts.find((a) => a.id === transaction.accountId)?.name || 'Unknown'}
+                {transaction.account?.name || accounts.find((a) => a.id === transaction.accountId)?.name || 'Unknown'}
               </td>
               <td className="px-6 py-4">
                 <span

@@ -40,7 +40,8 @@ export interface Transaction {
   title?: string;
   description?: string;
   category?: Category;
-  accountId: string;
+  accountId?: string;
+  account?: Account;
   transactionType?: TransactionType;
   date?: string;
 }

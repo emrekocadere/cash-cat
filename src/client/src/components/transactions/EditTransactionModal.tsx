@@ -5,11 +5,13 @@ import { transactionsApi } from '@/api/endpoints/transactions.api';
 
 interface Transaction {
   id: string;
-  transactionTypeId: string;
+  transactionTypeId?: string;
+  transactionType?: { id: string; name: string };
   amount: number;
   title: string;
   description: string;
-  categoryId: string;
+  categoryId?: string;
+  category?: { id: string; name: string };
   date: string;
 }
 
@@ -44,11 +46,11 @@ export const EditTransactionModal = ({
 
   useEffect(() => {
     if (transaction) {
-      setTransactionTypeId(transaction.transactionTypeId);
+      setTransactionTypeId(transaction.transactionTypeId || transaction.transactionType?.id || '');
       setAmount(transaction.amount.toString());
       setTitle(transaction.title);
       setDescription(transaction.description || '');
-      setCategoryId(transaction.categoryId);
+      setCategoryId(transaction.categoryId || transaction.category?.id || '');
       setDate(transaction.date.split('T')[0]);
     }
   }, [transaction]);
