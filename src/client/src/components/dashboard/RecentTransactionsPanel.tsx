@@ -74,7 +74,7 @@ export const RecentTransactionsPanel = ({ transactions, isLoading }: RecentTrans
               }`}>
                 {isIncome ? '+' : '-'}₺{transaction.amount.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </p>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-gray-500 mt-1 hidden sm:block">
                 {transaction.transactionType?.name || 'Unknown'}
               </p>
             </div>

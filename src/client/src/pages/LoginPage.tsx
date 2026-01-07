@@ -134,7 +134,7 @@ export const LoginPage = () => {
         </div>
 
         <div>
-          <div className="bg-white/5 backdrop-blur-2xl py-12 px-10 shadow-2xl rounded-3xl border border-white/10">
+          <div className="bg-white/5 backdrop-blur-2xl py-8 sm:py-12 px-4 sm:px-10 shadow-2xl rounded-2xl sm:rounded-3xl border border-white/10">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-white mb-2">Sign In</h2>
               <p className="text-gray-300">Welcome back to WalletUp</p>

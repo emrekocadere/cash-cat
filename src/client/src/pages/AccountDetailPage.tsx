@@ -112,8 +112,8 @@ export const AccountDetailPage = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
         <Header />
-        <main className="ml-64">
-          <div className="max-w-5xl mx-auto px-8 py-12">
+        <main className="lg:ml-64">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pt-16 lg:pt-12">
             <div className="text-center text-white text-xl">Loading account details...</div>
           </div>
         </main>
@@ -125,8 +125,8 @@ export const AccountDetailPage = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
         <Header />
-        <main className="ml-64">
-          <div className="max-w-5xl mx-auto px-8 py-12">
+        <main className="lg:ml-64">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pt-16 lg:pt-12">
             <div className="text-center">
               <p className="text-red-400 text-xl mb-4">Failed to load account</p>
               <Link to="/accounts" className="text-primary-400 hover:text-primary-300">
@@ -145,8 +145,8 @@ export const AccountDetailPage = () => {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       <Header />
 
-      <main className="ml-64">
-        <div className="max-w-7xl mx-auto px-8 py-12 space-y-8">
+      <main className="lg:ml-64">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12 pt-16 lg:pt-12 space-y-6 sm:space-y-8">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div>
               <Link
@@ -155,8 +155,8 @@ export const AccountDetailPage = () => {
               >
                 ← Back to Accounts
               </Link>
-              <h1 className="text-4xl font-bold text-white mt-1">{account.name}</h1>
-              <p className="text-gray-400">View your account balance and all transactions.</p>
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mt-1">{account.name}</h1>
+              <p className="text-sm sm:text-base text-gray-400">View your account balance and all transactions.</p>
             </div>
           </div>
 
