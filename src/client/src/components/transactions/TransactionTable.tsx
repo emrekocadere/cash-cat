@@ -65,19 +65,21 @@ export const TransactionTable = ({
   }
 
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full">
-        <thead className="bg-white/5 border-b border-white/10">
-          <tr>
-            <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Date</th>
-            <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Title</th>
-            <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Category</th>
-            <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Account</th>
-            <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Type</th>
-            <th className="px-6 py-4 text-right text-sm font-semibold text-gray-300">Amount</th>
-            <th className="px-6 py-4 text-center text-sm font-semibold text-gray-300">Actions</th>
-          </tr>
-        </thead>
+    <>
+      {/* Desktop Table View - hidden on mobile */}
+      <div className="hidden lg:block overflow-x-auto">
+        <table className="w-full">
+          <thead className="bg-white/5 border-b border-white/10">
+            <tr>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Date</th>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Title</th>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Category</th>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Account</th>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Type</th>
+              <th className="px-6 py-4 text-right text-sm font-semibold text-gray-300">Amount</th>
+              <th className="px-6 py-4 text-center text-sm font-semibold text-gray-300">Actions</th>
+            </tr>
+          </thead>
         <tbody className="divide-y divide-white/5">
           {transactions.map((transaction) => (
             <tr key={transaction.id} className="hover:bg-white/5 transition-colors">
@@ -149,6 +151,84 @@ export const TransactionTable = ({
           ))}
         </tbody>
       </table>
-    </div>
+      </div>
+
+      {/* Mobile Card View */}
+      <div className="lg:hidden space-y-3">
+        {transactions.map((transaction) => (
+          <div
+            key={transaction.id}
+            className="bg-white/5 backdrop-blur-xl rounded-xl border border-white/10 p-4 hover:bg-white/[0.07] transition-colors"
+          >
+            <div className="flex items-start justify-between mb-3">
+              <div className="flex-1">
+                <h3 className="text-white font-semibold text-base mb-1">
+                  {transaction.title || 'Untitled'}
+                </h3>
+                <p className="text-gray-400 text-xs">{formatDate(transaction.date)}</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <span
+                  className={`text-lg font-bold whitespace-nowrap ${
+                    transaction.transactionType?.name?.toLowerCase() === 'income' ? 'text-green-400' : 'text-white'
+                  }`}
+                >
+                  {transaction.transactionType?.name?.toLowerCase() === 'income' ? '+' : '-'}
+                  {formatCurrency(transaction.amount)}
+                </span>
+                <TransactionRowActions
+                  transaction={transaction}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                />
+              </div>
+            </div>
+
+            {transaction.description && (
+              <p className="text-gray-500 text-sm mb-3">{transaction.description}</p>
+            )}
+
+            <div className="flex flex-wrap gap-2 items-center">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-purple-500/15 text-purple-300 rounded-lg text-xs border border-purple-500/20">
+                {transaction.category?.name || 'No category'}
+              </span>
+              
+              <span
+                className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium ${
+                  transaction.transactionType?.name?.toLowerCase() === 'income'
+                    ? 'bg-green-500/20 text-green-400'
+                    : 'bg-red-500/20 text-red-400'
+                }`}
+              >
+                {transaction.transactionType?.name?.toLowerCase() === 'income' ? (
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M7 11l5-5m0 0l5 5m-5-5v12"
+                    />
+                  </svg>
+                ) : (
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17 13l-5 5m0 0l-5-5m5 5V6"
+                    />
+                  </svg>
+                )}
+                {transaction.transactionType?.name || 'Unknown'}
+              </span>
+
+              <span className="text-gray-400 text-xs">
+                {transaction.account?.name || accounts.find((a) => a.id === transaction.accountId)?.name || 'Unknown'}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
   );
 };
