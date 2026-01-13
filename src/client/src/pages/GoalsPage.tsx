@@ -5,6 +5,7 @@ import { GoalStatsCards } from '@/components/goals/GoalStatsCards';
 import { GoalCard } from '@/components/goals/GoalCard';
 import { EmptyGoalsState } from '@/components/goals/EmptyGoalsState';
 import { AddGoalModal } from '@/components/goals/AddGoalModal';
+import { EditGoalModal } from '@/components/goals/EditGoalModal';
 import { AddMoneyModal } from '@/components/goals/AddMoneyModal';
 import { Toast } from '@/components/common/Toast';
 import { AIInsightsSection } from '@/components/common/AIInsightsSection';
@@ -15,8 +16,10 @@ import type { Goal } from '@/types/model.types';
 
 export const GoalsPage = () => {
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [showAddMoneyModal, setShowAddMoneyModal] = useState(false);
   const [selectedGoal, setSelectedGoal] = useState<Goal | null>(null);
+  const [editingGoal, setEditingGoal] = useState<Goal | null>(null);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const [accounts, setAccounts] = useState<Array<{ id: string; name: string }>>([]);
   const [goals, setGoals] = useState<Goal[]>([]);
@@ -69,8 +72,11 @@ export const GoalsPage = () => {
   };
 
   const handleEditGoal = (goalId: string) => {
-    console.log('Edit goal:', goalId);
-
+    const goal = goals.find(g => g.id === goalId);
+    if (goal) {
+      setEditingGoal(goal);
+      setShowEditModal(true);
+    }
   };
 
   const handleDeleteGoal = async (goalId: string) => {
@@ -160,6 +166,18 @@ export const GoalsPage = () => {
         onSuccess={handleGoalCreated}
         onShowToast={(message, type) => setToast({ message, type })}
         accounts={accounts}
+      />
+
+      {/* Edit Goal Modal */}
+      <EditGoalModal
+        isOpen={showEditModal}
+        onClose={() => {
+          setShowEditModal(false);
+          setEditingGoal(null);
+        }}
+        goal={editingGoal}
+        onSuccess={handleGoalCreated}
+        onShowToast={(message, type) => setToast({ message, type })}
       />
 
       {/* Add Money Modal */}
