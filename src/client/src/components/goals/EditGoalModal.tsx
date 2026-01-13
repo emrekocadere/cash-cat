@@ -1,70 +1,92 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import type { Goal } from '@/types/model.types';
 import { goalsApi } from '@/api/endpoints/goals.api';
 
-interface AddGoalModalProps {
+interface EditGoalModalProps {
   isOpen: boolean;
   onClose: () => void;
+  goal: Goal | null;
   onSuccess?: () => void;
   onShowToast?: (message: string, type: 'success' | 'error') => void;
-  accounts?: Array<{ id: string; name: string }>;
 }
 
-export const AddGoalModal = ({ isOpen, onClose, onSuccess, onShowToast }: AddGoalModalProps) => {
+export const EditGoalModal = ({ isOpen, onClose, goal, onSuccess, onShowToast }: EditGoalModalProps) => {
   const [name, setName] = useState('');
   const [targetAmount, setTargetAmount] = useState('');
   const [description, setDescription] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  useEffect(() => {
+    if (goal && isOpen) {
+      setName(goal.title || '');
+      setTargetAmount(goal.target?.toString() || '');
+      setDescription(goal.description || '');
+    }
+  }, [goal, isOpen]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!goal) return;
+
     const amount = parseFloat(targetAmount);
     if (isNaN(amount) || amount <= 0) {
-      alert('Please enter a valid target amount');
+      onShowToast?.('Please enter a valid target amount', 'error');
       return;
     }
 
     if (!name.trim()) {
-      alert('Please enter a goal name');
+      onShowToast?.('Please enter a goal name', 'error');
       return;
     }
 
     setIsSubmitting(true);
     try {
-      const result = await goalsApi.create({
-        Name: name,
-        Target: amount,
-        Description: description || '',
-      });
+      // Only send changed fields
+      const payload: Partial<{ Name: string; Target: number; Description: string }> = {};
+      
+      if (name !== goal.title) {
+        payload.Name = name;
+      }
+      if (amount !== goal.target) {
+        payload.Target = amount;
+      }
+      if ((description || '') !== (goal.description || '')) {
+        payload.Description = description || '';
+      }
+
+      // If no changes, show message and return
+      if (Object.keys(payload).length === 0) {
+        onShowToast?.('No changes to save', 'error');
+        setIsSubmitting(false);
+        return;
+      }
+
+      const result = await goalsApi.update(goal.id, payload);
 
       if (result.isSuccess) {
-
-        setName('');
-        setTargetAmount('');
-        setDescription('');
-
-        onShowToast?.('Created successfully', 'success');
+        onShowToast?.('Goal updated successfully', 'success');
         onSuccess?.();
         onClose();
       } else {
-        onShowToast?.(result.error || 'Failed to create goal', 'error');
+        onShowToast?.(result.error || 'Failed to update goal', 'error');
       }
     } catch (err) {
-      console.error('Failed to create goal:', err);
-      onShowToast?.('Failed to create goal. Please try again.', 'error');
+      console.error('Failed to update goal:', err);
+      onShowToast?.('Failed to update goal. Please try again.', 'error');
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  if (!isOpen) return null;
+  if (!isOpen || !goal) return null;
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-slate-900 border border-white/10 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div className="p-8">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-white">Create New Goal</h2>
+            <h2 className="text-2xl font-bold text-white">Edit Goal</h2>
             <button
               onClick={onClose}
               className="text-gray-400 hover:text-white transition-colors"
@@ -133,7 +155,7 @@ export const AddGoalModal = ({ isOpen, onClose, onSuccess, onShowToast }: AddGoa
                 disabled={isSubmitting}
                 className="flex-1 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isSubmitting ? 'Creating...' : 'Create Goal'}
+                {isSubmitting ? 'Updating...' : 'Update Goal'}
               </button>
             </div>
           </form>
