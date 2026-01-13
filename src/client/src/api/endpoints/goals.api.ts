@@ -1,7 +1,7 @@
 import { apiClient } from '../client/axios.client';
 
 
-import type {  AddTransactionToGoalRequest, CreateGoalRequest } from '@/types/request.types';
+import type {  AddTransactionToGoalRequest, CreateGoalRequest, UpdateGoalRequest } from '@/types/request.types';
 import type { Result,ResultT } from '@/types/common.types';
 import { Goal } from '@/types/model.types';
 
@@ -27,6 +27,11 @@ export const goalsApi = {
 
   delete: async (goalId: string): Promise<Result> => {
     const { data } = await apiClient.delete<Result>(`/goal/${goalId}`);
+    return data;
+  },
+
+  update: async (goalId: string, goal: Partial<UpdateGoalRequest>): Promise<Result> => {
+    const { data } = await apiClient.patch<Result>(`/goal/${goalId}`, goal);
     return data;
   }
 

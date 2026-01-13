@@ -3,10 +3,11 @@ import type {
   Transaction,
   TransactionType,
   TransactionDashboard,
+  Currency,
+  Country,
 } from '@/types/model.types';
 
 import type {  CreateTransactionRequest } from '@/types/request.types';
-import type { Currency } from '@/types/model.types';
 import type { Result, ResultT } from '@/types/common.types';
 import { Category } from '@/types/model.types';
 
@@ -58,6 +59,12 @@ export const transactionsApi = {
     const { data } = await apiClient.get<ResultT<Currency[]>>('/Transaction/Currencies');
     return data.value!;
   },
+
+  getAllCountries: async (): Promise<Country[]> => {
+    const { data } = await apiClient.get<ResultT<Country[]>>('/Transaction/countries');
+    return data.value!;
+  },
+
   getAllCategories: async (): Promise<Category[]> => {
     const { data } = await apiClient.get<ResultT<Category[]>>('/Transaction/categories');
     return data.value!;
