@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WalletUp.Application.Transaction.Commands.UpdateTransaction;
 using WalletUp.Application.Transaction.Dtos;
+using WalletUp.Application.Transaction.Queries.GetCountries;
 
 namespace CashCat.API.Controllers;
 
@@ -97,6 +98,19 @@ public class TransactionController(IMediator mediator) : ControllerBase
     public async Task<ActionResult<Result>> GetTransactionTypes()
     {
         var result = await mediator.Send(new GetTransactionTypesQuery());
+        if (result.IsSuccess)
+        {
+            return Ok(result);
+        }
+
+        return BadRequest(result);
+    }
+    
+    [AllowAnonymous]
+    [HttpGet("countries")]
+    public async Task<ActionResult<Result>> GetCountries()
+    {
+        var result = await mediator.Send(new GetCountriesQuery());
         if (result.IsSuccess)
         {
             return Ok(result);

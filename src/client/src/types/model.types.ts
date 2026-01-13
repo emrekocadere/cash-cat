@@ -61,6 +61,11 @@ export interface Currency {
   iso4217Code: string;
 }
 
+export interface Country {
+  id: string;
+  name: string;
+}
+
 
 export interface CategoryExpense {
   categoryId: string;
