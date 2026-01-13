@@ -7,6 +7,7 @@ import { Toast } from '@/components/common/Toast';
 import { BaseCurrencySection } from '@/components/settings/BaseCurrencySection';
 import { CountrySection } from '@/components/settings/CountrySection';
 import { AISettingsSection } from '@/components/settings/AISettingsSection';
+import { ChangePasswordSection } from '@/components/settings/ChangePasswordSection';
 import { DeleteAccountSection } from '@/components/settings/DeleteAccountSection';
 
 export const SettingsPage = () => {
@@ -71,6 +72,10 @@ export const SettingsPage = () => {
                 onAutoAnalyzeChange={(enabled) => setSettings({ ...settings, aiAutoAnalyze: enabled })}
                 onFrequencyChange={(frequency) => setSettings({ ...settings, aiInsightsFrequency: frequency })}
               />
+            </div>
+
+            <div className="md:col-span-2">
+              <ChangePasswordSection onToast={setToast} />
             </div>
 
             <div className="md:col-span-2">
