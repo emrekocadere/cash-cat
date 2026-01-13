@@ -32,8 +32,12 @@ export const Hero = () => {
 
 
         <div className="relative hidden lg:block">
-          <div className="bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-xl rounded-3xl p-8 border border-white/10">
-
+          <div className="bg-white/5 backdrop-blur-xl p-8 rounded-2xl border border-white/10">
+            <img 
+              src="/Paragraf metniniz.png" 
+              alt="WalletUp Dashboard" 
+              className="rounded-xl w-full h-auto"
+            />
           </div>
         </div>
       </div>
