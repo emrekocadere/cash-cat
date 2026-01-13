@@ -6,6 +6,7 @@ using WalletUp.Application.Goal.Queries.GetGoals;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WalletUp.Application.Goal.Commands.UpdateGoal;
 
 namespace CashCat.API.Controllers;
 
@@ -43,6 +44,19 @@ public class GoalController(IMediator mediator):ControllerBase
     public async  Task<ActionResult> AddTransactionToGoal(Guid goalId)
     {
         var command = new DeleteGoalCommand(goalId);
+        var result =await  mediator.Send(command);
+        return Ok(result);
+    }
+    
+    [HttpPatch("api/Goal/{id}")]
+    public async  Task<ActionResult> UpdateGoal(Guid id,UpdateGoalRequest request)
+    {
+        var command=new UpdateGoalCommand( 
+            id,
+            request.Name,
+            request.Description,
+            request.Target);
+        
         var result =await  mediator.Send(command);
         return Ok(result);
     }
