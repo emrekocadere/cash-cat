@@ -1,7 +1,9 @@
 using System.Security.Claims;
 using AutoMapper;
+using Google.Apis.Auth;
 using WalletUp.Application.Auth.Commands.Register;
 using WalletUp.Application.Identity;
+using WalletUp.Application.Identity.Commands.GoogleLogin;
 using WalletUp.Application.Identity.Commands.Login;
 using WalletUp.Application.Identity.Dtos;
 using WalletUp.Domain.Common;
@@ -10,6 +12,7 @@ using WalletUp.Infstructre.Identity.Models;
 using CashCat.Infstructre.Persistence.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.Extensions.Logging;
 
 namespace CashCat.Infstructre.Identity;
 
@@ -19,7 +22,8 @@ public class IdentityService(
     UserManager<ApplicationUser> userManager,
     SignInManager<ApplicationUser> signInManager,
     ITokenService tokenService,
-    IUserTokenRepository userTokenRepository)
+    IUserTokenRepository userTokenRepository,
+    ILogger<IdentityService> logger)
     : IIdentityService
 {
     public async Task<ResultT<TokenDto>> Register(RegisterCommand command)
@@ -110,10 +114,8 @@ public class IdentityService(
             authClaims.Add(new Claim(ClaimTypes.Role, userRole));
         }
         
-        // generating access token
         var accessToken = tokenService.GenerateAccessToken(authClaims);
-
-        // refresh token
+        
         string refreshToken = tokenService.GenerateRefreshToken();
 
         var tokenInfo= userTokenRepository.GetByUserId(user.Id);
@@ -151,7 +153,7 @@ public class IdentityService(
         var newAccessToken = tokenService.GenerateAccessToken(principal.Claims);
         var newRefreshToken = tokenService.GenerateRefreshToken();
         
-        tokenInfo.Value = newRefreshToken; // rotating the refresh token
+        tokenInfo.Value = newRefreshToken; 
        await userTokenRepository.SaveChanges();
         var tokenDto = new TokenDto
         {
@@ -173,5 +175,92 @@ public class IdentityService(
             return Result.Failure(Errors.AccountNotFound);
         }
         
+    }
+
+    public async Task<ResultT<TokenDto>> GoogleLogin(GoogleLoginCommand command)
+    {
+        try
+        {
+            
+            var payload = await GoogleJsonWebSignature.ValidateAsync(command.IdToken);
+            var user = await userManager.FindByEmailAsync(payload.Email);
+            
+            if (user == null)
+            {
+                if (!await roleManager.RoleExistsAsync("user"))
+                {
+                    await roleManager.CreateAsync(new ApplicationRole { Name = "user" });
+                }
+
+                user = new ApplicationUser
+                {
+                    Email = payload.Email,
+                    UserName = payload.Email,
+                    Name = payload.GivenName ?? payload.Name ?? "User",
+                    Surname = payload.FamilyName ?? "",
+                    EmailConfirmed = true
+                };
+
+                var createResult = await userManager.CreateAsync(user);
+                if (!createResult.Succeeded)
+                { ;
+                    return Errors.AccountNotFound;
+                }
+
+                await userManager.AddToRoleAsync(user, "user");
+            }
+
+            
+            var userRoles = await userManager.GetRolesAsync(user);
+            List<Claim> authClaims = new()
+            {
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
+
+            foreach (var role in userRoles)
+            {
+                authClaims.Add(new Claim(ClaimTypes.Role, role));
+            }
+
+            
+            var accessToken = tokenService.GenerateAccessToken(authClaims);
+            var refreshToken = tokenService.GenerateRefreshToken();
+            
+            var existingToken = userTokenRepository.GetByUserId(user.Id);
+            if (existingToken != null)
+            {
+                existingToken.Value = refreshToken;
+                existingToken.ExpiresAt = DateTime.UtcNow.AddDays(7);
+            }
+            else
+            {
+                var userToken = new ApplicationUserToken
+                {
+                    UserId = user.Id,
+                    LoginProvider = "Google",
+                    Name = "RefreshToken",
+                    Value = refreshToken,
+                    ExpiresAt = DateTime.UtcNow.AddDays(7)
+                };
+                await userTokenRepository.Create(userToken);
+            }
+
+            await userTokenRepository.SaveChanges();
+            return new TokenDto
+            {
+                AccessToken = accessToken,
+                RefreshToken = refreshToken
+            };
+        }
+        catch (InvalidJwtException ex)
+        {
+            return Errors.AccountNotFound;
+        }
+        catch (Exception ex)
+        {
+            return Errors.AccountNotFound;
+        }
     }
 }

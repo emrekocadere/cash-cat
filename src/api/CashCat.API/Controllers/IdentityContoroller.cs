@@ -1,4 +1,5 @@
 using WalletUp.Application.Auth.Commands.Register;
+using WalletUp.Application.Identity.Commands.GoogleLogin;
 using WalletUp.Application.Identity.Commands.Login;
 using WalletUp.Application.Identity.Dtos;
 using WalletUp.Domain.Common;
@@ -18,6 +19,19 @@ public class IdentityController(IMediator mediator) : ControllerBase
     public async Task<ActionResult<ResultT<TokenDto>>> Register(RegisterCommand command)
     {
         var result = await mediator.Send(command);
+        
+        if (result.IsSuccess)
+        {
+            Response.Cookies.Append("refreshToken", result.Value.RefreshToken, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = false,
+                SameSite = SameSiteMode.Lax,
+                Expires = DateTime.UtcNow.AddDays(7),
+                Path = "/"
+            });
+        }
+        
         return result;
     }
     
@@ -31,8 +45,14 @@ public class IdentityController(IMediator mediator) : ControllerBase
             return Unauthorized(Result.Failure(Errors.AccountNotFound));
         }
 
-        // Access token'ı header'dan al
+        // Access token'ı header'dan al (varsa)
         var accessToken = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+        
+        // Eğer access token yoksa boş string gönder (refresh token ile yenileme yapılabilir)
+        if (string.IsNullOrEmpty(accessToken))
+        {
+            accessToken = string.Empty;
+        }
         
         var command = new RefreshTokenCommand(accessToken, refreshToken);
         var result = await mediator.Send(command);
@@ -58,14 +78,37 @@ public class IdentityController(IMediator mediator) : ControllerBase
 
         var result = await mediator.Send(command);
         
-        Response.Cookies.Append("refreshToken", result.Value.RefreshToken, new CookieOptions
+        if (result.IsSuccess)
         {
-            HttpOnly = true,
-            Secure = false,
-            SameSite = SameSiteMode.Lax,
-            Expires = DateTime.UtcNow.AddDays(7),
-            Path = "/"
-        });
+            Response.Cookies.Append("refreshToken", result.Value.RefreshToken, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = false,
+                SameSite = SameSiteMode.Lax,
+                Expires = DateTime.UtcNow.AddDays(7),
+                Path = "/"
+            });
+        }
+
+        return result;
+    }
+
+    [HttpPost("google")]
+    public async Task<ActionResult<ResultT<TokenDto>>> GoogleLogin(GoogleLoginCommand command)
+    {
+        var result = await mediator.Send(command);
+        
+        if (result.IsSuccess)
+        {
+            Response.Cookies.Append("refreshToken", result.Value.RefreshToken, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = false,
+                SameSite = SameSiteMode.Lax,
+                Expires = DateTime.UtcNow.AddDays(7),
+                Path = "/"
+            });
+        }
 
         return result;
     }
