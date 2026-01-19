@@ -15,10 +15,8 @@ export const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Eğer zaten login olmuşsa dashboard'a yönlendir
   useEffect(() => {
     if (isAuthenticated) {
-      console.log('✅ Kullanıcı zaten giriş yapmış, dashboard\'a yönlendiriliyor');
       navigate('/dashboard', { replace: true });
     }
   }, [isAuthenticated, navigate]);
@@ -46,9 +44,12 @@ export const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-12 px-4 relative overflow-hidden">
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary-500/30 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl"></div>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 py-12 px-4 relative overflow-hidden">
+
+      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary-500/10 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-3xl"></div>
+      
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMwLTkuOTQtOC4wNi0xOC0xOC0xOCIgc3Ryb2tlPSJyZ2JhKDI1NSwgMjU1LCAyNTUsIDAuMDMpIiBzdHJva2Utd2lkdGg9IjEiLz48L2c+PC9zdmc+')] opacity-40"></div>
 
       <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10">
         <div className="hidden md:block">
@@ -61,7 +62,7 @@ export const LoginPage = () => {
             WalletUp
           </h1>
           <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-            Welcome back! Manage your finances with ease.
+            Welcome back to your personal finance tracker.
           </p>
 
           <div className="space-y-6">
@@ -82,8 +83,8 @@ export const LoginPage = () => {
                 </svg>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-white mb-1">Secure Access</h3>
-                <p className="text-gray-400">Your account is protected</p>
+                <h3 className="text-lg font-semibold text-white mb-1">Track Expenses</h3>
+                <p className="text-gray-400">Log and categorize your spending</p>
               </div>
             </div>
 
@@ -99,13 +100,13 @@ export const LoginPage = () => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
                   />
                 </svg>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-white mb-1">Quick Access</h3>
-                <p className="text-gray-400">Login instantly to your dashboard</p>
+                <h3 className="text-lg font-semibold text-white mb-1">View Reports</h3>
+                <p className="text-gray-400">See where your money goes</p>
               </div>
             </div>
 
@@ -126,15 +127,15 @@ export const LoginPage = () => {
                 </svg>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-white mb-1">Your Data</h3>
-                <p className="text-gray-400">All your expenses in one place</p>
+                <h3 className="text-lg font-semibold text-white mb-1">Set Goals</h3>
+                <p className="text-gray-400">Plan your savings targets</p>
               </div>
             </div>
           </div>
         </div>
 
         <div>
-          <div className="bg-white/5 backdrop-blur-2xl py-8 sm:py-12 px-4 sm:px-10 shadow-2xl rounded-2xl sm:rounded-3xl border border-white/10">
+          <div className="bg-white/5 backdrop-blur-sm py-8 sm:py-12 px-4 sm:px-10 shadow-2xl rounded-2xl sm:rounded-3xl border border-white/10">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-white mb-2">Sign In</h2>
               <p className="text-gray-300">Welcome back to WalletUp</p>

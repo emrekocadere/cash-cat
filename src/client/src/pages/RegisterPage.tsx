@@ -36,9 +36,11 @@ export const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-12 px-4 relative overflow-hidden">
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary-500/30 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl"></div>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 py-12 px-4 relative overflow-hidden">
+      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary-500/10 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-3xl"></div>
+      
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMwLTkuOTQtOC4wNi0xOC0xOC0xOCIgc3Ryb2tlPSJyZ2JhKDI1NSwgMjU1LCAyNTUsIDAuMDMpIiBzdHJva2Utd2lkdGg9IjEiLz48L2c+PC9zdmc+')] opacity-40"></div>
 
       <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10">
         <div className="hidden md:block">
@@ -49,7 +51,7 @@ export const RegisterPage = () => {
           />
           <h1 className="text-5xl font-extrabold bg-gradient-to-r from-white via-purple-200 to-white bg-clip-text text-transparent mb-4">WalletUp</h1>
           <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-            Take control of your finances with our smart expense tracking app.
+            Start tracking your expenses and managing your budget.
           </p>
 
           <div className="space-y-6">
@@ -60,8 +62,8 @@ export const RegisterPage = () => {
                 </svg>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-white mb-1">Fast & Easy</h3>
-                <p className="text-gray-400">Log expenses in seconds</p>
+                <h3 className="text-lg font-semibold text-white mb-1">Simple Setup</h3>
+                <p className="text-gray-400">Get started in minutes</p>
               </div>
             </div>
 
@@ -72,8 +74,8 @@ export const RegisterPage = () => {
                 </svg>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-white mb-1">Smart Analytics</h3>
-                <p className="text-gray-400">Understand your spending patterns</p>
+                <h3 className="text-lg font-semibold text-white mb-1">Track Spending</h3>
+                <p className="text-gray-400">Keep tabs on your expenses</p>
               </div>
             </div>
 
@@ -84,15 +86,15 @@ export const RegisterPage = () => {
                 </svg>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-white mb-1">Secure & Private</h3>
-                <p className="text-gray-400">Your data is safe with us</p>
+                <h3 className="text-lg font-semibold text-white mb-1">Your Privacy</h3>
+                <p className="text-gray-400">We protect your information</p>
               </div>
             </div>
           </div>
         </div>
 
         <div>
-          <div className="bg-white/5 backdrop-blur-2xl py-8 sm:py-12 px-4 sm:px-10 shadow-2xl rounded-2xl sm:rounded-3xl border border-white/10">
+          <div className="bg-white/5 backdrop-blur-sm py-8 sm:py-12 px-4 sm:px-10 shadow-2xl rounded-2xl sm:rounded-3xl border border-white/10">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-white mb-2">Create Account</h2>
               <p className="text-gray-300">Start tracking your expenses</p>
