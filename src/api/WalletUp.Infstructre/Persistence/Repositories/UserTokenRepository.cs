@@ -13,4 +13,10 @@ public class UserTokenRepository:Repository<ApplicationUserToken>,IUserTokenRepo
          var userToken=   _dbSet.FirstOrDefault(x => x.UserId == userId);
          return userToken;
     }
+
+    public ApplicationUserToken GetByToken(string refreshToken)
+    {
+        var userToken = _dbSet.FirstOrDefault(x => x.Value == refreshToken);
+        return userToken;
+    }
 }

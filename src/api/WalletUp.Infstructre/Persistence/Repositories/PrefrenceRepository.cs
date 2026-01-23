@@ -20,7 +20,12 @@ public class PrefrenceRepository : Repository<Preference>, IPrefrenceRepository
     public void Update(Guid userId, Guid? currencyId, Guid? countryId, string? occupation, double? monthlyIncome)
     {
         var preference = _dbSet.FirstOrDefault(x => x.UserId == userId);
-
+        
+        if(preference == null)
+        {
+            return;
+        }
+        
         if (currencyId.HasValue)
         {
             preference.CurrencyId = currencyId.Value;

@@ -138,30 +138,46 @@ public class IdentityService(
     
     public async  Task<ResultT<TokenDto>> Refresh(TokenDto tokenModel)
     {
-            
-        var principal = tokenService.GetPrincipalFromExpiredToken(tokenModel.AccessToken);
-        var username = principal.Identity.Name;
-        var user= await userManager.FindByNameAsync(username);
-        var tokenInfo = userTokenRepository.GetByUserId(user.Id);
-        if (tokenInfo == null
-            || tokenInfo.Value != tokenModel.RefreshToken
-            || tokenInfo.ExpiresAt <= DateTime.UtcNow)
+        var tokenInfo = userTokenRepository.GetByToken(tokenModel.RefreshToken);
+        
+        if (tokenInfo == null || tokenInfo.ExpiresAt <= DateTime.UtcNow)
         {
             return Errors.AccountNotFound;
         }
         
-        var newAccessToken = tokenService.GenerateAccessToken(principal.Claims);
+        var user = await userManager.FindByIdAsync(tokenInfo.UserId.ToString());
+        
+        if (user == null)
+        {
+            return Errors.AccountNotFound;
+        }
+        
+        var userRoles = await userManager.GetRolesAsync(user);
+        List<Claim> authClaims = new()
+        {
+            new Claim(ClaimTypes.Name, user.UserName),
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+        };
+        
+        foreach (var role in userRoles)
+        {
+            authClaims.Add(new Claim(ClaimTypes.Role, role));
+        }
+        
+        var newAccessToken = tokenService.GenerateAccessToken(authClaims);
         var newRefreshToken = tokenService.GenerateRefreshToken();
         
-        tokenInfo.Value = newRefreshToken; 
-       await userTokenRepository.SaveChanges();
+        tokenInfo.Value = newRefreshToken;
+        tokenInfo.ExpiresAt = DateTime.UtcNow.AddDays(7);
+        await userTokenRepository.SaveChanges();
+        
         var tokenDto = new TokenDto
         {
             AccessToken = newAccessToken,
             RefreshToken = newRefreshToken
         };
-        return tokenDto;
         
+        return tokenDto;
     }
 
     public async Task<Result> DeleteUser(Guid userId)
