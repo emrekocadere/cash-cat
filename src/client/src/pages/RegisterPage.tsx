@@ -45,11 +45,10 @@ export const RegisterPage = () => {
       <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10">
         <div className="hidden md:block">
           <img 
-            src="/logo.png" 
+            src="/Logo2.svg" 
             alt="WalletUp Logo" 
-            className="w-20 h-20 mb-8 object-contain"
+            className="h-32 w-64 object-cover group-hover:scale-110 transition-transform duration-300"
           />
-          <h1 className="text-5xl font-extrabold bg-gradient-to-r from-white via-purple-200 to-white bg-clip-text text-transparent mb-4">WalletUp</h1>
           <p className="text-xl text-gray-300 mb-8 leading-relaxed">
             Start tracking your expenses and managing your budget.
           </p>

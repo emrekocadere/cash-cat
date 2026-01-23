@@ -26,7 +26,7 @@ export const Header = () => {
           </Link>
           <Link
             to="/register"
-            className="px-6 py-2.5 bg-gradient-to-r from-primary-500 to-indigo-600 hover:from-primary-600 hover:to-indigo-700 text-white font-semibold rounded-xl transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-primary-500/30"
+            className="px-6 py-2.5 bg-gradient-to-r from-indigo-400 to-purple-400 hover:from-primary-600 hover:to-indigo-700 text-white font-semibold rounded-xl transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-primary-500/30"
           >
             Get Started
           </Link>
@@ -46,7 +46,7 @@ export const Header = () => {
         </div>
       </div>
       
-      {/* Mobile Menu */}
+
       {isMenuOpen && (
         <div className="md:hidden border-t border-white/10 bg-slate-950/95 backdrop-blur-xl">
           <nav className="flex flex-col px-4 py-4 space-y-2">

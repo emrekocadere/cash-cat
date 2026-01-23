@@ -8,7 +8,6 @@ export const Header = () => {
 
   return (
     <>
-      {/* Mobile Menu Button */}
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         className="lg:hidden fixed top-4 left-4 z-[60] p-2 bg-slate-800 rounded-lg border border-white/10 text-white"
@@ -22,7 +21,6 @@ export const Header = () => {
         </svg>
       </button>
 
-      {/* Mobile Overlay */}
       {isMobileMenuOpen && (
         <div
           className="lg:hidden fixed inset-0 bg-black/50 z-40"
@@ -30,17 +28,15 @@ export const Header = () => {
         />
       )}
 
-      {/* Sidebar */}
       <aside className={`fixed left-0 top-0 h-screen w-64 bg-slate-900/95 border-r border-white/10 backdrop-blur-sm flex flex-col z-50 transition-transform duration-300 ${
         isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
       }`}>
-      <Link to="/dashboard" className="flex items-center gap-3 px-6 py-6 border-b border-white/10 group">
+      <Link to="/dashboard" className="flex items-center justify-center px-6 py-6 border-b border-white/10 group">
         <img 
-          src="/logo.png" 
+          src="/Logo2.svg" 
           alt="WalletUp Logo" 
-          className="w-10 h-10 object-contain group-hover:scale-105 transition-transform"
+          className="h-16 w-32 object-cover "
         />
-        <span className="text-lg font-bold text-white group-hover:text-primary-400 transition-colors">WalletUp</span>
       </Link>
 
 

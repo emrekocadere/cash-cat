@@ -16,8 +16,8 @@ export const Footer = () => {
         </div>
 
 
-        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
-          <p>&copy; {currentYear} WalletUp.</p>
+        <div className="border-t border-white/10 pt-8  flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
+          <p> {currentYear} WalletUp.</p>
           <div className="flex gap-6 mt-4 md:mt-0">
             <a href="#" className="hover:text-primary-400 transition-colors">
               GitHub

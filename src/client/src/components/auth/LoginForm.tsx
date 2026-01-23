@@ -99,12 +99,12 @@ export const LoginForm = ({ onSubmit, isLoading = false, error }: LoginFormProps
       <button
         type="submit"
         disabled={isLoading}
-        className="w-full py-4 px-4 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-xl shadow-xl shadow-primary-500/30 hover:shadow-primary-600/40 disabled:bg-gray-500 disabled:cursor-not-allowed disabled:shadow-none transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] hover:-translate-y-0.5"
+        className="w-full py-4 px-4 bg-gradient-to-r from-primary-600 to-primary-400 text-white font-bold rounded-xl shadow-xl shadow-primary-500/30 hover:shadow-primary-600/40 disabled:bg-gray-500 disabled:cursor-not-allowed disabled:shadow-none transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] hover:-translate-y-0.5"
       >
         {isLoading ? 'Signing in...' : 'Sign In'}
       </button>
 
-      <GoogleSignInButton isLoading={isLoading} onClick={() => console.log('Google sign in clicked')} />
+      <GoogleSignInButton isLoading={isLoading}  />
     </form>
   );
 };
