@@ -11,7 +11,9 @@ public class GoalProfile : Profile
     public GoalProfile()
     {
         CreateMap<CreateGoalCommand, WalletUp.Domain.Entities.Goal>();
-        CreateMap<WalletUp.Domain.Entities.Goal, GoalDto>();
+        CreateMap<WalletUp.Domain.Entities.Goal, GoalDto>()
+            .ForMember(dest => dest.Currency,
+                opt => opt.MapFrom(src =>src.Currency));
         CreateMap<AddTransactionToGoalCommand,GoalTransaction>();
     }
 }

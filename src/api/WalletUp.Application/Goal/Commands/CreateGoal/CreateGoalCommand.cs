@@ -6,5 +6,6 @@ namespace WalletUp.Application.Goal.Commands.CreateGoal;
 public record CreateGoalCommand(
     string Title,
     string? Description,
-    double Target
+    double Target,
+    Guid CurrencyId
     ):IRequest<Result>;

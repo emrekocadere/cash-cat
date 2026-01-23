@@ -1,4 +1,5 @@
 using WalletUp.Application.Account.Dtos;
+using WalletUp.Application.Transaction.Dtos;
 
 namespace WalletUp.Application.Goal.Dtos;
 
@@ -10,6 +11,7 @@ public class GoalDto
     public double Target { get; set; }
     public double TargetPercent => (CurrentAmount / Target) * 100;
     public double CurrentAmount { get; set; }
+    public required CurrencyDto Currency { get; set; }
 
     public DateTime CreationTime { get; set; }
 }
