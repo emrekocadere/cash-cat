@@ -1,19 +1,14 @@
+import type { Country } from '@/types/model.types';
+
 interface CountrySectionProps {
   value: string;
   onChange: (country: string) => void;
+  countries: Country[];
 }
 
-const countries = [
-  { code: 'TR', name: 'Turkey' },
-  { code: 'US', name: 'United States' },
-  { code: 'GB', name: 'United Kingdom' },
-  { code: 'DE', name: 'Germany' },
-  { code: 'FR', name: 'France' },
-];
-
-export const CountrySection = ({ value, onChange }: CountrySectionProps) => {
+export const CountrySection = ({ value, onChange, countries }: CountrySectionProps) => {
   return (
-    <div className="bg-white/5 backdrop-blur-xl p-6 rounded-2xl border border-white/10 hover:border-white/20 transition-colors">
+    <div className="bg-white/5 backdrop-blur-xl p-6 rounded-2xl border border-white/10">
       <div className="flex items-center gap-3 mb-4">
         <div className="w-10 h-10 rounded-lg bg-indigo-500/20 flex items-center justify-center">
           <svg className="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -30,9 +25,10 @@ export const CountrySection = ({ value, onChange }: CountrySectionProps) => {
         onChange={(e) => onChange(e.target.value)}
         className="w-full px-4 py-2 bg-slate-800/50 border border-white/10 rounded-lg text-white focus:border-primary-500/50 focus:outline-none transition-colors"
       >
+        <option value="">Select country</option>
         {countries.map((country) => (
-          <option key={country.code} value={country.code}>
-            {country.code} - {country.name}
+          <option key={country.id} value={country.id}>
+            {country.name}
           </option>
         ))}
       </select>

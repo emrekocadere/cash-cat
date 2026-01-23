@@ -67,7 +67,7 @@ export const ChangePasswordSection = ({ onToast }: ChangePasswordSectionProps) =
     <div className="bg-slate-800/50 backdrop-blur-xl rounded-2xl border border-slate-700 overflow-hidden">
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full px-6 py-4 flex items-center justify-between hover:bg-slate-700/30 transition-colors"
+        className="w-full px-6 py-4 flex items-center justify-between "
       >
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 bg-primary-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
