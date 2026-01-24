@@ -56,18 +56,39 @@ apiClient.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        const { data } = await apiClient.post<ResultT<AuthResponse>>('/Identity/refresh');
+        // Refresh isteği için yeni axios instance kullan (interceptor'sız)
+        const refreshResponse = await axios.post<ResultT<AuthResponse>>(
+          `${baseURL}/Identity/refresh`,
+          {},
+          { 
+            withCredentials: true,
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+        );
         
-        if (data.value?.accessToken) {
+        const data = refreshResponse.data;
+        
+        if (data.isSuccess && data.value?.accessToken) {
           const { setCredentials } = await import('@/store/slices/authSlice');
           store.dispatch(setCredentials({ accessToken: data.value.accessToken }));
           
           originalRequest.headers!.Authorization = `Bearer ${data.value.accessToken}`;
           return apiClient(originalRequest);
+        } else {
+          // Refresh başarısız
+          const { logout } = await import('@/store/slices/authSlice');
+          store.dispatch(logout());
+          window.location.href = '/login';
+          return Promise.reject(error);
         }
-      } catch {
-        store.dispatch({ type: 'auth/logout' });
+      } catch (refreshError) {
+        // Refresh isteği hata verdi
+        const { logout } = await import('@/store/slices/authSlice');
+        store.dispatch(logout());
         window.location.href = '/login';
+        return Promise.reject(refreshError);
       }
     }
 
