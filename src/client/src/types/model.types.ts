@@ -59,6 +59,9 @@ export interface Category {
 export interface Currency {
   id: string;
   iso4217Code: string;
+  code?: string;
+  name?: string;
+  symbol?: string;
 }
 
 export interface Country {
@@ -91,5 +94,6 @@ export interface Goal {
   currentAmount: number;
   targetPercent: number;
   creationTime: string;
+  currency: Currency;
 }
 

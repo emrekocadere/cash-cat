@@ -88,13 +88,13 @@ export const GoalCard = ({ goal, onAddMoney, onEdit, onDelete }: GoalCardProps) 
         <div className="flex items-center justify-between">
           <span className="text-sm text-gray-400">Current</span>
           <span className="text-sm font-bold text-white">
-            ₺{currentAmount.toLocaleString('tr-TR')}
+            {currentAmount.toLocaleString('tr-TR')} {goal.currency?.iso4217Code || ''}
           </span>
         </div>
         <div className="flex items-center justify-between">
           <span className="text-sm text-gray-400">Target</span>
           <span className="text-sm font-bold text-white">
-            ₺{targetAmount.toLocaleString('tr-TR')}
+            {targetAmount.toLocaleString('tr-TR')} {goal.currency?.iso4217Code || ''}
           </span>
         </div>
       </div>
