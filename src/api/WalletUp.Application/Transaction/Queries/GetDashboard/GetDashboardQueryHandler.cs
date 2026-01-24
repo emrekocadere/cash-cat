@@ -15,12 +15,13 @@ public class GetDashboardQueryHandler(
     public Task<ResultT<TransactionDashboardDto>> Handle(GetDashboardQuery request, CancellationToken cancellationToken)
     {
         var userId = userContext.UserId;
+        var expenses = transactionRepository.GetExpensesByMonths(userId,request.Month);
         var transactionQuantity = transactionRepository.GetTransactionQuantityByMonths(userId,request.Month);
         var ıncomeAmount = transactionRepository.GetIncomesByMonths(userId,request.Month);
-        var expenseAmount = transactionRepository.GetExpenseAmountByMonths(userId,request.Month);
+        var expenseAmount = expenses.Sum(e => e.Amount);
         var goalQuantity = goalRepository.GetGoalQuantityByUser(userId);
-        var expenses = transactionRepository.GetExpensesByMonths(userId,request.Month);
         var currentTotalBalance = transactionRepository.GetTotalBalanceByUser(userId);
+        
         
         var categoryExpenses = expenses
             .GroupBy(e => new { e.CategoryId, e.Category!.Name })

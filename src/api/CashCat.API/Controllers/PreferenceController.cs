@@ -17,7 +17,7 @@ public class PreferenceController(IMediator mediator):ControllerBase
     }
     
     [HttpPatch]
-    public async Task<IActionResult> CreatePreference(UpdatePreferenceCommand command)
+    public async Task<IActionResult> UpdatePreference(UpdatePreferenceCommand command)
     {
         var result=await mediator.Send(command);
         return Ok(result);

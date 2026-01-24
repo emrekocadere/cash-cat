@@ -1,6 +1,7 @@
 using AutoMapper;
 using WalletUp.Application.Transaction.Commands.CreateTransaction;
 using WalletUp.Application.Transaction.Dtos;
+using WalletUp.Domain.Entities;
 
 namespace WalletUp.Application.Transaction;
 
@@ -9,6 +10,7 @@ public class TransactionProfile : Profile
     public TransactionProfile()
     {
         CreateMap<CreateTransactionCommand, WalletUp.Domain.Entities.Transaction>();
+        CreateMap<Country,CountryDto>();
         CreateMap<Domain.Entities.TransactionType, TransactionTypeDto>();
         CreateMap<Domain.Entities.Category, CategoryDto>();
         CreateMap<WalletUp.Domain.Entities.Transaction, TransactionDto>()

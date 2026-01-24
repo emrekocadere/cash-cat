@@ -15,6 +15,7 @@ public class GoalRepository:Repository<Goal>,IGoalRepository
         return _dbSet
             .AsNoTracking()
             .Where(g => g.UserId == userId)
+            .Include(x=>x.Currency)
             .ToList();
     }
 
